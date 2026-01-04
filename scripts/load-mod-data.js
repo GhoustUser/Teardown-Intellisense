@@ -2,7 +2,7 @@
 const path = require("path");
 const fs = require("fs");
 
-const { LoadInfoTxt } = require("./mod-info.js");
+const { LoadInfoTxt } = require("./info-txt.js");
 
 
 /**
