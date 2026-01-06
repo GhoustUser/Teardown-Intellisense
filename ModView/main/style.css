@@ -1,0 +1,96 @@
+/* General body styling */
+body {
+    font-family: var(--vscode-font-family);
+    font-size: var(--vscode-font-size);
+    color: var(--vscode-foreground);
+    background-color: var(--vscode-editor-background);
+    margin: 0;
+    padding: 16px;
+}
+
+/* Container styling */
+.container {
+    max-width: 800px;
+    margin: 20px auto;
+    padding: 20px;
+    background: var(--vscode-editorWidget-background);
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Title styling */
+.title {
+    text-align: center;
+    font-size: 2rem;
+    margin-bottom: 20px;
+    color: var(--vscode-editor-foreground);
+}
+
+/* Description styling */
+.description {
+    border: 1px solid var(--vscode-editorWidget-border);
+    border-radius: 4px;
+    padding: 15px;
+    margin-bottom: 20px;
+    background: var(--vscode-input-background);
+    color: var(--vscode-input-foreground);
+    font-size: 1rem;
+    line-height: 1.5;
+}
+
+/* Tags and version styling */
+.tags-version {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+.tags,
+.version {
+    flex: 1;
+    margin-right: 10px;
+}
+
+.tags:last-child,
+.version:last-child {
+    margin-right: 0;
+}
+
+.tags input,
+.version input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid var(--vscode-editorWidget-border);
+    border-radius: 4px;
+    font-size: 1rem;
+    background: var(--vscode-input-background);
+    color: var(--vscode-input-foreground);
+}
+
+.tags input:focus,
+.version input:focus {
+    outline: none;
+    border-color: var(--vscode-focusBorder);
+}
+
+/* Save button styling */
+.save-button {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    background: var(--vscode-button-background);
+    color: var(--vscode-button-foreground);
+    border: none;
+    border-radius: 4px;
+    font-size: 1rem;
+    cursor: pointer;
+    text-align: center;
+}
+
+.save-button:hover {
+    background: var(--vscode-button-hoverBackground);
+}
+
+.save-button:focus {
+    outline: 2px solid var(--vscode-focusBorder);
+}

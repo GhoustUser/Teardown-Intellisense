@@ -3,7 +3,7 @@ const path = require("path");
 const fs = require("fs");
 const { IsScriptingApiLoaded, LoadScriptingApi } = require("./scripts/load-lua-api.js");
 const { LoadModData } = require("./scripts/load-mod-data.js");
-const CustomEditor = require('./CustomEditors/CustomEditor');
+const WebView = require("./ModView/WebView.js");
 
 
 const { workspaceFolders } = vscode.workspace;
@@ -37,59 +37,116 @@ function activate(context) {
         return;
     }
 
-    // check .vscode settings for Teardown Modding Extension prompted flag
-    const hasPrompted = workspaceSettings.get("TeardownModding.hasPrompted", false);
-    if (!hasPrompted) {
-        // show a yes/no prompt to load the Lua API if not already loaded
+    // Check if Mod View is already open
+    const existingPanel = vscode.window.visibleTextEditors.find(editor => editor.document.fileName.includes("main-mod-view"));
+    if (!existingPanel) {
+        // Prompt user to open the Mod View
         console.log("Prompting user to load Teardown Modding Extension...");
 
         vscode.window.showInformationMessage(
-            "Enable Teardown Modding Extension for this workspace?",
-            { modal: true, detail: "Found info.txt in workspace root.\nChoice will be saved in workspace settings." },
-            "Yes", "No"
+            "Teardown Mod detected in workspace.",
+            "Open Mod View"
         ).then(selection => {
-            // update hasPrompted flag in workspace settings
-            workspaceSettings.update("TeardownModding.hasPrompted", true, vscode.ConfigurationTarget.Workspace);
-
             // handle user selection
             switch (selection) {
-                case "Yes":
-                    workspaceSettings.update("TeardownModding.enabled", true, vscode.ConfigurationTarget.Workspace);
+                case "Open Mod View":
+                    openModView(context);
                     break;
-                case "No":
-                    workspaceSettings.update("TeardownModding.enabled", false, vscode.ConfigurationTarget.Workspace);
-                    return; // exit early
                 case null:
                     return; // user dismissed the prompt
             }
-
-            // Prompt for mod type and load relevant data
-            vscode.window.showInformationMessage(
-                "Select the type of mod you are working on:",
-                { modal: true, detail: "This will enable specific features based on your mod type." },
-                "Content Mod", "Global Mod"
-            ).then(modSelection => {
-                switch (modSelection) {
-                    case "Content Mod":
-                        workspaceSettings.update("TeardownModding.modType", "content", vscode.ConfigurationTarget.Workspace);
-                        break;
-                    case "Global Mod":
-                        workspaceSettings.update("TeardownModding.modType", "global", vscode.ConfigurationTarget.Workspace);
-                        break;
-                }
-            });
-
         });
     }
+
     if (!moddingEnabled) return;
 
-    // Proceed with loading mod data and registering custom editors
+    // Proceed with loading mod data and registering commands
     LoadModData(context, rootPath);
-    RegisterCustomEditors(context)
+    registerCommands(context)
     // Load the Lua API into the workspace configuration if not already loaded
     if (!IsScriptingApiLoaded(context)) {
         LoadScriptingApi(context);
     }
+
+    // Open Mod View by default if the setting is enabled
+    const openModViewByDefault = workspaceSettings.get("TeardownModding.OpenModViewByDefault", false);
+    if (openModViewByDefault) {
+        openModView(context);
+    }
+}
+
+/**
+ * Opens the main Mod View webview.
+ * @param {vscode.ExtensionContext} context - The extension context.
+ */
+function openModView(context) {
+    const modView = new WebView(
+        context,
+        "main",
+        (html, filePath, fileContent) => html
+    );
+
+    const panel = modView.open("Teardown Mod View", "main-mod-view");
+
+    if (!panel) {
+        console.error("Failed to create webview panel.");
+        return;
+    }
+
+    // Read the contents of info.txt and send it to the webview
+    const rootPath = workspaceFolders[0].uri.fsPath;
+    const infoTxtPath = path.join(rootPath, "info.txt");
+    if (fs.existsSync(infoTxtPath)) {
+        const infoTxtContent = fs.readFileSync(infoTxtPath, "utf8");
+        panel.webview.postMessage({
+            type: "update",
+            text: infoTxtContent
+        });
+    }
+}
+
+/**
+ * Parses the content of info.txt into fields.
+ * @param {string} content - The content of the info.txt file.
+ * @returns {Object} An object containing the parsed fields.
+ */
+function parseInfoTxt(content) {
+    const lines = content.split('\n');
+    const fields = { name: '', author: '', description: '', tags: '', version: '' };
+    let currentField = null;
+
+    lines.forEach(line => {
+        if (line.startsWith('name = ')) {
+            fields.name = line.replace('name = ', '').trim();
+        } else if (line.startsWith('author = ')) {
+            fields.author = line.replace('author = ', '').trim();
+        } else if (line.startsWith('description = ')) {
+            fields.description = line.replace('description = ', '').trim();
+            currentField = 'description';
+        } else if (line.startsWith('tags = ')) {
+            fields.tags = line.replace('tags = ', '').trim();
+            currentField = null;
+        } else if (line.startsWith('version = ')) {
+            fields.version = line.replace('version = ', '').trim();
+            currentField = null;
+        } else if (currentField === 'description') {
+            fields.description += '\n' + line.trim();
+        }
+    });
+
+    return fields;
+}
+
+/**
+ * Registers commands for the extension.
+ * @param {vscode.ExtensionContext} context - The extension context.
+ */
+function registerCommands(context) {
+    context.subscriptions.push(
+        vscode.commands.registerCommand("teardownModding.openModView", () => {
+            openModView(context);
+        })
+    );
 }
 
 /**
@@ -102,13 +159,3 @@ module.exports = {
     activate,
     deactivate
 };
-
-function RegisterCustomEditors(context) {
-    // info.txt custom editor
-    const customEditor = new CustomEditor(
-        context,
-        "info.txt",
-        (html, filePath, fileContent) => html
-            .replace(/<FileContent>/g, fileContent)
-    ).register('CustomEditor-info_txt');
-}
