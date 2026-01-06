@@ -64,6 +64,13 @@ class CustomEditor {
             }
         });
 
+        // Update webview when the panel becomes active
+        webviewPanel.onDidChangeViewState(e => {
+            if (webviewPanel.visible) {
+                updateWebview();
+            }
+        });
+
         webviewPanel.onDidDispose(() => {
             changeDocumentSubscription.dispose();
         });

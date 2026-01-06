@@ -39,62 +39,59 @@ function activate(context) {
 
     // check .vscode settings for Teardown Modding Extension prompted flag
     const hasPrompted = workspaceSettings.get("TeardownModding.hasPrompted", false);
-    if (hasPrompted) {
-        console.log("User has already been prompted for Teardown Modding Extension.");
-        return;
-    }
+    if (!hasPrompted) {
+        // show a yes/no prompt to load the Lua API if not already loaded
+        console.log("Prompting user to load Teardown Modding Extension...");
 
-    // show a yes/no prompt to load the Lua API if not already loaded
-    console.log("Prompting user to load Teardown Modding Extension...");
-
-    vscode.window.showInformationMessage(
-        "Enable Teardown Modding Extension for this workspace?",
-        { modal: true, detail: "Found info.txt in workspace root.\nChoice will be saved in workspace settings." },
-        "Yes", "No"
-    ).then(selection => {
-        // update hasPrompted flag in workspace settings
-        workspaceSettings.update("TeardownModding.hasPrompted", true, vscode.ConfigurationTarget.Workspace);
-
-        // handle user selection
-        switch (selection) {
-            case "Yes":
-                workspaceSettings.update("TeardownModding.enabled", true, vscode.ConfigurationTarget.Workspace);
-                break;
-            case "No":
-                workspaceSettings.update("TeardownModding.enabled", false, vscode.ConfigurationTarget.Workspace);
-                return; // exit early
-            case null:
-                return; // user dismissed the prompt
-        }
-
-        // Prompt for mod type and load relevant data
         vscode.window.showInformationMessage(
-            "Select the type of mod you are working on:",
-            { modal: true, detail: "This will enable specific features based on your mod type." },
-            "Content Mod", "Global Mod", "Character Mod"
-        ).then(modSelection => {
-            switch (modSelection) {
-                case "Content Mod":
-                    workspaceSettings.update("TeardownModding.modType", "content", vscode.ConfigurationTarget.Workspace);
-                    break;
-                case "Global Mod":
-                    workspaceSettings.update("TeardownModding.modType", "global", vscode.ConfigurationTarget.Workspace);
-                    break;
-                case "Character Mod":
-                    workspaceSettings.update("TeardownModding.modType", "character", vscode.ConfigurationTarget.Workspace);
-                    break;
-            }
-        });
+            "Enable Teardown Modding Extension for this workspace?",
+            { modal: true, detail: "Found info.txt in workspace root.\nChoice will be saved in workspace settings." },
+            "Yes", "No"
+        ).then(selection => {
+            // update hasPrompted flag in workspace settings
+            workspaceSettings.update("TeardownModding.hasPrompted", true, vscode.ConfigurationTarget.Workspace);
 
+            // handle user selection
+            switch (selection) {
+                case "Yes":
+                    workspaceSettings.update("TeardownModding.enabled", true, vscode.ConfigurationTarget.Workspace);
+                    break;
+                case "No":
+                    workspaceSettings.update("TeardownModding.enabled", false, vscode.ConfigurationTarget.Workspace);
+                    return; // exit early
+                case null:
+                    return; // user dismissed the prompt
+            }
+
+            // Prompt for mod type and load relevant data
+            vscode.window.showInformationMessage(
+                "Select the type of mod you are working on:",
+                { modal: true, detail: "This will enable specific features based on your mod type." },
+                "Content Mod", "Global Mod", "Character Mod"
+            ).then(modSelection => {
+                switch (modSelection) {
+                    case "Content Mod":
+                        workspaceSettings.update("TeardownModding.modType", "content", vscode.ConfigurationTarget.Workspace);
+                        break;
+                    case "Global Mod":
+                        workspaceSettings.update("TeardownModding.modType", "global", vscode.ConfigurationTarget.Workspace);
+                        break;
+                    case "Character Mod":
+                        workspaceSettings.update("TeardownModding.modType", "character", vscode.ConfigurationTarget.Workspace);
+                        break;
+                }
+            });
+
+        });
+    }
+    if (moddingEnabled) {
+        LoadModData(context, rootPath);
+        RegisterCustomEditors(context)
         // Load the Lua API into the workspace configuration if not already loaded
         if (!IsScriptingApiLoaded(context)) {
             LoadScriptingApi(context);
         }
-
-        // proceed with activation
-        LoadModData(context, rootPath);
-        RegisterCustomEditors(context)
-    });
+    }
 }
 
 /**
