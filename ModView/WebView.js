@@ -9,46 +9,46 @@ const path = require('path');
 class WebView {
     /**
      * @param {vscode.ExtensionContext} context - The extension context.
-     * @param {string} viewName - The name of the view to determine the HTML file to load.
-     * @param {function(html: string, filePath: string, fileContent: string): string} htmlProcessor - A function to process the HTML content before displaying.
+     * @param {string} name - The name of the view to determine the HTML file to load.
      */
-    constructor(context, viewName, htmlProcessor = (html) => html) {
+    constructor(context, name, title, viewType) {
         this.context = context;
-        this.viewName = viewName;
-        this.htmlProcessor = htmlProcessor;
+        this.name = name;
+        this.title = title;
+        this.viewType = viewType;
+        this.panel = null;
     }
 
     /**
      * Opens the webview as a new panel.
-     * @param {string} title - The title of the webview panel.
-     * @param {string} viewType - The unique identifier for the webview.
+     * @returns {boolean} True if the panel was created successfully, false otherwise.
      */
-    open(title, viewType) {
-        const panel = vscode.window.createWebviewPanel(
-            viewType,
-            title,
+    open() {
+        this.panel = vscode.window.createWebviewPanel(
+            this.viewType,
+            this.title,
             vscode.ViewColumn.One,
             { enableScripts: true, retainContextWhenHidden: true } // Retain context to prevent content loss
         );
 
-        const htmlContent = this.getHtmlForWebview(panel);
-        panel.webview.html = htmlContent || '<h1>Error loading view</h1>';
+        const htmlContent = this.getHtmlForWebview(this.panel);
+        this.panel.webview.html = htmlContent || '<h1>Error loading view</h1>';
 
-        const previewImagePath = this.getPreviewImagePath(panel);
-        panel.webview.postMessage({ type: 'initialize', previewImagePath });
+        const previewImagePath = this.getPreviewImagePath(this.panel);
+        this.panel.webview.postMessage({ type: 'initialize', previewImagePath });
 
         // Send the 'update' message after initialization
         const rootPath = vscode.workspace.workspaceFolders[0].uri.fsPath;
         const infoTxtPath = path.join(rootPath, 'info.txt');
         if (fs.existsSync(infoTxtPath)) {
             const infoTxtContent = fs.readFileSync(infoTxtPath, 'utf8');
-            panel.webview.postMessage({
+            this.panel.webview.postMessage({
                 type: 'update',
                 text: infoTxtContent
             });
         }
 
-        panel.webview.onDidReceiveMessage((e) => {
+        this.panel.webview.onDidReceiveMessage((e) => {
             if (e.type === 'save') {
                 this.saveFile(e.filePath, e.content);
             } else if (e.type === 'selectIcon') {
@@ -71,9 +71,9 @@ class WebView {
                                 vscode.window.showInformationMessage('Icon updated successfully!');
 
                                 // Dynamically update the icon in the webview
-                                panel.webview.postMessage({
+                                this.panel.webview.postMessage({
                                     type: 'updateIcon',
-                                    previewImagePath: panel.webview.asWebviewUri(vscode.Uri.file(targetPath)).toString()
+                                    previewImagePath: this.panel.webview.asWebviewUri(vscode.Uri.file(targetPath)).toString()
                                 });
                             }
                         });
@@ -82,7 +82,13 @@ class WebView {
             }
         });
 
-        return panel;
+        return this.panel ? true : false;
+    }
+
+    sendUpdate(type, data) {
+        if (!this.panel) return false;
+        this.panel.webview.postMessage({ type: type, data: data });
+        return true;
     }
 
     /**
@@ -124,19 +130,20 @@ class WebView {
      * @returns {string|null} The HTML content for the webview, or null if the file cannot be loaded.
      */
     getHtmlForWebview(webviewPanel) {
-        const htmlPath = this.context.asAbsolutePath(`./ModView/${this.viewName}/index.html`);
-        const cssPath = this.context.asAbsolutePath(`./ModView/${this.viewName}/style.css`);
+        const htmlPath = this.context.asAbsolutePath(`./ModView/${this.name}/index.html`);
+        const webviewPath = this.context.asAbsolutePath(`./ModView/${this.name}`);
+        const webviewUri = this.getWebviewUri(webviewPath);
 
         try {
             let htmlContent = fs.readFileSync(htmlPath, 'utf8');
-            const cssUri = webviewPanel.webview.asWebviewUri(vscode.Uri.file(cssPath));
-            const nonce = this.getNonce();
+            htmlContent = htmlContent.replaceAll(`src="`, `src="${webviewUri}/`);
+            htmlContent = htmlContent.replaceAll(`href="`, `href="${webviewUri}/`);
+            // For debugging: write the final HTML to a log file
+            //fs.writeFileSync(
+            //    `C:\\Users\\gusta\\Desktop\\coding\\VSCode-Extensions\\Teardown-Modding\\logs\\debug_log.html`,
+            //    htmlContent, 'utf8');
 
-            htmlContent = htmlContent
-                .replace('<link rel="stylesheet" href="style.css">', `<link rel="stylesheet" href="${cssUri}">`)
-                .replace(/<Nonce>/g, nonce);
-
-            return this.htmlProcessor(htmlContent);
+            return htmlContent;
         } catch (error) {
             console.error(`Failed to load HTML content from ${htmlPath}: ${error.message}`);
             return null;
@@ -144,15 +151,13 @@ class WebView {
     }
 
     /**
-     * Generates a nonce for securing the webview content.
-     * @returns {string} A random nonce string.
+     * Gets the webview URI for a given file path.
+     * @param {string} filePath - The file path to convert.
+     * @returns {string} The webview URI for the file.
      */
-    getNonce() {
-        return Array.from({ length: 32 }, () =>
-            'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'.charAt(
-                Math.floor(Math.random() * 62)
-            )
-        ).join('');
+    getWebviewUri(filePath) {
+        if (!this.panel) return null;
+        return this.panel.webview.asWebviewUri(vscode.Uri.file(filePath));
     }
 }
 

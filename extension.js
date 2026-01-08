@@ -1,157 +1,97 @@
 const vscode = require("vscode");
 const path = require("path");
 const fs = require("fs");
-const { IsScriptingApiLoaded, LoadScriptingApi } = require("./scripts/load-lua-api.js");
-const { LoadModData } = require("./scripts/load-mod-data.js");
 const WebView = require("./ModView/WebView.js");
+const VscManager = require("./scripts/vsc-manager.js");
 
-
-const { workspaceFolders } = vscode.workspace;
-const workspaceSettings = vscode.workspace.getConfiguration("", null);
-
-const moddingEnabled = workspaceSettings.get("TeardownModding.enabled", false);
+let ModViews = {
+    /** 
+     * The main Mod View.
+     * @type {WebView|null}
+     */
+    main: null
+}
 
 /**
  * Entry point for the extension.
- * 
- * Initializes the extension by adding the Lua API path to the workspace library configuration.
- * Retrieves the existing workspace library paths from Lua configuration and appends the extension's
- * lua directory to the library array if it's not already included.
- * 
  * @param {vscode.ExtensionContext} context - The extension context provided by VS Code
  * @returns {void}
  */
 
 function activate(context) {
-    // check project root for 'info.txt' to determine if it's a Teardown mod
-    if (!workspaceFolders) {
+    const vscManager = new VscManager(context);
+
+    // check if there are workspace folders open
+    if (!vscManager.workspaceFolders) {
         console.log("No workspace folders found.");
         return;
     }
 
-    const rootPath = workspaceFolders[0].uri.fsPath;
-    const infoTxtPath = path.join(rootPath, "info.txt");
     // if info.txt doesn't exist, exit early
-    if (!fs.existsSync(infoTxtPath)) {
+    if (!fs.existsSync(path.join(vscManager.projectPath, "info.txt"))) {
         console.log("No Teardown mod detected in workspace.");
         return;
     }
 
-    // Register commands globally
-    registerCommands(context);
+    // initialize mod views
+    ModViews.main = new WebView(
+        vscManager.context,
+        "main",
+        "Teardown Mod View",
+        "mod-view-main"
+    );
 
-    // Check if Mod View is already open
-    const existingPanel = vscode.window.visibleTextEditors.find(editor => editor.document.fileName.includes("main-mod-view"));
-    if (!existingPanel) {
-        vscode.window.showInformationMessage(
-            "Teardown Mod detected in workspace.",
-            "Open Mod View"
-        ).then(selection => {
-            if (selection === "Open Mod View") {
-                openModView(context);
-            }
-        });
-    }
-
-    if (!moddingEnabled) return;
-
-    // Proceed with loading mod data
-    LoadModData(context, workspaceFolders[0].uri.fsPath);
-
-    // Load the Lua API into the workspace configuration if not already loaded
-    if (!IsScriptingApiLoaded(context)) {
-        LoadScriptingApi(context);
-    }
+    vscManager.registerCommand("teardownModding.openModView", () => {
+        openModView(vscManager);
+    });
 
     // Open Mod View by default if the setting is enabled
-    const openModViewByDefault = workspaceSettings.get("teardownModding.openModViewByDefault", false);
-    if (openModViewByDefault) {
-        openModView(context);
+    if (vscManager.getSetting("teardownModding.openModViewByDefault", false)) {
+        openModView(vscManager);
     }
-
-    // Create a status bar item to open ModView
-    const modViewButton = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Right, 100);
-    modViewButton.text = "$(file-code) Open ModView"; // Use an icon and label
-    modViewButton.tooltip = "Open the Teardown Mod View"; // Tooltip for additional info
-    modViewButton.command = "teardownModding.openModView"; // Command to execute
-    modViewButton.show(); // Make the button visible
-
-    // Register the status bar item for disposal
-    context.subscriptions.push(modViewButton);
+    // Otherwise, show an information message with an option to open the Mod View
+    else {
+        vscManager.showInformationMessage(
+            "Teardown Mod detected in workspace.",
+            [{ name: "Open Mod View", action: () => openModView(vscManager) }]
+        )
+    }
 }
 
 /**
  * Opens the main Mod View webview.
- * @param {vscode.ExtensionContext} context - The extension context.
+ * @param {VscManager} vscManager - The VscManager instance.
  */
-function openModView(context) {
+function openModView(vscManager) {
     const modView = new WebView(
-        context,
+        vscManager.context,
         "main",
-        (html, filePath, fileContent) => html
+        "Teardown Mod View",
+        "mod-view-main"
     );
 
-    const panel = modView.open("Teardown Mod View", "main-mod-view");
+    const isModViewOpen = modView.open();
 
-    if (!panel) {
+    if (!isModViewOpen) {
         console.error("Failed to create webview panel.");
         return;
     }
 
     // Read the contents of info.txt and send it to the webview
-    const rootPath = workspaceFolders[0].uri.fsPath;
-    const infoTxtPath = path.join(rootPath, "info.txt");
+    const infoTxtPath = path.join(vscManager.projectPath, "info.txt");
     if (fs.existsSync(infoTxtPath)) {
         const infoTxtContent = fs.readFileSync(infoTxtPath, "utf8");
-        panel.webview.postMessage({
-            type: "update",
-            text: infoTxtContent
-        });
+        modView.sendUpdate("infoTxt", infoTxtContent);
     }
-}
-
-/**
- * Parses the content of info.txt into fields.
- * @param {string} content - The content of the info.txt file.
- * @returns {Object} An object containing the parsed fields.
- */
-function parseInfoTxt(content) {
-    const lines = content.split('\n');
-    const fields = { name: '', author: '', description: '', tags: '', version: '' };
-    let currentField = null;
-
-    lines.forEach(line => {
-        if (line.startsWith('name = ')) {
-            fields.name = line.replace('name = ', '').trim();
-        } else if (line.startsWith('author = ')) {
-            fields.author = line.replace('author = ', '').trim();
-        } else if (line.startsWith('description = ')) {
-            fields.description = line.replace('description = ', '').trim();
-            currentField = 'description';
-        } else if (line.startsWith('tags = ')) {
-            fields.tags = line.replace('tags = ', '').trim();
-            currentField = null;
-        } else if (line.startsWith('version = ')) {
-            fields.version = line.replace('version = ', '').trim();
-            currentField = null;
-        } else if (currentField === 'description') {
-            fields.description += '\n' + line.trim();
-        }
-    });
-
-    return fields;
-}
-
-/**
- * Registers commands for the extension.
- * @param {vscode.ExtensionContext} context - The extension context.
- */
-function registerCommands(context) {
-    context.subscriptions.push(
-        vscode.commands.registerCommand("teardownModding.openModView", () => {
-            openModView(context);
-        })
-    );
+    // Send the mod icon path if it exists
+    let modIconPath = path.join(vscManager.projectPath, "preview.png");
+    if (!fs.existsSync(modIconPath)) {
+        modIconPath = path.join(vscManager.projectPath, "preview.jpg");
+    }
+    if (fs.existsSync(modIconPath)) {
+        const modIconUri = modView.getWebviewUri(modIconPath);
+        modView.sendUpdate("modIconPath", modIconUri.toString());
+    }
 }
 
 /**

@@ -8,6 +8,10 @@
 	},
 	"version": "0.1.0",
 	"main": "./extension.js",
+	"repository": {
+		"type": "git",
+		"url": "https://gitlab.com/ghoust1/teardown/Teardown-lua-API"
+	},
 	"keywords": [
 		"teardown",
 		"modding",
