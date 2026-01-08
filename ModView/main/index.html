@@ -26,8 +26,11 @@
         <div class="header">
             <img id="mod-icon" src="" class="icon" alt="Mod Icon">
             <div class="header-content">
-                <input id="mod-title" class="title" value="Mod Name" />
-                <input id="mod-author" class="author" value="Author Name" />
+                <input id="mod-name" class="title" value="Mod Name" />
+                <div class="author-container" style="display: flex; align-items: center;">
+                    <p class="author" style="margin: 0;">By</p>
+                    <input id="mod-author" class="author" value="Author" style="align-self: center; margin-left: 5px;"/>
+                </div>
             </div>
         </div>
 
@@ -51,7 +54,6 @@
         <button id="saveButton" class="save-button">Save</button>
     </div>
 
-    <script src="message.js"></script>
     <script src="main.js"></script>
 </body>
 

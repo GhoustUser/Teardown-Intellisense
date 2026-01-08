@@ -8,82 +8,96 @@ const path = require('path');
  */
 class WebView {
     /**
-     * @param {vscode.ExtensionContext} context - The extension context.
      * @param {string} name - The name of the view to determine the HTML file to load.
+     * @param {string} title - The title of the webview panel.
+     * @param {string} viewType - The unique identifier for the webview panel.
      */
-    constructor(context, name, title, viewType) {
-        this.context = context;
+    constructor(name, title, viewType) {
         this.name = name;
-        this.title = title;
+        this.defaultTitle = title;
         this.viewType = viewType;
         this.panel = null;
+        
+        this.currentTitle = () => this.panel ? this.panel.title : this.defaultTitle;
+
+        this.onOpen = () => { };
+        this.onMessage = (type, data) => { };
+        this.onClose = () => { };
+    }
+
+    setTitle(title) {
+        if (this.panel) {
+            this.panel.title = title || this.defaultTitle;
+        }
     }
 
     /**
      * Opens the webview as a new panel.
      * @returns {boolean} True if the panel was created successfully, false otherwise.
      */
-    open() {
+    open(context) {
+        // If the panel is already open, reveal it
+        if (this.panel) {
+            this.panel.reveal(vscode.ViewColumn.One);
+            return true;
+        }
+        // Create a new webview panel
         this.panel = vscode.window.createWebviewPanel(
             this.viewType,
-            this.title,
+            this.defaultTitle,
             vscode.ViewColumn.One,
             { enableScripts: true, retainContextWhenHidden: true } // Retain context to prevent content loss
         );
 
-        const htmlContent = this.getHtmlForWebview(this.panel);
+        const htmlContent = this.getHtmlForWebview(context, this.panel);
         this.panel.webview.html = htmlContent || '<h1>Error loading view</h1>';
 
         const previewImagePath = this.getPreviewImagePath(this.panel);
         this.panel.webview.postMessage({ type: 'initialize', previewImagePath });
 
-        // Send the 'update' message after initialization
-        const rootPath = vscode.workspace.workspaceFolders[0].uri.fsPath;
-        const infoTxtPath = path.join(rootPath, 'info.txt');
-        if (fs.existsSync(infoTxtPath)) {
-            const infoTxtContent = fs.readFileSync(infoTxtPath, 'utf8');
-            this.panel.webview.postMessage({
-                type: 'update',
-                text: infoTxtContent
-            });
-        }
-
         this.panel.webview.onDidReceiveMessage((e) => {
-            if (e.type === 'save') {
-                this.saveFile(e.filePath, e.content);
-            } else if (e.type === 'selectIcon') {
-                vscode.window.showOpenDialog({
-                    canSelectMany: false,
-                    openLabel: 'Select Icon',
-                    filters: {
-                        Images: ['png', 'jpg', 'jpeg']
-                    }
-                }).then(fileUri => {
-                    if (fileUri && fileUri[0]) {
-                        const selectedPath = fileUri[0].fsPath;
-                        const rootPath = vscode.workspace.workspaceFolders[0].uri.fsPath;
-                        const targetPath = path.join(rootPath, 'preview.jpg');
+            const { type, data } = e;
+            this.onMessage(type, data);
+        });
 
-                        fs.copyFile(selectedPath, targetPath, (err) => {
-                            if (err) {
-                                vscode.window.showErrorMessage(`Failed to set new icon: ${err.message}`);
-                            } else {
-                                vscode.window.showInformationMessage('Icon updated successfully!');
+        this.onOpen();
 
-                                // Dynamically update the icon in the webview
-                                this.panel.webview.postMessage({
-                                    type: 'updateIcon',
-                                    previewImagePath: this.panel.webview.asWebviewUri(vscode.Uri.file(targetPath)).toString()
-                                });
-                            }
-                        });
-                    }
-                });
-            }
+        this.panel.onDidDispose(() => {
+            this.onClose();
+            this.panel = null;
         });
 
         return this.panel ? true : false;
     }
+
+    /**
+     * Closes the webview panel if it is open.
+     * @return {void}
+     */
+    close() {
+        if (this.panel) {
+            this.panel.dispose();
+            this.panel = null;
+        }
+    }
+
+    /**
+     * Reloads the webview content.
+     * @param {vscode.ExtensionContext} context - The extension context.
+     * @returns {void}
+     */
+    reload(context) {
+        if (this.panel)
+            this.close();
+        this.open(context);
+    }
+
+    /**
+     * Sends a message to the webview.
+     * @param {string} type - The type of the message.
+     * @param {any} data - The data to send with the message.
+     * @returns {boolean} True if the message was sent successfully, false otherwise.
+     */
 
     send(type, data) {
         if (!this.panel) return false;
@@ -126,12 +140,13 @@ class WebView {
 
     /**
      * Generates the HTML content for the webview.
+     * @param {vscode.ExtensionContext} context - The extension context.
      * @param {vscode.WebviewPanel} webviewPanel - The webview panel to display the content.
      * @returns {string|null} The HTML content for the webview, or null if the file cannot be loaded.
      */
-    getHtmlForWebview(webviewPanel) {
-        const htmlPath = this.context.asAbsolutePath(`./ModView/${this.name}/index.html`);
-        const webviewPath = this.context.asAbsolutePath(`./ModView/${this.name}`);
+    getHtmlForWebview(context, webviewPanel) {
+        const htmlPath = context.asAbsolutePath(`./ModView/${this.name}/index.html`);
+        const webviewPath = context.asAbsolutePath(`./ModView/${this.name}`);
         const webviewUri = this.getWebviewUri(webviewPath);
 
         try {
