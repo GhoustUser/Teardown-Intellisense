@@ -1,53 +1,5 @@
 const vscode = acquireVsCodeApi();
 
-/**
- * Fields object to hold mod info values.
- * @type {{name: string, author: string, description: string, tags: string[], version: number, asString: function, forEach: function}}
- */
-let fields = {
-    name: '',
-    author: '',
-    description: '',
-    tags: [],
-    version: 0,
-    /**
-     * Returns the field value as a string.
-     * @param {'name' | 'author' | 'description' | 'tags' | 'version'} key 
-     * @returns 
-     */
-    asString(key) {
-        switch (key) {
-            case 'tags':
-                return this.tags.join(' ');
-            case 'version':
-                return this.version.toString();
-            default:
-                return this[key] || '';
-        }
-    },
-    /**
-     * Iterates over each field and executes the callback.
-     * @param {(callback: (key: string, value: any) => void)} callback - The callback function to execute for each field.
-     * @returns {void}
-     */
-    forEach(callback) {
-        if (!callback || typeof callback !== 'function') return; // validate callback
-        // iterate over each key in fields
-        for (let key of Object.keys(this)) {
-            if (typeof this[key] === 'function') continue; // skip functions
-            if (this.hasOwnProperty(key)) // check if property exists
-                callback(key, this[key]);
-        }
-    },
-    asArray() {
-        const arr = [];
-        this.forEach((key, value) => {
-            if (typeof value === 'function') return;
-            arr.push([key, value]);
-        });
-        return arr;
-    }
-};
 
 /**
  * Flag to track unsaved changes.
@@ -90,20 +42,6 @@ function checkForUnsavedChanges() {
     });
     return hasUnsavedChanges;
 }
-
-// Listen for messages from the extension
-window.addEventListener('message', (event) => {
-    const { type, data } = JSON.parse(event.data);
-
-    switch (type) {
-        case 'infoTxt':
-            loadModInfo(data);
-            break;
-        case 'modIconPath':
-            document.getElementById('mod-icon').src = data;
-            break;
-    }
-});
 
 // function to parse the content into fields
 function loadModInfo(content) {
