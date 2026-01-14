@@ -171,3 +171,80 @@ body {
 .save-button:active {
     background-color: #003f73;
 }
+
+/* Settings Container Styles */
+.settings-container {
+    margin-top: 20px;
+    padding: 20px;
+    background: var(--vscode-editor-background, #252526);
+    border: 1px solid var(--vscode-widget-border, #3c3c3c);
+    border-radius: 6px;
+}
+
+.settings-header {
+    margin-bottom: 16px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--vscode-widget-border, #3c3c3c);
+}
+
+.settings-header h2 {
+    margin: 0;
+    color: var(--vscode-foreground, #d4d4d4);
+    font-size: 18px;
+    font-weight: 600;
+}
+
+.settings-content {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.setting-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding: 12px;
+    background: var(--vscode-input-background, #1e1e1e);
+    border: 1px solid var(--vscode-input-border, #3c3c3c);
+    border-radius: 4px;
+    transition: border-color 0.2s ease;
+}
+
+.setting-item:hover {
+    border-color: var(--vscode-focusBorder, #5c9cf0);
+}
+
+.setting-info {
+    flex: 1;
+    margin-right: 12px;
+}
+
+.setting-label {
+    display: block;
+    color: var(--vscode-foreground, #d4d4d4);
+    font-weight: 500;
+    font-size: 14px;
+    margin-bottom: 4px;
+    cursor: pointer;
+}
+
+.setting-description {
+    margin: 0;
+    color: var(--vscode-descriptionForeground, #999999);
+    font-size: 12px;
+    line-height: 1.4;
+}
+
+.setting-checkbox {
+    width: 18px;
+    height: 18px;
+    margin: 0;
+    cursor: pointer;
+    accent-color: var(--vscode-checkbox-foreground, #5c9cf0);
+}
+
+.setting-checkbox:focus {
+    outline: 2px solid var(--vscode-focusBorder, #5c9cf0);
+    outline-offset: 2px;
+}

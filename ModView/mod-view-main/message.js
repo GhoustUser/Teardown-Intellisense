@@ -6,8 +6,20 @@ window.addEventListener('message', (event) => {
         case 'infoTxt':
             loadModInfo(data);
             break;
+            
         case 'modIconPath':
-            document.getElementById('mod-icon').src = data;
+            const iconElement = document.getElementById('mod-icon');
+            if (iconElement) {
+                iconElement.src = data;
+            }
+            break;
+            
+        case 'workspaceSettings':
+            updateSettings(data);
+            break;
+            
+        default:
+            console.warn('Unknown message type received:', type);
             break;
     }
 });

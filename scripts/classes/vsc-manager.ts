@@ -31,6 +31,10 @@ class VscManager {
         return this._projectPath || "";
     }
 
+    private _hasWorkspaceFolder(): boolean {
+        return this._workspaceFolders !== undefined && this._workspaceFolders.length > 0 && this._workspaceFolders[0] !== undefined;
+    }
+
     /** Creates an instance of VscManager.
      * @param {vscode.ExtensionContext} context - Extension context provided by VS Code
      */
@@ -51,7 +55,18 @@ class VscManager {
      * @returns {any} - The value of the setting or the default value.
      */
     getSetting(settingKey: string, defaultValue: any): any {
-        return this._workspaceSettings.get(settingKey, defaultValue);
+        // Get workspace-specific configuration
+        const workspaceUri = this._hasWorkspaceFolder() ? this._workspaceFolders![0]!.uri : undefined;
+        const config = vscode.workspace.getConfiguration("", workspaceUri);
+        
+        // Try to get the workspace-level setting first
+        const workspaceValue = config.inspect(settingKey)?.workspaceValue;
+        if (workspaceValue !== undefined) {
+            return workspaceValue;
+        }
+        
+        // Fall back to any configured value or default
+        return config.get(settingKey, defaultValue);
     }
 
     /** Updates a workspace setting value.
@@ -61,7 +76,13 @@ class VscManager {
      * @returns {Thenable<void>} - A promise that resolves when the setting is updated.
      */
     updateSetting(settingKey: string, value: any, isGlobal: boolean = false): Thenable<void> {
-        return this._workspaceSettings.update(settingKey, value, isGlobal);
+        // Get workspace-specific configuration
+        const workspaceUri = this._hasWorkspaceFolder() ? this._workspaceFolders![0]!.uri : undefined;
+        const config = vscode.workspace.getConfiguration("", workspaceUri);
+        
+        // Update setting with proper scope (workspace-level by default)
+        const target = isGlobal ? vscode.ConfigurationTarget.Global : vscode.ConfigurationTarget.Workspace;
+        return config.update(settingKey, value, target);
     }
 
     /** Registers a command in VS Code.

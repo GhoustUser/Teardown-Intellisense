@@ -3,7 +3,7 @@ import path from "path";
 import fs from "fs";
 import WebView from "./scripts/classes/web-view";
 import VscManager from "./scripts/classes/vsc-manager";
-import { loadScriptingApi, isScriptingApiLoaded } from "./scripts/load-lua-api";
+import { loadScriptingApi, isScriptingApiLoaded, unloadScriptingApi } from "./scripts/load-lua-api";
 
 // initialize mod views
 const modviews: { main: WebView } = {
@@ -31,9 +31,6 @@ function activate(context: vscode.ExtensionContext): void {
     }
 
     console.log(`\x1b[32mTeardown mod detected at: \x1b[96m${vscManager.projectPath}\x1b[0m`);
-    
-    // load Teardown Lua API into workspace
-    loadScriptingApi(vscManager);
 
     modviews.main.onOpen(() => {
         // read and send info.txt content to webview
@@ -61,6 +58,13 @@ function activate(context: vscode.ExtensionContext): void {
             console.log("\x1b[33mNo mod icon found (preview.png or preview.jpg)\x1b[0m");
         }
 
+        // send workspace settings to webview
+        const settings = {
+            openByDefault: vscManager.getSetting("teardownModding.openModViewByDefault", false),
+            enableScriptingApi: isScriptingApiLoaded(vscManager)
+        };
+        modviews.main.send("workspaceSettings", settings);
+
         console.log("\x1b[32mMod View opened\x1b[0m");
     });
 
@@ -73,7 +77,7 @@ function activate(context: vscode.ExtensionContext): void {
                 break;
                 
             case "unsavedChanges":
-                console.log(`\x1b[33mUnsaved changes: \x1b[96m${data}\x1b[0m`);
+                //console.log(`\x1b[32mUnsaved changes: \x1b[96m${data}\x1b[0m`);
                 const title = data ? `${modviews.main.defaultTitle} (unsaved)` : modviews.main.defaultTitle;
                 modviews.main.setTitle(title);
                 break;
@@ -88,7 +92,16 @@ function activate(context: vscode.ExtensionContext): void {
                 
             case "setting_openByDefault":
                 vscManager.updateSetting("teardownModding.openModViewByDefault", data);
-                console.log(`\x1b[33mSetting 'openModViewByDefault' updated to: \x1b[96m${data}\x1b[0m`);
+                //console.log(`\x1b[32mSetting 'openModViewByDefault' updated to: \x1b[96m${data}\x1b[0m`);
+                break;
+                
+            case "setting_enableScriptingApi":
+                if (data) {
+                    loadScriptingApi(vscManager);
+                } else {
+                    unloadScriptingApi(vscManager);
+                }
+                //console.log(`\x1b[32mScripting API ${data ? 'enabled' : 'disabled'}\x1b[0m`);
                 break;
                 
             default:

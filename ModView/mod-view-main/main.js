@@ -1,201 +1,140 @@
 const vscode = acquireVsCodeApi();
 
+/** @type {InfoTxt} */
+let modInfo = new InfoTxt();
 
-/**
- * Flag to track unsaved changes.
- * @type {boolean}
- */
+/** @type {boolean} */
 let hasUnsavedChanges = false;
 
-/** Text content of info.txt
- * @type {string}
- */
-let infoTxt = '';
+// Initialize the webview
+function initializeWebview() {
+    setupEventListeners();
+    setupKeyboardShortcuts();
+}
 
-// add event listener to all input fields to check for changes
-fields.forEach((key, value) => {
-    // get element
-    const element = document.getElementById(`mod-${key}`);
-    if (!element) return;
-    // add input event listener
-    element.addEventListener('input', checkForUnsavedChanges);
-});
-
-function checkForUnsavedChanges() {
-    let newChanges = false;
-    // check if any field value differs from original
-    fields.forEach((key, value) => {
-        if (newChanges) return; // skip if already found changes
-        const el = document.getElementById(`mod-${key}`);
-        if (!el) return;
-        // compare values
-        if (el.value !== fields.asString(key)) {
-            newChanges = true; // set flag to true if different
+// Set up all event listeners
+function setupEventListeners() {
+    // Add change listeners to all input fields
+    modInfo.fieldKeys.forEach(key => {
+        const element = document.getElementById(`mod-${key}`);
+        if (element) {
+            element.addEventListener('input', checkForUnsavedChanges);
         }
     });
-    if (newChanges === hasUnsavedChanges) return hasUnsavedChanges; // no change in state
+
+    // Save button event listener
+    document.getElementById('saveButton').addEventListener('click', saveModInfo);
+
+    // Settings event listeners
+    document.getElementById('setting-openByDefault').addEventListener('change', (e) => {
+        vscode.postMessage({
+            type: 'setting_openByDefault',
+            data: e.target.checked
+        });
+    });
+
+    document.getElementById('setting-enableScriptingApi').addEventListener('change', (e) => {
+        vscode.postMessage({
+            type: 'setting_enableScriptingApi',
+            data: e.target.checked
+        });
+    });
+}
+
+// Set up keyboard shortcuts
+function setupKeyboardShortcuts() {
+    window.addEventListener('keydown', (e) => {
+        if (e.ctrlKey || e.metaKey) {
+            e.preventDefault();
+            switch (e.key.toLowerCase()) {
+                case 's':
+                    saveModInfo();
+                    break;
+                case 'r':
+                    vscode.postMessage({ type: 'reload' });
+                    break;
+            }
+        }
+    });
+}
+
+/** Check for unsaved changes and notify extension
+ * @returns {boolean} Whether there are unsaved changes
+ */
+function checkForUnsavedChanges() {
+    const newChanges = modInfo.hasUnsavedChanges();
+    
+    if (newChanges === hasUnsavedChanges) {
+        return hasUnsavedChanges; // No change in state
+    }
+    
     hasUnsavedChanges = newChanges;
-    // notify extension of unsaved changes
+    
+    // Notify extension of unsaved changes
     vscode.postMessage({
         type: 'unsavedChanges',
         data: hasUnsavedChanges
     });
+    
     return hasUnsavedChanges;
 }
 
-// function to parse the content into fields
+/** Load mod info from content and update the UI
+ * @param {string} content - The info.txt file content
+ * @returns {InfoTxt} The parsed mod info
+ */
 function loadModInfo(content) {
-    infoTxt = content;
-    const lines = content.split('\n');
-    fields = fields || {
-        name: 'Mod Name',
-        author: 'Mod Author',
-        description: 'Description of the mod.',
-        tags: ['example', 'mod'],
-        version: 1
-    };
-
-    // iterate through each line from info.txt
-    lines.forEach(line => {
-        line = line.trim();
-        // skip empty lines, comments and lines without '='
-        if (line === '' || line.startsWith('#') || !line.includes('=')) return;
-
-        // match line with any of the field keys
-        fields.forEach((key, value) => {
-            // if line has key, parse value accordingly
-            if (line.replaceAll(' ', '').startsWith(key + '=')) {
-                const value = line.split('=')[1].trim();
-                switch (key) {
-                    // parse tags as array
-                    case 'tags':
-                        fields.tags = value.split(' ')
-                            .map(tag => tag.trim());
-                        break;
-                    // parse version as integer
-                    case 'version':
-                        fields.version = parseInt(value) || 1;
-                        break;
-                    // default case: assign string value
-                    default:
-                        fields[key] = value;
-                        break;
-                }
-            }
-        });
-    });
-
-    // set element values to fields
-    for (let key of Object.keys(fields)) {
-        switch (key) {
-            case 'tags':
-                document.getElementById('mod-tags').value = fields.tags.join(' ');
-                break;
-            case 'version':
-                document.getElementById('mod-version').value = fields.version;
-                break;
-            default:
-                const element = document.getElementById(`mod-${key}`);
-                if (element)
-                    element.value = fields[key];
-                break;
-        }
-    }
+    modInfo.parseFile(content);
+    modInfo.updateWebview();
+    
     vscode.postMessage({
         type: 'infoLoaded',
-        data: JSON.stringify(fields)
+        data: JSON.stringify({
+            name: modInfo.name,
+            author: modInfo.author,
+            description: modInfo.description,
+            tags: modInfo.tags,
+            version: modInfo.version
+        })
     });
+    
     hasUnsavedChanges = false;
-    return fields;
+    return modInfo;
 }
 
-// handle the save button click
-document.getElementById('saveButton').addEventListener('click', () => {
-    saveModInfo();
-});
-
-// listen for keyboard shortcuts for saving
-window.addEventListener('keydown', (e) => {
-    // if Ctrl or Cmd are pressed
-    if ((e.ctrlKey || e.metaKey)) {
-        e.preventDefault();
-        switch (e.key.toLowerCase()) {
-            case 's':
-                // trigger save
-                saveModInfo();
-                break;
-            case 'r':
-                // trigger reload
-                vscode.postMessage({
-                    type: 'reload'
-                });
-                break;
-        }
-    }
-});
-
-/** Saves the mod info by sending it to the extension.
+/** Save the current mod info to file
  * @returns {void}
  */
 function saveModInfo() {
-    let content = '';
-    let remainingFields = new Map(fields.asArray());
+    // Update modInfo with current webview values
+    modInfo.updateFromWebview();
     
-    const lines = infoTxt.split('\n');
-    lines.forEach(line => {
-        line = line.trim();
-        // add unchanged lines directly
-        if (line === '' || line.startsWith('#') || !line.includes('=')) {
-            content += line + '\n';
-            return;
-        }
-        // check if line corresponds to a field
-        let fieldFound = false;
-        remainingFields.forEach((value, key) => {
-            if (fieldFound) return; // skip if already found
-            if (line.replaceAll(' ', '').startsWith(key + '=')) {
-                // construct new line with updated value
-                content += `${key} = ${fields.asString(key)}\n`;
-                remainingFields.delete(key);
-                fieldFound = true;
-            }
-        });
-        // if no field found, keep line unchanged
-        if (!fieldFound) {
-            content += line + '\n';
-        }
-    });
-    // append any remaining fields that were not in the original content
-    remainingFields.forEach((value, key) => {
-        content += `${key} = ${fields.asString(key)}\n`;
-    });
+    // Generate file content
+    const content = modInfo.generateFileContent();
     
-    if (!content.endsWith('\n')) 
-        content += '\n';
-    if (content.endsWith('\n\n'))
-        content = content.slice(0, -1);
-
-    // update variables
-    infoTxt = content;
+    // Update original content for future saves
+    modInfo.originalContent = content;
     hasUnsavedChanges = false;
-    // update fields
-    fields.forEach((key, value) => {
-        const element = document.getElementById(`mod-${key}`);
-        if (element)
-            fields[key] = element.value;
-    });
-
-    // send save message to extension
+    
+    // Send save message to extension
     vscode.postMessage({
         type: 'saveModInfo',
         data: content
     });
 }
 
-document.getElementById('setting-openByDefault').addEventListener('change', (e) => {
-    const isChecked = e.target.checked;
-    vscode.postMessage({
-        type: 'setting_openByDefault',
-        data: isChecked
-    });
-});
+/** Handle settings update
+ * @param {object} settings - Settings object from extension
+ * @returns {void}
+ */
+function updateSettings(settings) {
+    if (settings.openByDefault !== undefined) {
+        document.getElementById('setting-openByDefault').checked = settings.openByDefault;
+    }
+    if (settings.enableScriptingApi !== undefined) {
+        document.getElementById('setting-enableScriptingApi').checked = settings.enableScriptingApi;
+    }
+}
+
+// Initialize when page loads
+initializeWebview();
