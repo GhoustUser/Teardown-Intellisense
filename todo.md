@@ -1,6 +1,29 @@
-https://teardowngame.com/experimental/api.html#GetIntParam
-- convert **`extension.js`** to TypeScript.
-- add mod type definition.
-  - add **`info.txt`** type definition.
-- add better icon.
-- add support for different mod types
+- think of a better name for the extension
+- separate setting to toggle `"duplicate-set-field"` from `"enableScriptingApi"`.
+- fix inconsistent naming schemes
+- add all remaining api definitions as lua meta code.
+  - ### api categories implemented:
+  - [x] Parameters
+  - [ ] Script control
+  - [ ] Registry
+  - [ ] Events
+  - [ ] Vector math
+  - [ ] Entity
+  - [ ] Body
+  - [ ] Shape
+  - [ ] Location
+  - [ ] Joint
+  - [ ] Animation
+  - [ ] Light
+  - [ ] Trigger
+  - [ ] Screen
+  - [ ] Vehicle
+  - [ ] Rig
+  - [ ] Player
+  - [ ] Sound
+  - [ ] Sprite
+  - [ ] Scene queries
+  - [ ] Particles
+  - [ ] Spawn
+  - [ ] Miscellaneous
+  - [ ] User Interface

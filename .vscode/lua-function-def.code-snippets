@@ -1,0 +1,16 @@
+{
+	"Lua Function Definition": {
+		"scope": "lua",
+		"prefix": "fndef",
+		"body": [
+			"---@param ${3:paramName} ${4:string} -- ${5:Parameter description}",
+			"---@return ${7:string} ${6:returnValue} -- ${8:Return description}",
+			"---@example",
+			"---```lua",
+			"${9/^(.+)$/---$1/gm}",
+			"---```",
+			"function ${1:FunctionName}(${2:params}) end$0"
+		],
+		"description": "Creates a Lua function definition."
+	}
+}
