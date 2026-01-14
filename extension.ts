@@ -3,15 +3,11 @@ import path from "path";
 import fs from "fs";
 import WebView from "./scripts/classes/web-view";
 import VscManager from "./scripts/classes/vsc-manager";
+import { loadScriptingApi, isScriptingApiLoaded } from "./scripts/load-lua-api";
 
-const modviews = {
-    /** The main Mod View.
-     * @type {WebView}
-     */
-    main: new WebView(
-        "mod-view-main",
-        "Mod View"
-    )
+// initialize mod views
+const modviews: { main: WebView } = {
+    main: new WebView("mod-view-main", "Mod View")
 }
 
 /** Entry point for the extension.
@@ -24,15 +20,20 @@ function activate(context: vscode.ExtensionContext): void {
 
     // check if there are workspace folders open
     if (!vscManager.workspaceFolders) {
-        console.log("No workspace folders found.");
+        console.log("\x1b[33mNo workspace folders found\x1b[0m");
         return;
     }
 
     // if info.txt doesn't exist, exit early
     if (!fs.existsSync(path.join(vscManager.projectPath, "info.txt"))) {
-        console.log("No Teardown mod detected in workspace.");
+        console.log("\x1b[33mNo Teardown mod detected in workspace\x1b[0m");
         return;
     }
+
+    console.log(`\x1b[32mTeardown mod detected at: \x1b[96m${vscManager.projectPath}\x1b[0m`);
+    
+    // load Teardown Lua API into workspace
+    loadScriptingApi(vscManager);
 
     modviews.main.onOpen(() => {
         // read and send info.txt content to webview
@@ -40,58 +41,64 @@ function activate(context: vscode.ExtensionContext): void {
         if (fs.existsSync(infoTxtPath)) {
             const infoTxtContent = fs.readFileSync(infoTxtPath, "utf8");
             modviews.main.send("infoTxt", infoTxtContent);
+            console.log("\x1b[32mSent info.txt content to webview\x1b[0m");
         }
 
         // send mod icon path if it exists (try .png first, then .jpg)
-        const iconExtensions = ["preview.png", "preview.jpg"];
-        for (const iconFile of iconExtensions) {
-            const modIconPath = path.join(vscManager.projectPath, iconFile);
+        const iconExtensions = ["png", "jpg", "jpeg"];
+        let iconFound = false;
+        for (const iconExtension of iconExtensions) {
+            const modIconPath = path.join(vscManager.projectPath, `preview.${iconExtension}`);
             if (fs.existsSync(modIconPath)) {
                 const modIconUri = modviews.main.getWebviewUri(modIconPath);
                 modviews.main.send("modIconPath", modIconUri.toString());
+                console.log(`\x1b[32mFound mod icon: \x1b[96m${iconExtension}\x1b[0m`);
+                iconFound = true;
                 break;
             }
         }
+        if (!iconFound) {
+            console.log("\x1b[33mNo mod icon found (preview.png or preview.jpg)\x1b[0m");
+        }
 
-        console.log("Mod View opened");
+        console.log("\x1b[32mMod View opened\x1b[0m");
     });
 
     modviews.main.onMessage(({ type, data }) => {
-        // handle different message types
         switch (type) {
             case "reload":
-                // reload the webview content
                 modviews.main.reload(context);
                 modviews.main.setTitle(modviews.main.defaultTitle);
+                console.log("\x1b[32mWebview reloaded\x1b[0m");
                 break;
+                
             case "unsavedChanges":
-                console.log("Unsaved changes:", data);
-                // mark the main mod view as having unsaved changes
-                // by making the dab title italic and adding asterisk
-                modviews.main.setTitle(data ? modviews.main.defaultTitle + " (unsaved)" : modviews.main.defaultTitle);
+                console.log(`\x1b[33mUnsaved changes: \x1b[96m${data}\x1b[0m`);
+                const title = data ? `${modviews.main.defaultTitle} (unsaved)` : modviews.main.defaultTitle;
+                modviews.main.setTitle(title);
                 break;
+                
             case "saveModInfo":
-                // save the mod info to info.txt
-                //const infoTxtPath = path.join(vscManager.projectPath, "info.txt");
-                //fs.writeFileSync(infoTxtPath, data, "utf8");
-                console.log("Mod info saved:\n", data);
+                const infoTxtPath = path.join(vscManager.projectPath, "info.txt");
+                fs.writeFileSync(infoTxtPath, data, "utf8");
+                console.log(`\x1b[32mMod info saved to info.txt\x1b[0m`);
                 vscode.window.showInformationMessage("Mod info saved successfully.");
-                // reset the unsaved changes indicator
                 modviews.main.setTitle(modviews.main.defaultTitle);
                 break;
+                
             case "setting_openByDefault":
-                // update the setting for opening mod view by default
                 vscManager.updateSetting("teardownModding.openModViewByDefault", data);
-                console.log("Setting 'openModViewByDefault' updated to:", data);
+                console.log(`\x1b[33mSetting 'openModViewByDefault' updated to: \x1b[96m${data}\x1b[0m`);
                 break;
+                
             default:
-                console.warn(`\x1b[93mUnhandled message type in Mod View: \x1b[35m${type}: \x1b[96m${data}\x1b[0m`, );
+                console.warn(`\x1b[93mUnhandled message type: \x1b[35m${type}\x1b[93m with data: \x1b[96m${data}\x1b[0m`);
                 break;
         }
     });
 
     modviews.main.onClose(() => {
-        console.log("Mod View closed.");
+        console.log("\x1b[33mMod View closed\x1b[0m");
     });
 
     // register command to open the Mod View
@@ -100,11 +107,11 @@ function activate(context: vscode.ExtensionContext): void {
     });
 
     // open Mod View by default if the setting is enabled
-    if (vscManager.getSetting("teardownModding.openModViewByDefault", false)) {
+    const shouldOpenByDefault = vscManager.getSetting("teardownModding.openModViewByDefault", false);
+    if (shouldOpenByDefault) {
         modviews.main.open(context);
-    }
-    // otherwise, show an information message with an option to open the Mod View
-    else {
+        console.log("\x1b[32mOpened Mod View by default (setting enabled)\x1b[0m");
+    } else {
         vscManager.showInformationMessage(
             "Teardown Mod detected in workspace.",
             [{ name: "Open Mod View", action: () => modviews.main.open(context) }]
@@ -112,11 +119,10 @@ function activate(context: vscode.ExtensionContext): void {
     }
 }
 
-/**
- * Cleanup function called when the extension is deactivated.
+/** Cleanup function called when the extension is deactivated.
  * @returns {void}
  */
-function deactivate() { }
+function deactivate(): void {}
 
 module.exports = {
     activate,

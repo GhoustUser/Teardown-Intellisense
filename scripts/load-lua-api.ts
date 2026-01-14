@@ -1,51 +1,45 @@
-import vscode from "vscode";
 import path from "path";
 import VscManager from "./classes/vsc-manager";
 
 /** Checks if the Teardown Lua API is already loaded in the VSCode Lua workspace configuration.
- * @param {VscManager} vscm - The VscManager instance
+ * @param {VscManager} vscManager - The VscManager instance
  * @returns {boolean} True if the Lua API is loaded, false otherwise
  */
-function IsScriptingApiLoaded(vscm: VscManager): boolean {
-    return vscm.getSetting("Lua.workspace.library", []).includes(
-        path.join(vscm.context.extensionPath, "teardown-lua-api")
-    );
+function isScriptingApiLoaded(vscManager: VscManager): boolean {
+    const luaApiPath = path.join(vscManager.context.extensionPath, "teardown-lua-api");
+    const workspaceLibrary = vscManager.getSetting("Lua.workspace.library", []);
+    return workspaceLibrary.includes(luaApiPath);
 }
 
-/**
- * Loads the Teardown Lua API into the VSCode Lua workspace configuration.
- * @param {VscManager} vscm - The VscManager instance
+/** Loads the Teardown Lua API into the VSCode Lua workspace configuration.
+ * @param {VscManager} vscManager - The VscManager instance
+ * @returns {void}
  */
-function LoadScriptingApi(vscm: VscManager) {
-    // if already loaded, do nothing
-    if (IsScriptingApiLoaded(vscm))
+function loadScriptingApi(vscManager: VscManager): void {
+    if (isScriptingApiLoaded(vscManager)) {
+        console.log("\x1b[33mTeardown Lua API already loaded\x1b[0m");
         return;
+    }
 
-    // Construct the path to the Lua API directory within the extension
-    const luaApiPath = path.join(vscm.context.extensionPath, "teardown-lua-api");
+    const luaApiPath = path.join(vscManager.context.extensionPath, "teardown-lua-api");
+    const workspaceLibrary = vscManager.getSetting("Lua.workspace.library", []);
     
-    // Get the Lua library configuration for the workspace
-    const workspaceLibrary = vscm.getSetting("Lua.workspace.library", []);
-
-    // check if the Lua API path is already included
-    if (workspaceLibrary.includes(luaApiPath)) 
-        return;
-
-    // check for and remove any old paths that might exist (for older versions of the extension)
-    const filteredLibrary = workspaceLibrary.filter((libPath: string) => {
-        return !libPath.endsWith("teardown-lua-api");
-    });
-
-    // Add the Lua API path to the workspace library array
-    vscm.updateSetting(
-        "Lua.workspace.library",
-        [...filteredLibrary, luaApiPath],
+    // filter out any old teardown-lua-api paths from previous versions
+    const filteredLibrary = workspaceLibrary.filter((libPath: string) => 
+        !libPath.endsWith("teardown-lua-api")
     );
 
-    console.log("Teardown Lua API loaded into workspace.");
+    // add the new path and update setting
+    const updatedLibrary = [...filteredLibrary, luaApiPath];
+    vscManager.updateSetting("Lua.workspace.library", updatedLibrary);
+    
+    // also disable duplicate-set-field diagnostic (Teardown API has intentional duplicates)
+    const diagnostics = vscManager.getSetting("Lua.diagnostics.disable", []);
+    if (!diagnostics.includes("duplicate-set-field")) {
+        vscManager.updateSetting("Lua.diagnostics.disable", [...diagnostics, "duplicate-set-field"]);
+    }
+
+    console.log(`\x1b[32mTeardown Lua API loaded into workspace: \x1b[96m${luaApiPath}\x1b[0m`);
 }
 
-module.exports = {
-    IsScriptingApiLoaded,
-    LoadScriptingApi
-};
+export { isScriptingApiLoaded, loadScriptingApi };
