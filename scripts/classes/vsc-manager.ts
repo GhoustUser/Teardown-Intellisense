@@ -9,7 +9,6 @@ class VscManager {
 
     private _context: vscode.ExtensionContext;
     private _workspaceFolders: readonly vscode.WorkspaceFolder[] | undefined;
-    private _workspaceSettings: vscode.WorkspaceConfiguration;
     private _projectPath: string | null;
 
     /** Gets the extension context.
@@ -41,7 +40,6 @@ class VscManager {
     constructor(context: vscode.ExtensionContext) {
         this._context = context;
         this._workspaceFolders = vscode.workspace.workspaceFolders;
-        this._workspaceSettings = vscode.workspace.getConfiguration("", null);
 
         if (this._workspaceFolders && this._workspaceFolders.length > 0 && this._workspaceFolders[0])
             this._projectPath = this._workspaceFolders[0].uri.fsPath;

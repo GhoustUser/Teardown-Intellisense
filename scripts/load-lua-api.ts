@@ -8,7 +8,6 @@ import VscManager from "./classes/vsc-manager";
 function isScriptingApiLoaded(vscManager: VscManager): boolean {
     const luaApiPath = path.join(vscManager.context.extensionPath, "teardown-lua-api");
     const workspaceLibrary = vscManager.getSetting("Lua.workspace.library", []);
-    console.log(`\x1b[34mCurrent Lua.workspace.library: \x1b[0m${JSON.stringify(workspaceLibrary)}`);
     return workspaceLibrary.includes(luaApiPath);
 }
 
@@ -24,7 +23,7 @@ function loadScriptingApi(vscManager: VscManager): void {
 
     const luaApiPath = path.join(vscManager.context.extensionPath, "teardown-lua-api");
     const workspaceLibrary = vscManager.getSetting("Lua.workspace.library", []);
-    
+    //console.log(`\x1b[34mCurrent Lua.workspace.library: \x1b[0m${JSON.stringify(workspaceLibrary)}`);
     // filter out any old teardown-lua-api paths from previous versions
     const filteredLibrary = workspaceLibrary.filter((libPath: string) => 
         !libPath.endsWith("teardown-lua-api")

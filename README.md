@@ -31,7 +31,7 @@ This opens a custom interface where you can view and change info about your mod,
 
 The current progress per category for implementing type definitions of the API:
   - [x] Parameters
-  - [/] Script control
+  - [ ] Script control (in progress)
   - [ ] Registry
   - [ ] Events
   - [ ] Vector math
