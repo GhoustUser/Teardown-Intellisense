@@ -4,7 +4,7 @@
 	"description": "Adds Teardown's Lua API to the Lua language server for better autocompletion and documentation support.",
 	"author": {
 		"name": "GhoustUser",
-		"url": "https://gitlab.com/GhoustUser"
+		"url": "https://github.com/GhoustUser"
 	},
 	"version": "0.1.0",
 	"main": "./out/extension.js",
@@ -17,7 +17,7 @@
 	},
 	"repository": {
 		"type": "git",
-		"url": "https://gitlab.com/ghoust1/teardown/Teardown-lua-API"
+		"url": "https://github.com/GhoustUser/Teardown-Modding-Extension"
 	},
 	"keywords": [
 		"teardown",
