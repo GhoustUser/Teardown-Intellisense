@@ -1,12 +1,12 @@
 {
 	"name": "teardown-modding-extension",
 	"displayName": "Teardown Modding Extension",
-	"description": "A VS Code extension to make modding Teardown easier, with Lua API references and mod management.",
+	"description": "Adds intellisense for Teardown's scripting API.",
 	"author": {
 		"name": "GhoustUser",
 		"url": "https://github.com/GhoustUser"
 	},
-	"version": "0.4.0",
+	"version": "0.4.1",
 	"main": "./out/extension.js",
 	"scripts": {
 		"vscode:prepublish": "npm run compile",
@@ -47,13 +47,7 @@
 					"description": "Used to track if the user has already seen the prompt to enable the scripting API. (workspace only)"
 				}
 			}
-		},
-		"commands": [
-			{
-				"command": "teardownModding.openModView",
-				"title": "Open Teardown Mod View"
-			}
-		]
+		}
 	},
 	"devDependencies": {
 		"@types/node": "^25.0.8",

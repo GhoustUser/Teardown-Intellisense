@@ -2,14 +2,9 @@ import vscode from "vscode";
 import path from "path";
 import fs from "fs";
 
-import WebView from "./scripts/web-view";
 import VscManager from "./scripts/vsc-manager";
-import initializeModViewMain from "./ModView/mod-view-main/initialize";
 import { enableScriptingApi } from "./scripts/scripting-api";
 
-
-// initialize mod views
-const mainModview = new WebView("mod-view-main", "Mod View");
 
 /** Entry point for the extension.
  * @param {vscode.ExtensionContext} context - The extension context provided by VS Code
@@ -28,14 +23,6 @@ function activate(context: vscode.ExtensionContext): void {
     if (!fs.existsSync(path.join(vscManager.projectPath, "info.txt"))) {
         return;
     }
-
-    // initialize main mod view
-    initializeModViewMain(mainModview, vscManager);
-
-    // register command to open the Mod View
-    vscManager.registerCommand("teardownModding.openModView", () => {
-        mainModview.open(context);
-    });
 
     vscManager.onWorkspaceSettingChanged("teardownModding.enableScriptingAPI", (newValue: any) => {
         if (typeof newValue === "boolean") {
