@@ -2,7 +2,7 @@
 
 A Visual Studio Code extension which adds intellisense for most features in the [Teardown scripting API (2.0.0 // Experimental)](https://teardowngame.com/experimental/api.html).
 
-Currently contains definitions for a total of `606` functions across `24` files/categories, as well as the `server` and `client` objects.
+Currently contains `24` files/categories with definitions for a total of `606` functions and `15` aliases, as well as the `server` and `client` objects.
 
 ### Note:
 This is my first VS Code extension and public coding project, so any help, advice or feedback is appreciated.
@@ -31,7 +31,7 @@ I will try to get this on the VSCode extension marketplace at some point, but fo
 
 The extension adds `.meta.lua` files to the Lua Language Server's workspace library. This does not add, modify or remove any files from your project, it just tells VS Code that the type definitions are part of the workspace.
 
-Currently, the only requirement for a Teardown mod is having an `info.txt` in the root folder. But just because a folder has an `info.txt` file, that doesn't guarantee that it's a Teardown mod, which is why I've chosen this popup prompt approach.
+Currently, the only requirement for a Teardown mod is having an `info.txt` in the root folder. But since a folder with an `info.txt` file isn't guaranteed to be a Teardown mod, I've chosen to go with this popup prompt approach. Hopefully I can replace this with a better solution in the future.
 
 ## Links
 - [Teardown Game](https://teardowngame.com) - The game this is for

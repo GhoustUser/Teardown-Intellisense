@@ -3,6 +3,5 @@
 
 ## API
 - more type definitions.
-  - input types, physical and logical.
-  - the registry and server/client tables.
+  - registry
   - events
