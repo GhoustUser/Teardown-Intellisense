@@ -1,7 +1,25 @@
 --- @meta
 
+--- @alias Registry_Key
+--- | 'options' reserved for game settings (write protected from mods)
+--- | 'game' reserved for the game engine internals (see documentation)
+--- | 'savegame' used for persistent game data (write protected for mods)
+--- | 'savegame.mod' used for persistent mod data. Use only alphanumeric character for key name.
+--- | 'level' not reserved, but recommended for level specific entries and script communication
+
+--- @alias LoadLanguageTable_Id
+--- | 0 English
+--- | 1 French
+--- | 2 Spanish
+--- | 3 Italian
+--- | 4 German
+--- | 5 Simplified Chinese
+--- | 6 Japanese
+--- | 7 Russian
+--- | 8 Polish
+
 --- Remove registry node, including all child nodes.
---- @param key string -- Registry key to clear
+--- @param key Registry_Key -- Registry key to clear
 --- ### Example
 --- ```lua
 --- function init()
@@ -44,7 +62,7 @@ function ClearKey(key) end
 function ListKeys(parent) end
 
 --- Returns true if the registry contains a certain key
---- @param key string -- Registry key
+--- @param key Registry_Key -- Registry key
 --- @return boolean exists -- True if key exists
 --- ### Example
 --- ```lua
@@ -56,7 +74,7 @@ function ListKeys(parent) end
 --- [View Documentation](https://teardowngame.com/experimental/api.html#HasKey)
 function HasKey(key) end
 
---- @param key string -- Registry key
+--- @param key Registry_Key -- Registry key
 --- @param value number -- Desired value
 --- @param sync? boolean -- Synchronize to clients
 --- ### Example
@@ -69,7 +87,7 @@ function HasKey(key) end
 --- [View Documentation](https://teardowngame.com/experimental/api.html#SetInt)
 function SetInt(key, value, sync) end
 
---- @param key string -- Registry key
+--- @param key Registry_Key -- Registry key
 --- @return number value -- Integer value of registry node or zero if not found
 --- ### Example
 --- ```lua
@@ -81,7 +99,7 @@ function SetInt(key, value, sync) end
 --- [View Documentation](https://teardowngame.com/experimental/api.html#GetInt)
 function GetInt(key) end
 
---- @param key string -- Registry key
+--- @param key Registry_Key -- Registry key
 --- @param value number -- Desired value
 --- @param sync? boolean -- Synchronize to clients
 --- ### Example
@@ -94,7 +112,7 @@ function GetInt(key) end
 --- [View Documentation](https://teardowngame.com/experimental/api.html#SetFloat)
 function SetFloat(key, value, sync) end
 
---- @param key string -- Registry key
+--- @param key Registry_Key -- Registry key
 --- @return number value -- Float value of registry node or zero if not found
 --- ### Example
 --- ```lua
@@ -106,7 +124,7 @@ function SetFloat(key, value, sync) end
 --- [View Documentation](https://teardowngame.com/experimental/api.html#GetFloat)
 function GetFloat(key) end
 
---- @param key string -- Registry key
+--- @param key Registry_Key -- Registry key
 --- @param value boolean -- Desired value
 --- @param sync? boolean -- Synchronize to clients
 --- ### Example
@@ -119,7 +137,7 @@ function GetFloat(key) end
 --- [View Documentation](https://teardowngame.com/experimental/api.html#SetBool)
 function SetBool(key, value, sync) end
 
---- @param key string -- Registry key
+--- @param key Registry_Key -- Registry key
 --- @return boolean value -- Boolean value of registry node or false if not found
 --- ### Example
 --- ```lua
@@ -131,7 +149,7 @@ function SetBool(key, value, sync) end
 --- [View Documentation](https://teardowngame.com/experimental/api.html#GetBool)
 function GetBool(key) end
 
---- @param key string -- Registry key
+--- @param key Registry_Key -- Registry key
 --- @param value string -- Desired value
 --- @param sync? boolean -- Synchronize to clients
 --- ### Example
@@ -144,7 +162,7 @@ function GetBool(key) end
 --- [View Documentation](https://teardowngame.com/experimental/api.html#SetString)
 function SetString(key, value, sync) end
 
---- @param key string -- Registry key
+--- @param key Registry_Key -- Registry key
 --- @return string value -- String value of registry node or "" if not found
 --- ### Example
 --- ```lua
@@ -157,7 +175,7 @@ function SetString(key, value, sync) end
 function GetString(key) end
 
 --- Sets the color registry key value
---- @param key string -- Registry key
+--- @param key Registry_Key -- Registry key
 --- @param r number -- Desired red channel value
 --- @param g number -- Desired green channel value
 --- @param b number -- Desired blue channel value
@@ -172,7 +190,7 @@ function GetString(key) end
 function SetColor(key, r, g, b, a) end
 
 --- Returns the color registry key value
---- @param key string -- Registry key
+--- @param key Registry_Key -- Registry key
 --- @return number r -- Desired red channel value
 --- @return number g -- Desired green channel value
 --- @return number b -- Desired blue channel value
@@ -189,7 +207,7 @@ function SetColor(key, r, g, b, a) end
 function GetColor(key) end
 
 --- Returns the translation for the specified key from the translation table. If the key is not found returns the default value
---- @param key string -- Translation key
+--- @param key Registry_Key -- Translation key
 --- @param default? string -- Default value
 --- @return string value -- Translation
 --- ### Example
@@ -202,7 +220,7 @@ function GetColor(key) end
 function GetTranslatedStringByKey(key, default) end
 
 --- Checks that translation for specified key exists
---- @param key string -- Translation key
+--- @param key Registry_Key -- Translation key
 --- @return boolean value -- True if translation exists
 --- ### Example
 --- ```lua
@@ -213,23 +231,7 @@ function GetTranslatedStringByKey(key, default) end
 --- [View Documentation](https://teardowngame.com/experimental/api.html#HasTranslationByKey)
 function HasTranslationByKey(key) end
 
---- Loads the language table for specified language id for further localization. Possible id values below.
---- @param id number -- Language id (enum)
---- ```markdown
---- -|----|--------------------|
---- -| Id | Language           |
---- -|----|--------------------|
---- -| 0  | English            |
---- -| 1  | French             |
---- -| 2  | Spanish            |
---- -| 3  | Italian            |
---- -| 4  | German             |
---- -| 5  | Simplified Chinese |
---- -| 6  | Japanese           |
---- -| 7  | Russian            |
---- -| 8  | Polish             |
---- -|----|--------------------|
---- ```
+--- @param id LoadLanguageTable_Id -- Language id (enum)
 --- ### Example
 --- ```lua
 --- function init()

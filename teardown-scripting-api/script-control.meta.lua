@@ -1,5 +1,83 @@
 --- @meta
 
+---@alias InputIdentifier ScriptControl_PhysicalInput | ScriptControl_LogicalInput
+
+--- @alias ScriptControl_PhysicalInput
+--- | 'esc' Escape key
+--- | 'tab' Tab key
+--- | 'lmb' Left mouse button
+--- | 'rmb' Right mouse button
+--- | 'mmb' Middle mouse button
+--- | 'uparrow' Up arrow key
+--- | 'downarrow' Down arrow key
+--- | 'leftarrow' Left arrow key
+--- | 'rightarrow' Right arrow key
+--- | 'f1-f12' Function keys
+--- | 'backspace' Backspace key
+--- | 'alt' Alt key
+--- | 'delete' Delete key
+--- | 'home' Home key
+--- | 'end' End key
+--- | 'pgup' Pgup key
+--- | 'pgdown' Pgdown key
+--- | 'insert' Insert key
+--- | 'space' Space bar
+--- | 'shift' Shift key
+--- | 'ctrl' Ctrl key
+--- | 'return' Return key
+--- | 'any' Any key or button
+--- | 'a,b,c,...' Latin, alphabetical keys a through z
+--- | '0-9' Digits, zero to nine
+--- | 'mousedx' Mouse horizontal diff. Only valid in InputValue.
+--- | 'mousedy' Mouse vertical diff. Only valid in InputValue.
+--- | 'mousewheel' Mouse wheel. Only valid in InputValue.
+
+--- @alias ScriptControl_LogicalInput
+--- | 'up' Move forward / Accelerate
+--- | 'down' Move backward / Brake
+--- | 'left' Move left
+--- | 'right' Move right
+--- | 'interact' Interact
+--- | 'flashlight' Flashlight
+--- | 'jump' Jump
+--- | 'crouch' Crouch
+--- | 'usetool' Use tool
+--- | 'grab' Grab
+--- | 'handbrake' Handbrake
+--- | 'map' Map
+--- | 'pause' Pause game (escape)
+--- | 'vehicleraise' Raise vehicle parts
+--- | 'vehiclelower' Lower vehicle parts
+--- | 'vehicleaction' Vehicle action
+--- | 'camerax' Camera x movement, scaled by sensitivity. Only valid in InputValue.
+--- | 'cameray' Camera y movement, scaled by sensitivity. Only valid in InputValue.
+--- | 'tool_group_prev' Switch to previous tool group
+--- | 'tool_group_next' Switch to next tool group
+--- | 'extra0' Extra action 0
+--- | 'extra1' Extra action 1
+--- | 'extra2' Extra action 2
+--- | 'extra3' Extra action 3
+--- | 'extra4' Extra action 4
+--- | 'extra5' Extra action 5
+--- | 'extra6' Extra action 6
+--- | 'photomode' Photomode
+--- | 'zoom' Zoom
+--- | 'menu_left' Menu left
+--- | 'menu_right' Menu right
+--- | 'menu_up' Menu up
+--- | 'menu_down' Menu down
+--- | 'menu_next' Menu next
+--- | 'menu_prev' Menu prev
+--- | 'menu_accept' Menu accept
+--- | 'menu_cancel' Menu cancel
+
+--- @alias SetValue_Transition
+--- | 'linear' Linear transition
+--- | 'cosine' Slow at beginning and end
+--- | 'easein' Slow at beginning
+--- | 'easeout' Slow at end
+--- | 'bounce' Bounce and overshoot new value
+
 --- @return string version -- Dot separated string of current version of the game
 --- ### Example
 --- ```lua
@@ -74,7 +152,7 @@ function GetTimeStep() end
 --- [View Documentation](https://teardowngame.com/experimental/api.html#InputLastPressedKey)
 function InputLastPressedKey(playerId) end
 
---- @param input string -- The input identifier
+--- @param input InputIdentifier -- The input identifier
 --- @param playerId? number -- Player ID. On client, zero means client player. On server, zero means server (host) player.
 --- @return boolean pressed -- True if input was pressed during last frame
 --- ### Example
@@ -88,7 +166,7 @@ function InputLastPressedKey(playerId) end
 --- [View Documentation](https://teardowngame.com/experimental/api.html#InputPressed)
 function InputPressed(input, playerId) end
 
---- @param input string -- The input identifier
+--- @param input InputIdentifier -- The input identifier
 --- @param playerId? number -- Player ID. On client, zero means client player. On server, zero means server (host) player.
 --- @return boolean pressed -- True if input was released during last frame
 --- ### Example
@@ -102,7 +180,7 @@ function InputPressed(input, playerId) end
 --- [View Documentation](https://teardowngame.com/experimental/api.html#InputReleased)
 function InputReleased(input, playerId) end
 
---- @param input string -- The input identifier
+--- @param input InputIdentifier -- The input identifier
 --- @param playerId? number -- Player ID. On client, zero means client player. On server, zero means server (host) player.
 --- @return boolean pressed -- True if input is currently held down
 --- ### Example
@@ -116,7 +194,7 @@ function InputReleased(input, playerId) end
 --- [View Documentation](https://teardowngame.com/experimental/api.html#InputDown)
 function InputDown(input, playerId) end
 
---- @param input string -- The input identifier
+--- @param input InputIdentifier -- The input identifier
 --- @param playerId? number -- Player ID. On client, zero means client player. On server, zero means server (host) player.
 --- @return number value -- Depends on input type
 --- ### Example
@@ -137,7 +215,7 @@ function InputValue(input, playerId) end
 --- function client.update()
 --- 	-- Prints '2' because InputClear() allows the game to "forget" the player's input
 --- 	if InputDown("interact") then
----     	InputClear()
+--- 		InputClear()
 --- 		if InputDown("interact") then
 --- 			DebugPrint(1)
 --- 		else
@@ -155,7 +233,7 @@ function InputClear() end
 --- ```lua
 --- function update()
 --- 	if InputDown("interact") then
----     	-- In this form, you won't be able to notice the result of the function; you need a specific context
+--- 		-- In this form, you won't be able to notice the result of the function; you need a specific context
 --- 		InputResetOnTransition()
 --- 	end
 --- end
@@ -184,19 +262,8 @@ function LastInputDevice() end
 
 --- @param variable string -- Name of number variable in the global context
 --- @param value number -- The new value
---- @param transition? string -- Transition type. See description.
+--- @param transition? SetValue_Transition -- Transition type. See description.
 --- @param time? number -- Transition time (seconds)
---- ```markdown
---- -|------------|----------------------------------|
---- -| Transition | Description                      |
---- -|------------|----------------------------------|
---- -| linear     | Linear transition                |
---- -| cosine     | Slow at beginning and end        |
---- -| easein     | Slow at beginning                |
---- -| easeout    | Slow at end                      |
---- -| bounce     | Bounce and overshoot new value   |
---- -|------------|----------------------------------|
---- ```
 --- ### Example
 --- ```lua
 --- myValue = 0
@@ -225,7 +292,7 @@ function SetValue(variable, value, transition, time) end
 --- function update()
 --- 	if InputPressed("interact") then
 --- 		SetValueInTable(t, "score", t.score + 1, "number", 1)
----     	DebugPrint(t.score)
+--- 		DebugPrint(t.score)
 --- 	end
 --- end
 --- ```
@@ -354,7 +421,8 @@ function Restart() end
 function Menu() end
 
 --- @param playerId number -- Player ID of the recipient. Use 0 to broadcast to every player.
---- @param function string -- Name of the function to be invoked. This function must exist within issuing script.
+--- @param function_arg string -- Name of the function to be invoked. This function must exist within issuing script.
+--- @param ...? any -- Optional parameters to send to the recipent(s). Arguments should match the signature of the specified function.
 --- ### Example
 --- ```lua
 --- function server.tick()
@@ -375,9 +443,10 @@ function Menu() end
 --- end
 --- ```
 --- [View Documentation](https://teardowngame.com/experimental/api.html#ClientCall)
-function ClientCall(playerId, function) end
+function ClientCall(playerId, function_arg, ...) end
 
---- @param function string -- Name of the function to be invoked. This function must exist within issuing script.
+--- @param function_arg string -- Name of the function to be invoked. This function must exist within issuing script.
+--- @param ...? any -- Optional parameters to send to the server. Arguments should match the signature of the specified function.
 --- ### Example
 --- ```lua
 --- function client.tick()
@@ -390,5 +459,5 @@ function ClientCall(playerId, function) end
 --- end
 --- ```
 --- [View Documentation](https://teardowngame.com/experimental/api.html#ServerCall)
-function ServerCall(function) end
+function ServerCall(function_arg, ...) end
 

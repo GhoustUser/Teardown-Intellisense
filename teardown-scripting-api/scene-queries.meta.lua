@@ -1,5 +1,33 @@
 --- @meta
 
+--- @alias QueryRequire_Layer
+--- | 'physical' have a physical representation
+--- | 'dynamic' part of a dynamic body
+--- | 'static' part of a static body
+--- | 'large' above debris threshold
+--- | 'small' below debris threshold
+--- | 'visible' only hit visible shapes
+--- | 'animator' part of an animator hierarchy
+--- | 'player' part of an player animator hierarchy
+--- | 'tool' part of a tool
+
+--- @alias QueryInclude_Layer
+--- | 'physical' have a physical representation
+--- | 'dynamic' part of a dynamic body
+--- | 'static' part of a static body
+--- | 'large' above debris threshold
+--- | 'small' below debris threshold
+--- | 'visible' only hit visible shapes
+--- | 'animator' part of an animator hierarchy
+--- | 'player' part of an player
+--- | 'tool' part of a tool
+
+--- @alias GetPathState_State
+--- | 'idle' No recent query
+--- | 'busy' Busy computing. No path found yet.
+--- | 'fail' Failed to find path. You can still get the resulting path (even though it won't reach the target).
+--- | 'done' Path planning completed and a path was found. Get it with GetPathLength and GetPathPoint)
+
 --- @param layers string -- Space separate list of layers
 --- ### Example
 --- ```lua
@@ -335,7 +363,7 @@ function QueryAabbBodies(min, max) end
 --- Using the 'water' type allows you to build a path within the water.
 --- The 'flying' type builds a path in the entire three-dimensional space.
 --- @param start TVec -- World space start point
---- @param end TVec -- World space target point
+--- @param end_arg TVec -- World space target point
 --- @param maxDist? number -- Maximum path length before giving up. Default is infinite.
 --- @param targetRadius? number -- Maximum allowed distance to target in meters. Default is 2.0
 --- @param type? string -- Type of path. Can be "low", "standart", "water", "flying". Default is "standart"
@@ -346,7 +374,7 @@ function QueryAabbBodies(min, max) end
 --- end
 --- ```
 --- [View Documentation](https://teardowngame.com/experimental/api.html#QueryPath)
-function QueryPath(start, end, maxDist, targetRadius, type) end
+function QueryPath(start, end_arg, maxDist, targetRadius, type) end
 
 --- Creates a new path planner that can be used to calculate multiple paths in parallel.
 --- It is supposed to be used together with PathPlannerQuery.
@@ -392,7 +420,7 @@ function DeletePathPlanner(id) end
 --- The QueryPath automatically creates a path planner with an index of 0 and only works with it.
 --- @param id number -- Path planner id
 --- @param start TVec -- World space start point
---- @param end TVec -- World space target point
+--- @param end_arg TVec -- World space target point
 --- @param maxDist? number -- Maximum path length before giving up. Default is infinite.
 --- @param targetRadius? number -- Maximum allowed distance to target in meters. Default is 2.0
 --- @param type? string -- Type of path. Can be "low", "standart", "water", "flying". Default is "standart"
@@ -414,7 +442,7 @@ function DeletePathPlanner(id) end
 --- end
 --- ```
 --- [View Documentation](https://teardowngame.com/experimental/api.html#PathPlannerQuery)
-function PathPlannerQuery(id, start, end, maxDist, targetRadius, type) end
+function PathPlannerQuery(id, start, end_arg, maxDist, targetRadius, type) end
 
 --- Abort current path query, regardless of what state it is currently in. This is a way to
 --- save computing resources if the result of the current query is no longer of interest.
@@ -430,7 +458,7 @@ function PathPlannerQuery(id, start, end, maxDist, targetRadius, type) end
 function AbortPath(id) end
 
 --- @param id? number -- Path planner id. Default value is 0.
---- @return string state -- Current path planning state
+--- @return GetPathState_State state -- Current path planning state
 --- ### Example
 --- ```lua
 --- function server.init()

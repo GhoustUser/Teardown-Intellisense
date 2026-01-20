@@ -24,7 +24,7 @@ function activate(context: vscode.ExtensionContext): void {
         return;
     }
 
-    vscManager.onWorkspaceSettingChanged("teardownModding.enableScriptingAPI", (newValue: any) => {
+    vscManager.onWorkspaceSettingChanged("teardownModding.enableIntellisense", (newValue: any) => {
         if (typeof newValue === "boolean") {
             enableScriptingApi(newValue, vscManager);
         }
@@ -37,9 +37,9 @@ function activate(context: vscode.ExtensionContext): void {
         vscManager.showInformationMessage(
             "Teardown Mod detected in workspace, enable intellisense for scripting API?",
             [
-                { name: "Enable", action: () => vscManager.updateSetting("teardownModding.enableScriptingAPI", true) },
-                { name: "Dismiss", action: () => vscManager.updateSetting("teardownModding.enableScriptingAPI", false) },
-                { name: "Settings", action: () => vscManager.openWorkspaceSettingsUI("teardownModding.enableScriptingAPI") }
+                { name: "Enable", action: () => vscManager.updateSetting("teardownModding.enableIntellisense", true) },
+                { name: "Dismiss", action: () => vscManager.updateSetting("teardownModding.enableIntellisense", false) },
+                { name: "Settings", action: () => vscManager.openWorkspaceSettingsUI("teardownModding.enableIntellisense") }
             ]
         ).then(selectedAction => {
             // update setting to not show the prompt again

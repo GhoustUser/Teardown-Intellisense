@@ -1,5 +1,29 @@
 --- @meta
 
+--- @alias GetProperty_EntityType
+--- | 'Body' desc (string), dynamic (boolean), mass (number), transform, velocity (vector(x, y, z)), angVelocity (vector(x, y, z)), active (boolean), friction (number), restitution (number), frictionMode (average|minimum|multiply|maximum), restitutionMode (average|minimum|multiply|maximum)
+--- | 'Shape' density (number), strength (number), size (number), emissiveScale (number), localTransform, worldTransform
+--- | 'Light' enabled (boolean), color (vector(r, g, b)), intensity (number), transform, active (boolean), type (string), size (number), reach (number), unshadowed (number), fogscale (number), fogiter (number), glare (number)
+--- | 'Location' transform
+--- | 'Water' depth (number), wave (number), ripple (number), motion (number), foam (number), color (vector(r, g, b))
+--- | 'Joint' type (string), size (number), rotstrength (number), rotspring (number);  only for ropes: slack (number), strength (number), maxstretch (number), ropecolor (vector(r, g, b))
+--- | 'Vehicle' spring (number), damping (number), topspeed (number), acceleration (number), strength (number), antispin (number), antiroll (number), difflock (number), steerassist (number), friction (number), smokeintensity (number), transform, brokenthreshold (number)
+--- | 'Wheel' drive (number), steer (number), travel (vector(x, y))
+--- | 'Screen' enabled (boolean), bulge (number), resolution (number, number), script (string), interactive (boolean), emissive (number), fxraster (number), fxca (number), fxnoise (number), fxglitch (number), size (vector(x, y))
+--- | 'Trigger' transform, type (string), size (vector(x, y, z)/number)
+
+--- @alias SetProperty_EntityType
+--- | 'Body' desc (string), dynamic (boolean), transform, velocity (vector(x, y, z)), angVelocity (vector(x,y,z)), active (boolean), friction (number), restitution (number), frictionMode (average|minimum|multiply|maximum), restitutionMode (average|minimum|multiply|maximum)
+--- | 'Shape' density (number), strength (number), emissiveScale (number), localTransform
+--- | 'Light' enabled (boolean), color (vector(r, g, b)), intensity (number), transform, size (number/vector(x,y)), reach (number), unshadowed (number), fogscale (number), fogiter (number), glare (number)
+--- | 'Location' transform
+--- | 'Water' type (string), depth (number), wave (number), ripple (number), motion (number), foam (number), color (vector(r, g, b))
+--- | 'Joint' size (number), rotstrength (number), rotspring (number);  only for ropes: slack (number), strength (number), maxstretch (number), ropecolor (vector(r, g, b))
+--- | 'Vehicle' spring (number), damping (number), topspeed (number), acceleration (number), strength (number), antispin (number), antiroll (number), difflock (number), steerassist (number), friction (number), smokeintensity (number), transform, brokenthreshold (number)
+--- | 'Wheel' drive (number), steer (number), travel (vector(x, y))
+--- | 'Screen' enabled (boolean), interactive (boolean), emissive (number), fxraster (number), fxca (number), fxnoise (number), fxglitch (number)
+--- | 'Trigger' transform, size (vector(x, y, z)/number)
+
 --- Returns an entity with the specified tag and type. This is a universal method that is an alternative to FindBody, FindShape, FindVehicle, etc.
 --- @param tag? string -- Tag name
 --- @param global? boolean -- Search in entire scene
@@ -245,6 +269,7 @@ function GetEntityType(handle) end
 --- 	DebugWatch("isDynamic", isDynamic)
 --- end
 --- ```
+--- @see GetProperty_EntityType
 --- [View Documentation](https://teardowngame.com/experimental/api.html#GetProperty)
 function GetProperty(handle, property) end
 
@@ -259,6 +284,7 @@ function GetProperty(handle, property) end
 --- 	SetProperty(light, "intensity", math.abs(math.sin(GetTime())))
 --- end
 --- ```
+--- @see SetProperty_EntityType
 --- [View Documentation](https://teardowngame.com/experimental/api.html#SetProperty)
 function SetProperty(handle, property, value) end
 

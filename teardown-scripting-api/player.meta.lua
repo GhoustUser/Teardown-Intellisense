@@ -1,5 +1,31 @@
 --- @meta
 
+--- @alias GetPlayerParam_parameter
+--- | 'health' Current value of the player's health.
+--- | 'healthRegeneration' Is the player's health regeneration enabled.
+--- | 'walkingSpeed' The player's walking speed.
+--- | 'jumpSpeed' The player's jump speed.
+--- | 'godMode' If the value is True, the player does not lose health
+--- | 'friction' Player body friction
+--- | 'frictionMode' Player friction combine mode
+--- | 'flyMode' If the value is True, the player will fly
+--- | 'flashlightAllowed' Changes ability to use flashlight
+--- | 'disableInteract' Disable interactions for player
+--- | 'CollisionMask' Player collision mask bits (0-255) with respect to all shapes layer bits
+
+--- @alias SetPlayerParam_parameter
+--- | 'health' Current value of the player's health.
+--- | 'healthRegeneration' Is the player's health regeneration enabled.
+--- | 'walkingSpeed' The player's walking speed.
+--- | 'jumpSpeed' The player's jump speed. The height of the jump depends non-linearly on the jump speed.
+--- | 'godMode' If the value is True, the player does not lose health
+--- | 'friction' Player body friction. Default is 0.8
+--- | 'frictionMode' Player friction combine mode. Can be (average|minimum|multiply|maximum)
+--- | 'flyMode' If the value is True, the player will fly
+--- | 'flashlightAllowed' Changes ability to use flashlight
+--- | 'disableInteract' Disable interactions for player
+--- | 'CollisionMask' Player collision mask bits (0-255) with respect to all shapes layer bits
+
 --- @return list name -- List of all player Ids
 --- ### Example
 --- ```lua
@@ -182,7 +208,7 @@ function SetPlayerPitch(pitch, playerId) end
 --- function client.tick()
 --- 	local crouch = GetPlayerCrouch()
 --- 	if crouch > 0.0 then
----     	...
+--- 		...
 --- 	end
 --- end
 --- ```
@@ -699,6 +725,7 @@ function GetPlayerCanUseTool(playerId) end
 function SetPlayerRegenerationState(state, player) end
 
 --- ### SERVER ONLY
+--- @param toolId string -- Set Tool ID
 --- @param playerId? number -- Player ID. On server, zero means server (host) player.
 --- ### Example
 --- ```lua
@@ -708,9 +735,10 @@ function SetPlayerRegenerationState(state, player) end
 --- end
 --- ```
 --- [View Documentation](https://teardowngame.com/experimental/api.html#SetPlayerTool)
-function SetPlayerTool(playerId) end
+function SetPlayerTool(toolId, playerId) end
 
 --- @param playerId? number -- Player ID. On client, zero means client player. On server, zero means server (host) player.
+--- @return string toolId -- Get Tool ID
 --- ### Example
 --- ```lua
 --- local tool = GetPlayerTool()
@@ -842,27 +870,9 @@ function GetPlayerHurtSpeedScale(playerId) end
 --- [View Documentation](https://teardowngame.com/experimental/api.html#SetPlayerHurtSpeedScale)
 function SetPlayerHurtSpeedScale(speed, playerId) end
 
---- @param parameter string -- Parameter name
+--- @param parameter GetPlayerParam_parameter -- Parameter name
 --- @param player? number -- Player ID. On player, zero means local player.
 --- @return any value -- Parameter value
---- ```markdown
---- -|--------------------|---------|-------------------------------------------------------|
---- -| Param name         | Type    | Description                                           |
---- -|--------------------|---------|-------------------------------------------------------|
---- -| health             | float   | Current value of the player's health.                 |
---- -| healthRegeneration | boolean | Is the player's health regeneration enabled.          |
---- -| walkingSpeed       | float   | The player's walking speed.                           |
---- -| jumpSpeed          | float   | The player's jump speed.                              |
---- -| godMode            | boolean | If the value is True, the player does not lose health |
---- -| friction           | float   | Player body friction                                  |
---- -| frictionMode       | string  | Player friction combine mode                          |
---- -| flyMode            | boolean | If the value is True, the player will fly             |
---- -| flashlightAllowed  | boolean | Changes ability to use flashlight                     |
---- -| disableInteract    | boolean | Disable interactions for player                       |
---- -| CollisionMask      | int     | Player collision mask bits (0-255) with respect to    |
---- -|                    |         | ^ all shapes layer bits                               |
---- -|--------------------|---------|-------------------------------------------------------|
---- ```
 --- ### Example
 --- ```lua
 --- function client.tick()
@@ -877,29 +887,9 @@ function SetPlayerHurtSpeedScale(speed, playerId) end
 function GetPlayerParam(parameter, player) end
 
 --- ### SERVER ONLY
---- @param parameter string -- Parameter name
+--- @param parameter SetPlayerParam_parameter -- Parameter name
 --- @param value any -- Parameter value
 --- @param player? number -- Player ID. On player, zero means local player.
---- ```markdown
---- -|--------------------|---------|-------------------------------------------------------|
---- -| Param name         | Type    | Description                                           |
---- -|--------------------|---------|-------------------------------------------------------|
---- -| health             | float   | Current value of the player's health.                 |
---- -| healthRegeneration | boolean | Is the player's health regeneration enabled.          |
---- -| walkingSpeed       | float   | **!** The player's walking speed.                     |
---- -| jumpSpeed          | float   | **!** The player's jump speed.                        |
---- -| godMode            | boolean | If the value is True, the player does not lose health |
---- -| friction           | float   | Player body friction                                  |
---- -| frictionMode       | string  | Player friction combine mode.                         |
---- -|                    |         | ^ Can be (average|minimum|multiply|maximum)           |
---- -| flyMode            | boolean | If the value is True, the player will fly             |
---- -| flashlightAllowed  | boolean | Changes ability to use flashlight                     |
---- -| disableInteract    | boolean | Disable interactions for player                       |
---- -| CollisionMask      | int     | Player collision mask bits (0-255) with respect to    |
---- -|                    |         | ^ all shapes layer bits                               |
---- -|--------------------|---------|-------------------------------------------------------|
---- **!** : This value is applied for 1 frame!
---- ```
 --- ### Example
 --- ```lua
 --- function server.tick()
@@ -1095,6 +1085,7 @@ function SetToolTransform(transform, sway, playerId) end
 --- Set the allowed zoom for a registered tool. The zoom sensitivity will be factored
 --- with the user options for sensitivity.
 --- @param zoom number -- Zoom factor
+--- @param zoomSensitivity? number -- Input sensitivity when zoomed in. Default is 1.0.
 --- ### Example
 --- ```lua
 --- function client.tick()
@@ -1103,7 +1094,7 @@ function SetToolTransform(transform, sway, playerId) end
 --- end
 --- ```
 --- [View Documentation](https://teardowngame.com/experimental/api.html#SetToolAllowedZoom)
-function SetToolAllowedZoom(zoom) end
+function SetToolAllowedZoom(zoom, zoomSensitivity) end
 
 --- ### CLIENT ONLY
 --- This function serves as an alternative to SetToolTransform, providing full control over tool animation by disabling all internal tool animations.
@@ -1270,8 +1261,7 @@ function GetPlayerRig(playerId) end
 --- [View Documentation](https://teardowngame.com/experimental/api.html#GetPlayerRigWorldTransform)
 function GetPlayerRigWorldTransform(playerId) end
 
---- ### This function will be deprecated in the next update!
---- @param rigId number -- Unique id
+--- @param rigId number -- Unique rig-id, -1 means all rigs
 --- @param playerId? number -- Player ID. On client, zero means client player. On server, zero means server (host) player.
 --- ### Example
 --- ```lua
@@ -1280,7 +1270,6 @@ function GetPlayerRigWorldTransform(playerId) end
 --- [View Documentation](https://teardowngame.com/experimental/api.html#ClearPlayerRig)
 function ClearPlayerRig(rigId, playerId) end
 
---- ### This function will be deprecated in the next update!
 --- @param rigId number -- Unique id
 --- @param name string -- Name of location
 --- @param location table -- Rig Local transform of the location
@@ -1293,8 +1282,6 @@ function ClearPlayerRig(rigId, playerId) end
 --- [View Documentation](https://teardowngame.com/experimental/api.html#SetPlayerRigLocationLocalTransform)
 function SetPlayerRigLocationLocalTransform(rigId, name, location, playerId) end
 
---- ### This function will be deprecated in the next update!
---- This will both update the rig identified by the 'id' and make it active
 --- @param rigId number -- Unique id
 --- @param location table -- New world transform
 --- @param playerId? number -- Player ID. On client, zero means client player. On server, zero means server (host) player.
@@ -1306,7 +1293,6 @@ function SetPlayerRigLocationLocalTransform(rigId, name, location, playerId) end
 --- [View Documentation](https://teardowngame.com/experimental/api.html#SetPlayerRigTransform)
 function SetPlayerRigTransform(rigId, location, playerId) end
 
---- ### This function will be deprecated in the next update!
 --- @param name string -- Name of location
 --- @param playerId? number -- Player ID. On client, zero means client player. On server, zero means server (host) player.
 --- @return table location -- Transform of a location in world space
@@ -1317,7 +1303,6 @@ function SetPlayerRigTransform(rigId, location, playerId) end
 --- [View Documentation](https://teardowngame.com/experimental/api.html#GetPlayerRigLocationWorldTransform)
 function GetPlayerRigLocationWorldTransform(name, playerId) end
 
---- ### This function will be deprecated in the next update!
 --- ### CLIENT ONLY
 --- @param rigId number -- Unique id
 --- @param tag string -- Tag
@@ -1325,14 +1310,12 @@ function GetPlayerRigLocationWorldTransform(name, playerId) end
 --- [View Documentation](https://teardowngame.com/experimental/api.html#SetPlayerRigTags)
 function SetPlayerRigTags(rigId, tag, playerId) end
 
---- ### This function will be deprecated in the next update!
 --- @param tag string -- Tag name
 --- @param playerId? number -- Player ID. On client, zero means client player. On server, zero means server (host) player.
 --- @return boolean exists -- Returns true if entity has tag
 --- [View Documentation](https://teardowngame.com/experimental/api.html#GetPlayerRigHasTag)
 function GetPlayerRigHasTag(tag, playerId) end
 
---- ### This function will be deprecated in the next update!
 --- @param tag string -- Tag name
 --- @param playerId? number -- Player ID. On client, zero means client player. On server, zero means server (host) player.
 --- @return string value -- Returns the tag value, if any. Empty string otherwise.

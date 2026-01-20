@@ -1,5 +1,18 @@
 --- @meta
 
+--- @alias UiAlign_Alignment
+--- | 'left' Horizontally align to the left
+--- | 'right' Horizontally align to the right
+--- | 'center' Horizontally align to the center
+--- | 'top' Vertically align to the top
+--- | 'bottom' Veritcally align to the bottom
+--- | 'middle' Vertically align to the middle
+
+--- @alias UiTextAlignment_Alignment
+--- | 'left' Horizontally align to the left
+--- | 'right' Horizontally align to the right
+--- | 'center' Horizontally align to the center
+
 --- Calling this function will disable game input, bring up the mouse pointer
 --- and allow Ui interaction with the calling script without pausing the game.
 --- This can be useful to make interactive user interfaces from scripts while
@@ -111,7 +124,7 @@ function UiColorFilter(r, g, b, a) end
 --- ```lua
 --- function client.draw()
 --- 	UiPush()
----     	UiFont("bold.ttf", 44)
+--- 		UiFont("bold.ttf", 44)
 --- 		UiTranslate(100, 100)
 --- 		UiColor(1, 0, 0)
 --- 		UiText("A")
@@ -186,10 +199,10 @@ function UiGetScale() end
 --- function client.draw()
 --- 	UiTranslate(200, 200)
 --- 	UiPush()
----     	UiClipRect(100, 50)
----     	UiTranslate(5, 15)
----     	UiFont("regular.ttf", 50)
----     	UiText("Text")
+--- 		UiClipRect(100, 50)
+--- 		UiTranslate(5, 15)
+--- 		UiFont("regular.ttf", 50)
+--- 		UiText("Text")
 --- 	UiPop()
 --- end
 --- ```
@@ -216,6 +229,10 @@ function UiClipRect(width, height, inherit) end
 function UiWindow(width, height, clip, inherit) end
 
 --- Returns the top left & bottom right points of the current window
+--- @return number tl_x -- Top left x
+--- @return number tl_y -- Top left y
+--- @return number br_x -- Bottom right x
+--- @return number br_y -- Bottom right y
 --- ### Example
 --- ```lua
 --- function client.draw()
@@ -239,7 +256,7 @@ function UiGetCurrentWindow() end
 --- 	UiPush()
 --- 		UiWindow(400, 200)
 --- 		DebugPrint("point 1: " .. tostring(UiIsInCurrentWindow(200, 100)))
----     	DebugPrint("point 2: " .. tostring(UiIsInCurrentWindow(450, 100)))
+--- 		DebugPrint("point 2: " .. tostring(UiIsInCurrentWindow(450, 100)))
 --- 	UiPop()
 --- end
 --- ```
@@ -255,15 +272,15 @@ function UiIsInCurrentWindow(x, y) end
 --- function client.draw()
 --- 	UiTranslate(200, 200)
 --- 	UiPush()
----     	UiClipRect(150, 150)
----     	UiColor(1.0, 1.0, 1.0, 0.15)
----     	UiRect(150, 150)
----     	UiRect(w, h)
----     	UiTranslate(-50, 30)
----     	UiColor(1, 0, 0)
----     	local w, h = 100, 100
----     	UiRect(w, h)
----     	DebugPrint(UiIsRectFullyClipped(w, h))
+--- 		UiClipRect(150, 150)
+--- 		UiColor(1.0, 1.0, 1.0, 0.15)
+--- 		UiRect(150, 150)
+--- 		UiRect(w, h)
+--- 		UiTranslate(-50, 30)
+--- 		UiColor(1, 0, 0)
+--- 		local w, h = 100, 100
+--- 		UiRect(w, h)
+--- 		DebugPrint(UiIsRectFullyClipped(w, h))
 --- 	UiPop()
 --- end
 --- ```
@@ -278,13 +295,13 @@ function UiIsRectFullyClipped(w, h) end
 --- ```lua
 --- function client.draw()
 --- 	UiPush()
----     	UiTranslate(200, 200)
----     	UiClipRect(150, 150)
----     	UiColor(1.0, 1.0, 1.0, 0.15)
----     	UiRect(150, 150)
----     	UiRect(w, h)
----     	DebugPrint("point 1: " .. tostring(UiIsInClipRegion(250, 250)))
----     	DebugPrint("point 2: " .. tostring(UiIsInClipRegion(350, 250)))
+--- 		UiTranslate(200, 200)
+--- 		UiClipRect(150, 150)
+--- 		UiColor(1.0, 1.0, 1.0, 0.15)
+--- 		UiRect(150, 150)
+--- 		UiRect(w, h)
+--- 		DebugPrint("point 1: " .. tostring(UiIsInClipRegion(250, 250)))
+--- 		DebugPrint("point 2: " .. tostring(UiIsInClipRegion(350, 250)))
 --- 	UiPop()
 --- end
 --- ```
@@ -299,14 +316,14 @@ function UiIsInClipRegion(x, y) end
 --- ```lua
 --- function client.draw()
 --- 	UiPush()
----     	UiTranslate(200, 200)
----     	UiClipRect(150, 150)
----     	UiColor(1.0, 1.0, 1.0, 0.15)
----     	UiRect(150, 150)
----     	UiRect(w, h)
----     	DebugPrint("rect 1: " .. tostring(UiIsFullyClipped(200, 200)))
----     	UiTranslate(200, 0)
----     	DebugPrint("rect 2: " .. tostring(UiIsFullyClipped(200, 200)))
+--- 		UiTranslate(200, 200)
+--- 		UiClipRect(150, 150)
+--- 		UiColor(1.0, 1.0, 1.0, 0.15)
+--- 		UiRect(150, 150)
+--- 		UiRect(w, h)
+--- 		DebugPrint("rect 1: " .. tostring(UiIsFullyClipped(200, 200)))
+--- 		UiTranslate(200, 0)
+--- 		DebugPrint("rect 2: " .. tostring(UiIsFullyClipped(200, 200)))
 --- 	UiPop()
 --- end
 --- ```
@@ -316,6 +333,10 @@ function UiIsFullyClipped(w, h) end
 --- Return a safe drawing area that will always be visible regardless of
 --- display aspect ratio. The safe drawing area will always be 1920 by 1080
 --- in size. This is useful for setting up a fixed size UI.
+--- @return number x0 -- Left
+--- @return number y0 -- Top
+--- @return number x1 -- Right
+--- @return number y1 -- Bottom
 --- ### Example
 --- ```lua
 --- function client.draw()
@@ -335,18 +356,18 @@ function UiSafeMargins() end
 --- ```lua
 --- function client.draw()
 --- 	UiPush()
----     	local canvas = UiCanvasSize()
----     	UiWindow(canvas.w, canvas.h)
----     	--[[
----         	...
----     	]]
+--- 		local canvas = UiCanvasSize()
+--- 		UiWindow(canvas.w, canvas.h)
+--- 		--[[
+--- 			...
+--- 		]]
 --- 	UiPop()
 --- end
 --- ```
 --- [View Documentation](https://teardowngame.com/experimental/api.html#UiCanvasSize)
 function UiCanvasSize() end
 
---- @param alignment string -- Alignment keywords
+--- @param alignment UiAlign_Alignment -- Alignment keywords
 --- ### Example
 --- ```lua
 --- UiAlign("left")
@@ -357,7 +378,7 @@ function UiCanvasSize() end
 --- [View Documentation](https://teardowngame.com/experimental/api.html#UiAlign)
 function UiAlign(alignment) end
 
---- @param alignment string -- Alignment keyword
+--- @param alignment UiTextAlignment_Alignment -- Alignment keyword
 --- ### Example
 --- ```lua
 --- UiTextAlignment("left")
@@ -637,47 +658,47 @@ function UiTextDisableWildcards(disable) end
 --- group = 1
 --- local desc = {
 --- 	{
----     	{"A mod desc without descenders"},
----     	{"Author: Abcd"},
----     	{"Tags: map, spawnable"},
+--- 		{"A mod desc without descenders"},
+--- 		{"Author: Abcd"},
+--- 		{"Tags: map, spawnable"},
 --- 	},
 --- 	{
----     	{"A mod with descenders, like g, j, p, q, y"},
----     	{"Author: Ggjyq"},
----     	{"Tags: map, spawnable"},
+--- 		{"A mod with descenders, like g, j, p, q, y"},
+--- 		{"Author: Ggjyq"},
+--- 		{"Tags: map, spawnable"},
 --- 	},
 --- }
 --- -- Function to draw text with or without uniform line height
 --- local function drawDescriptions()
 --- 	UiAlign("top")
 --- 	for _, text in ipairs(desc[group]) do
----     	UiTextUniformHeight(enabled)
----     	UiText(text[1], true)
+--- 		UiTextUniformHeight(enabled)
+--- 		UiText(text[1], true)
 --- 	end
 --- end
 --- function client.draw()
 --- 	UiFont("regular.ttf", 22)
 --- 	UiTranslate(100, 100)
 --- 	UiPush()
----     	local r,g,b
----     	if enabled then
----         	r,g,b = 0,1,0
----     	else
----         	r,g,b = 1,0,0
----     	end
----     	UiColor(0,0,0)
----     	UiButtonImageBox("ui/common/box-solid-6.png", 6, 6, r,g,b)
----     	if UiTextButton("Uniform height "..(enabled and "enabled" or "disabled")) then
----         	enabled = not enabled
----     	end
----     	UiTranslate(0,35)
----     	if UiTextButton(">") then
----         	group = clamp(group + 1, 1, #desc)
----     	end
----     	UiTranslate(0,35)
----     	if UiTextButton("<") then
----         	group = clamp(group - 1, 1, #desc)
----     	end
+--- 		local r,g,b
+--- 		if enabled then
+--- 			r,g,b = 0,1,0
+--- 		else
+--- 			r,g,b = 1,0,0
+--- 		end
+--- 		UiColor(0,0,0)
+--- 		UiButtonImageBox("ui/common/box-solid-6.png", 6, 6, r,g,b)
+--- 		if UiTextButton("Uniform height "..(enabled and "enabled" or "disabled")) then
+--- 			enabled = not enabled
+--- 		end
+--- 		UiTranslate(0,35)
+--- 		if UiTextButton(">") then
+--- 			group = clamp(group + 1, 1, #desc)
+--- 		end
+--- 		UiTranslate(0,35)
+--- 		if UiTextButton("<") then
+--- 			group = clamp(group - 1, 1, #desc)
+--- 		end
 --- 	UiPop()
 --- 	UiTranslate(0,80)
 --- 	drawDescriptions()
@@ -699,6 +720,7 @@ function UiTextUniformHeight(uniform) end
 function UiGetTextSize(text) end
 
 --- @param space number -- Space between lines
+--- @param textOrLocale string -- , ... A text strings
 --- @return number w -- Width of biggest line
 --- @return number h -- Height of all lines combined with interval
 --- ### Example
@@ -706,7 +728,7 @@ function UiGetTextSize(text) end
 --- local w, h = UiMeasureText(0, "Some text", "loc@key")
 --- ```
 --- [View Documentation](https://teardowngame.com/experimental/api.html#UiMeasureText)
-function UiMeasureText(space) end
+function UiMeasureText(space, textOrLocale) end
 
 --- @param text string -- Text
 --- @return number count -- Symbols count
@@ -916,6 +938,10 @@ function UiBackgroundBlur(amount) end
 --- Draw image at cursor position. If x0, y0, x1, y1 is provided a cropped version
 --- will be drawn in that coordinate range.
 --- @param path string -- Path to image (PNG or JPG format)
+--- @param x0? number -- Lower x coordinate (default is 0)
+--- @param y0? number -- Lower y coordinate (default is 0)
+--- @param x1? number -- Upper x coordinate (default is image width)
+--- @param y1? number -- Upper y coordinate (default is image height)
 --- @return number w -- Width of drawn image
 --- @return number h -- Height of drawn image
 --- ### Example
@@ -928,7 +954,7 @@ function UiBackgroundBlur(amount) end
 --- UiPop()
 --- ```
 --- [View Documentation](https://teardowngame.com/experimental/api.html#UiImage)
-function UiImage(path) end
+function UiImage(path, x0, y0, x1, y1) end
 
 --- Unloads a texture from the memory
 --- @param path string -- Path to image (PNG or JPG format)
@@ -1169,23 +1195,23 @@ function UiSlider(path, axis, current, min, max) end
 --- 	local thumbPath = "common/thumb_I218_249_2430_49029.png"
 --- 	UiTranslate(200, 200)
 --- 	UiPush()
----     	UiMakeInteractive()
----     	UiPush()
----         	UiAlign("top right")
----         	UiTranslate(40, 3.4)
----         	UiColor(0.5291666388511658, 0.5291666388511658, 0.5291666388511658, 1)
----         	UiFont("regular.ttf", 27)
----         	UiText("slider")
----     	UiPop()
----     	UiTranslate(45.0, 3.0)
----     	UiPush()
----         	UiTranslate(0, 4.0)
----         	UiImageBox("common/rect_c#ffffff_o0.10_cr3.png", 301.0, 12.0, 4, 4)
----     	UiPop()
----     	UiTranslate(2, 0)
----     	UiSliderHoverColorFilter(1.0, 0.2, 0.2)
----     	UiSliderThumbSize(8, 20)
----     	slider = UiSlider(thumbPath, "x", slider * 295, 0, 295) / 295
+--- 		UiMakeInteractive()
+--- 		UiPush()
+--- 			UiAlign("top right")
+--- 			UiTranslate(40, 3.4)
+--- 			UiColor(0.5291666388511658, 0.5291666388511658, 0.5291666388511658, 1)
+--- 			UiFont("regular.ttf", 27)
+--- 			UiText("slider")
+--- 		UiPop()
+--- 		UiTranslate(45.0, 3.0)
+--- 		UiPush()
+--- 			UiTranslate(0, 4.0)
+--- 			UiImageBox("common/rect_c#ffffff_o0.10_cr3.png", 301.0, 12.0, 4, 4)
+--- 		UiPop()
+--- 		UiTranslate(2, 0)
+--- 		UiSliderHoverColorFilter(1.0, 0.2, 0.2)
+--- 		UiSliderThumbSize(8, 20)
+--- 		slider = UiSlider(thumbPath, "x", slider * 295, 0, 295) / 295
 --- 	UiPop()
 --- end
 --- ```
@@ -1202,23 +1228,23 @@ function UiSliderHoverColorFilter(r, g, b, a) end
 --- 	local thumbPath = "common/thumb_I218_249_2430_49029.png"
 --- 	UiTranslate(200, 200)
 --- 	UiPush()
----     	UiMakeInteractive()
----     	UiPush()
----         	UiAlign("top right")
----         	UiTranslate(40, 3.4)
----         	UiColor(0.5291666388511658, 0.5291666388511658, 0.5291666388511658, 1)
----         	UiFont("regular.ttf", 27)
----         	UiText("slider")
----     	UiPop()
----     	UiTranslate(45.0, 3.0)
----     	UiPush()
----         	UiTranslate(0, 4.0)
----         	UiImageBox("common/rect_c#ffffff_o0.10_cr3.png", 301.0, 12.0, 4, 4)
----     	UiPop()
----     	UiTranslate(2, 0)
----     	UiSliderHoverColorFilter(1.0, 0.2, 0.2)
----     	UiSliderThumbSize(8, 20)
----     	slider = UiSlider(thumbPath, "x", slider * 295, 0, 295) / 295
+--- 		UiMakeInteractive()
+--- 		UiPush()
+--- 			UiAlign("top right")
+--- 			UiTranslate(40, 3.4)
+--- 			UiColor(0.5291666388511658, 0.5291666388511658, 0.5291666388511658, 1)
+--- 			UiFont("regular.ttf", 27)
+--- 			UiText("slider")
+--- 		UiPop()
+--- 		UiTranslate(45.0, 3.0)
+--- 		UiPush()
+--- 			UiTranslate(0, 4.0)
+--- 			UiImageBox("common/rect_c#ffffff_o0.10_cr3.png", 301.0, 12.0, 4, 4)
+--- 		UiPop()
+--- 		UiTranslate(2, 0)
+--- 		UiSliderHoverColorFilter(1.0, 0.2, 0.2)
+--- 		UiSliderThumbSize(8, 20)
+--- 		slider = UiSlider(thumbPath, "x", slider * 295, 0, 295) / 295
 --- 	UiPop()
 --- end
 --- ```
@@ -1251,14 +1277,14 @@ function UiGetScreen() end
 --- 	if LastInputDevice() == UI_DEVICE_GAMEPAD then
 --- 		-- active mouse cursor has higher priority over the gamepad control
 --- 		-- so it will reset focused components if the mouse moves
----     	UiSetCursorState(UI_CURSOR_HIDE_AND_LOCK)
+--- 		UiSetCursorState(UI_CURSOR_HIDE_AND_LOCK)
 --- 	end
 --- 	UiTranslate(960, 540)
 --- 	local id = UiNavComponent(100, 20)
 --- 	local isInFocus = UiIsComponentInFocus(id)
 --- 	if isInFocus then
----     	local rect = UiFocusedComponentRect()
----     	DebugPrint("Position: (" .. tostring(rect.x) .. ", " .. tostring(rect.y) .. "), Size: (" .. tostring(rect.w) .. ", " .. tostring(rect.h) .. ")")
+--- 		local rect = UiFocusedComponentRect()
+--- 		DebugPrint("Position: (" .. tostring(rect.x) .. ", " .. tostring(rect.y) .. "), Size: (" .. tostring(rect.w) .. ", " .. tostring(rect.h) .. ")")
 --- 	end
 --- end
 --- ```
@@ -1278,7 +1304,7 @@ function UiNavComponent(w, h) end
 --- 	if LastInputDevice() == UI_DEVICE_GAMEPAD then
 --- 		-- active mouse cursor has higher priority over the gamepad control
 --- 		-- so it will reset focused components if the mouse moves
----     	UiSetCursorState(UI_CURSOR_HIDE_AND_LOCK)
+--- 		UiSetCursorState(UI_CURSOR_HIDE_AND_LOCK)
 --- 	end
 --- 	UiTranslate(960, 540)
 --- 	UiNavComponent(100, 20)
@@ -1304,7 +1330,7 @@ function UiIgnoreNavigation(ignore) end
 --- 	if LastInputDevice() == UI_DEVICE_GAMEPAD then
 --- 		-- active mouse cursor has higher priority over the gamepad control
 --- 		-- so it will reset focused components if the mouse moves
----     	UiSetCursorState(UI_CURSOR_HIDE_AND_LOCK)
+--- 		UiSetCursorState(UI_CURSOR_HIDE_AND_LOCK)
 --- 	end
 --- 	UiTranslate(960, 540)
 --- 	local id = UiNavComponent(100, 20)
@@ -1329,7 +1355,7 @@ function UiResetNavigation() end
 --- 	if LastInputDevice() == UI_DEVICE_GAMEPAD then
 --- 		-- active mouse cursor has higher priority over the gamepad control
 --- 		-- so it will reset focused components if the mouse moves
----     	UiSetCursorState(UI_CURSOR_HIDE_AND_LOCK)
+--- 		UiSetCursorState(UI_CURSOR_HIDE_AND_LOCK)
 --- 	end
 --- 	UiTranslate(960, 540)
 --- 	UiNavComponent(100, 20)
@@ -1358,7 +1384,7 @@ function UiNavSkipUpdate() end
 --- 	if LastInputDevice() == UI_DEVICE_GAMEPAD then
 --- 		-- active mouse cursor has higher priority over the gamepad control
 --- 		-- so it will reset focused components if the mouse moves
----     	UiSetCursorState(UI_CURSOR_HIDE_AND_LOCK)
+--- 		UiSetCursorState(UI_CURSOR_HIDE_AND_LOCK)
 --- 	end
 --- 	UiTranslate(960, 540)
 --- 	local gId = UiNavGroupBegin()
@@ -1395,7 +1421,7 @@ function UiIsComponentInFocus(id) end
 --- 	if LastInputDevice() == UI_DEVICE_GAMEPAD then
 --- 		-- active mouse cursor has higher priority over the gamepad control
 --- 		-- so it will reset focused components if the mouse moves
----     	UiSetCursorState(UI_CURSOR_HIDE_AND_LOCK)
+--- 		UiSetCursorState(UI_CURSOR_HIDE_AND_LOCK)
 --- 	end
 --- 	UiTranslate(960, 540)
 --- 	local gId = UiNavGroupBegin()
@@ -1423,7 +1449,7 @@ function UiNavGroupBegin(id) end
 --- 	if LastInputDevice() == UI_DEVICE_GAMEPAD then
 --- 		-- active mouse cursor has higher priority over the gamepad control
 --- 		-- so it will reset focused components if the mouse moves
----     	UiSetCursorState(UI_CURSOR_HIDE_AND_LOCK)
+--- 		UiSetCursorState(UI_CURSOR_HIDE_AND_LOCK)
 --- 	end
 --- 	UiTranslate(960, 540)
 --- 	local gId = UiNavGroupBegin()
@@ -1454,7 +1480,7 @@ function UiNavGroupEnd() end
 --- 	if LastInputDevice() == UI_DEVICE_GAMEPAD then
 --- 		-- active mouse cursor has higher priority over the gamepad control
 --- 		-- so it will reset focused components if the mouse moves
----     	UiSetCursorState(UI_CURSOR_HIDE_AND_LOCK)
+--- 		UiSetCursorState(UI_CURSOR_HIDE_AND_LOCK)
 --- 	end
 --- 	UiTranslate(960, 540)
 --- 	local gId = UiNavGroupBegin()
@@ -1467,8 +1493,8 @@ function UiNavGroupEnd() end
 --- 	local groupInFocus = UiIsComponentInFocus(gId)
 --- 	if groupInFocus then
 --- 		-- get a rect of the focused component parent
----     	local rect = UiFocusedComponentRect(1)
----     	DebugPrint("Position: (" .. tostring(rect.x) .. ", " .. tostring(rect.y) .. "), Size: (" .. tostring(rect.w) .. ", " .. tostring(rect.h) .. ")")
+--- 		local rect = UiFocusedComponentRect(1)
+--- 		DebugPrint("Position: (" .. tostring(rect.x) .. ", " .. tostring(rect.y) .. "), Size: (" .. tostring(rect.w) .. ", " .. tostring(rect.h) .. ")")
 --- 	end
 --- end
 --- ```
@@ -1483,9 +1509,9 @@ function UiNavGroupSize(w, h) end
 --- 	-- window declaration is necessary for navigation to work
 --- 	UiWindow(1920, 1080)
 --- 	if LastInputDevice() == UI_DEVICE_GAMEPAD then
----     	-- active mouse cursor has higher priority over the gamepad control
----     	-- so it will reset focused components if the mouse moves
----     	UiSetCursorState(UI_CURSOR_HIDE_AND_LOCK)
+--- 		-- active mouse cursor has higher priority over the gamepad control
+--- 		-- so it will reset focused components if the mouse moves
+--- 		UiSetCursorState(UI_CURSOR_HIDE_AND_LOCK)
 --- 	end
 --- 	UiPush()
 --- 	UiTranslate(960, 540)
@@ -1497,12 +1523,12 @@ function UiNavGroupSize(w, h) end
 --- 	local f2 = UiIsComponentInFocus(id2)
 --- 	local rect = UiFocusedComponentRect()
 --- 	UiPush()
----     	UiColor(1, 0, 0)
----     	UiTranslate(rect.x, rect.y)
----     	UiRect(rect.w, rect.h)
+--- 		UiColor(1, 0, 0)
+--- 		UiTranslate(rect.x, rect.y)
+--- 		UiRect(rect.w, rect.h)
 --- 	UiPop()
 --- 	if InputPressed("menu_accept") then
----     	UiForceFocus(id2)
+--- 		UiForceFocus(id2)
 --- 	end
 --- end
 --- ```
@@ -1517,9 +1543,9 @@ function UiForceFocus(id) end
 --- 	-- window declaration is necessary for navigation to work
 --- 	UiWindow(1920, 1080)
 --- 	if LastInputDevice() == UI_DEVICE_GAMEPAD then
----     	-- active mouse cursor has higher priority over the gamepad control
----     	-- so it will reset focused components if the mouse moves
----     	UiSetCursorState(UI_CURSOR_HIDE_AND_LOCK)
+--- 		-- active mouse cursor has higher priority over the gamepad control
+--- 		-- so it will reset focused components if the mouse moves
+--- 		UiSetCursorState(UI_CURSOR_HIDE_AND_LOCK)
 --- 	end
 --- 	UiPush()
 --- 	UiTranslate(960, 540)
@@ -1531,9 +1557,9 @@ function UiForceFocus(id) end
 --- 	local f2 = UiIsComponentInFocus(id2)
 --- 	local rect = UiFocusedComponentRect()
 --- 	UiPush()
----     	UiColor(1, 0, 0)
----     	UiTranslate(rect.x, rect.y)
----     	UiRect(rect.w, rect.h)
+--- 		UiColor(1, 0, 0)
+--- 		UiTranslate(rect.x, rect.y)
+--- 		UiRect(rect.w, rect.h)
 --- 	UiPop()
 --- 	DebugPrint(UiFocusedComponentId())
 --- end
@@ -1556,9 +1582,9 @@ function UiFocusedComponentId() end
 --- 	-- window declaration is necessary for navigation to work
 --- 	UiWindow(1920, 1080)
 --- 	if LastInputDevice() == UI_DEVICE_GAMEPAD then
----     	-- active mouse cursor has higher priority over the gamepad control
----     	-- so it will reset focused components if the mouse moves
----     	UiSetCursorState(UI_CURSOR_HIDE_AND_LOCK)
+--- 		-- active mouse cursor has higher priority over the gamepad control
+--- 		-- so it will reset focused components if the mouse moves
+--- 		UiSetCursorState(UI_CURSOR_HIDE_AND_LOCK)
 --- 	end
 --- 	UiPush()
 --- 	UiTranslate(960, 540)
@@ -1570,9 +1596,9 @@ function UiFocusedComponentId() end
 --- 	local f2 = UiIsComponentInFocus(id2)
 --- 	local rect = UiFocusedComponentRect()
 --- 	UiPush()
----     	UiColor(1, 0, 0)
----     	UiTranslate(rect.x, rect.y)
----     	UiRect(rect.w, rect.h)
+--- 		UiColor(1, 0, 0)
+--- 		UiTranslate(rect.x, rect.y)
+--- 		UiRect(rect.w, rect.h)
 --- 	UiPop()
 --- end
 --- ```
@@ -1587,12 +1613,12 @@ function UiFocusedComponentRect(n) end
 --- function client.draw()
 --- 	UiTranslate(200, 200)
 --- 	UiPush()
----     	UiBeginFrame()
----         	UiFont("regular.ttf", 30)
----         	UiText("Text")
----     	UiEndFrame()
----     	w, h = UiGetItemSize()
----     	DebugPrint(w .. " " .. h)
+--- 		UiBeginFrame()
+--- 			UiFont("regular.ttf", 30)
+--- 			UiText("Text")
+--- 		UiEndFrame()
+--- 		w, h = UiGetItemSize()
+--- 		DebugPrint(w .. " " .. h)
 --- 	UiPop()
 --- end
 --- ```
@@ -1605,16 +1631,16 @@ function UiGetItemSize() end
 --- ```lua
 --- function client.draw()
 --- 	UiPush()
----     	UiBeginFrame()
----         	if InputDown("interact") then
----             	UiAutoTranslate(false)
----         	else
----             	UiAutoTranslate(true)
----         	end
----         	UiRect(50, 50)
----         	local w, h = UiGetItemSize()
----         	DebugPrint(math.ceil(w) .. "x" .. math.ceil(h))
----     	UiEndFrame()
+--- 		UiBeginFrame()
+--- 			if InputDown("interact") then
+--- 				UiAutoTranslate(false)
+--- 			else
+--- 				UiAutoTranslate(true)
+--- 			end
+--- 			UiRect(50, 50)
+--- 			local w, h = UiGetItemSize()
+--- 			DebugPrint(math.ceil(w) .. "x" .. math.ceil(h))
+--- 		UiEndFrame()
 --- 	UiPop()
 --- end
 --- ```
@@ -1628,13 +1654,13 @@ function UiAutoTranslate(value) end
 --- ```lua
 --- function client.draw()
 --- 	UiPush()
----     	UiBeginFrame()
----         	UiColor(1.0, 1.0, 0.8)
----         	UiTranslate(UiCenter(), 300)
----         	UiFont("bold.ttf", 40)
----         	UiText("Hello")
----     	local panelWidth, panelHeight = UiEndFrame()
----     	DebugPrint(math.ceil(panelWidth) .. "x" .. math.ceil(panelHeight))
+--- 		UiBeginFrame()
+--- 			UiColor(1.0, 1.0, 0.8)
+--- 			UiTranslate(UiCenter(), 300)
+--- 			UiFont("bold.ttf", 40)
+--- 			UiText("Hello")
+--- 		local panelWidth, panelHeight = UiEndFrame()
+--- 		DebugPrint(math.ceil(panelWidth) .. "x" .. math.ceil(panelHeight))
 --- 	UiPop()
 --- end
 --- ```
@@ -1646,15 +1672,15 @@ function UiBeginFrame() end
 --- ```lua
 --- function client.draw()
 --- 	UiPush()
----     	UiTranslate(UiCenter(), 300)
----     	UiFont("bold.ttf", 40)
----     	UiBeginFrame()
----         	UiTextButton("Button1")
----         	UiTranslate(200, 0)
----         	UiTextButton("Button2")
----     	UiResetFrame()
----     	local panelWidth, panelHeight = UiEndFrame()
----     	DebugPrint("w: " .. panelWidth .. "; h:" .. panelHeight)
+--- 		UiTranslate(UiCenter(), 300)
+--- 		UiFont("bold.ttf", 40)
+--- 		UiBeginFrame()
+--- 			UiTextButton("Button1")
+--- 			UiTranslate(200, 0)
+--- 			UiTextButton("Button2")
+--- 		UiResetFrame()
+--- 		local panelWidth, panelHeight = UiEndFrame()
+--- 		DebugPrint("w: " .. panelWidth .. "; h:" .. panelHeight)
 --- 	UiPop()
 --- end
 --- ```
@@ -1668,13 +1694,13 @@ function UiResetFrame() end
 --- ```lua
 --- function client.draw()
 --- 	UiPush()
----     	UiBeginFrame()
----         	UiColor(1.0, 1.0, 0.8)
----         	UiRect(200, 200)
----         	UiRect(300, 200)
----         	UiFrameOccupy(500, 500)
----     	local panelWidth, panelHeight = UiEndFrame()
----     	DebugPrint(math.ceil(panelWidth) .. "x" .. math.ceil(panelHeight))
+--- 		UiBeginFrame()
+--- 			UiColor(1.0, 1.0, 0.8)
+--- 			UiRect(200, 200)
+--- 			UiRect(300, 200)
+--- 			UiFrameOccupy(500, 500)
+--- 		local panelWidth, panelHeight = UiEndFrame()
+--- 		DebugPrint(math.ceil(panelWidth) .. "x" .. math.ceil(panelHeight))
 --- 	UiPop()
 --- end
 --- ```
@@ -1687,12 +1713,12 @@ function UiFrameOccupy(width, height) end
 --- ```lua
 --- function client.draw()
 --- 	UiPush()
----     	UiBeginFrame()
----         	UiColor(1.0, 1.0, 0.8)
----         	UiRect(200, 200)
----         	UiRect(300, 200)
----     	local panelWidth, panelHeight = UiEndFrame()
----     	DebugPrint(math.ceil(panelWidth) .. "x" .. math.ceil(panelHeight))
+--- 		UiBeginFrame()
+--- 			UiColor(1.0, 1.0, 0.8)
+--- 			UiRect(200, 200)
+--- 			UiRect(300, 200)
+--- 		local panelWidth, panelHeight = UiEndFrame()
+--- 		DebugPrint(math.ceil(panelWidth) .. "x" .. math.ceil(panelHeight))
 --- 	UiPop()
 --- end
 --- ```
@@ -1746,20 +1772,20 @@ function UiGetLanguage() end
 --- 		if LastInputDevice() == UI_DEVICE_GAMEPAD then
 --- 			UiSetCursorState(UI_CURSOR_HIDE_AND_LOCK)
 --- 		end
----     	UiMakeInteractive()
----     	UiAlign("center")
----     	UiColor(1.0, 1.0, 1.0)
+--- 		UiMakeInteractive()
+--- 		UiAlign("center")
+--- 		UiColor(1.0, 1.0, 1.0)
 --- 		UiButtonHoverColor(1.0, 0.5, 0.5)
----     	UiFont("regular.ttf", 50)
----     	UiTranslate(UiCenter(), 200)
----     	UiTranslate(0, 100)
----     	if UiTextButton("1") then
----         	DebugPrint(1)
----     	end
----     	UiTranslate(0, 100)
----     	if UiTextButton("2") then
----         	DebugPrint(2)
----     	end
+--- 		UiFont("regular.ttf", 50)
+--- 		UiTranslate(UiCenter(), 200)
+--- 		UiTranslate(0, 100)
+--- 		if UiTextButton("1") then
+--- 			DebugPrint(1)
+--- 		end
+--- 		UiTranslate(0, 100)
+--- 		if UiTextButton("2") then
+--- 			DebugPrint(2)
+--- 		end
 --- 	UiPop()
 --- end
 --- ```

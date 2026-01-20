@@ -95,6 +95,9 @@ function PaintRGBA(origin, radius, red, green, blue, alpha, probability) end
 --- Medium materials: concrete, brick and weak metal.
 --- Hard materials: hard metal and hard masonry.
 --- @param position TVec -- Hole center point
+--- @param r0 number -- Hole radius for soft materials
+--- @param r1? number -- Hole radius for medium materials. May not be bigger than r0. Default zero.
+--- @param r2? number -- Hole radius for hard materials. May not be bigger than r1. Default zero.
 --- @param silent? boolean -- Make hole without playing any break sounds.
 --- @return number count -- Number of voxels that was cut out. This will be zero if there were no changes to any shape.
 --- ### Example
@@ -104,7 +107,7 @@ function PaintRGBA(origin, radius, red, green, blue, alpha, probability) end
 --- end
 --- ```
 --- [View Documentation](https://teardowngame.com/experimental/api.html#MakeHole)
-function MakeHole(position, silent) end
+function MakeHole(position, r0, r1, r2, silent) end
 
 --- ### SERVER ONLY
 --- @param pos TVec -- Position in world space as vector
@@ -415,6 +418,10 @@ function SetEnvironmentDefault() end
 --- This function is used for manipulating the environment properties. The available properties are
 --- exactly the same as in the editor, except for "snowonground" which is not currently supported.
 --- @param name string -- Property name
+--- @param value0 any -- Property value (type depends on property)
+--- @param value1? any -- Extra property value (only some properties)
+--- @param value2? any -- Extra property value (only some properties)
+--- @param value3? any -- Extra property value (only some properties)
 --- ### Example
 --- ```lua
 --- function server.init()
@@ -426,11 +433,16 @@ function SetEnvironmentDefault() end
 --- end
 --- ```
 --- [View Documentation](https://teardowngame.com/experimental/api.html#SetEnvironmentProperty)
-function SetEnvironmentProperty(name) end
+function SetEnvironmentProperty(name, value0, value1, value2, value3) end
 
 --- This function is used for querying the current environment properties. The available properties are
 --- exactly the same as in the editor.
 --- @param name string -- Property name
+--- @return any value0 -- Property value (type depends on property)
+--- @return any value1 -- Property value (only some properties)
+--- @return any value2 -- Property value (only some properties)
+--- @return any value3 -- Property value (only some properties)
+--- @return any value4 -- Property value (only some properties)
 --- ### Example
 --- ```lua
 --- function client.init()
@@ -462,6 +474,9 @@ function SetPostProcessingDefault() end
 --- This function is used for manipulating the post processing properties. The available properties are
 --- exactly the same as in the editor.
 --- @param name string -- Property name
+--- @param value0 number -- Property value
+--- @param value1? number -- Extra property value (only some properties)
+--- @param value2? number -- Extra property value (only some properties)
 --- ### Example
 --- ```lua
 --- --Sepia post processing
@@ -471,11 +486,14 @@ function SetPostProcessingDefault() end
 --- end
 --- ```
 --- [View Documentation](https://teardowngame.com/experimental/api.html#SetPostProcessingProperty)
-function SetPostProcessingProperty(name) end
+function SetPostProcessingProperty(name, value0, value1, value2) end
 
 --- This function is used for querying the current post processing properties.
 --- The available properties are exactly the same as in the editor.
 --- @param name string -- Property name
+--- @return number value0 -- Property value
+--- @return number value1 -- Property value (only some properties)
+--- @return number value2 -- Property value (only some properties)
 --- ### Example
 --- ```lua
 --- function client.tick()
@@ -491,6 +509,8 @@ function SetPostProcessingProperty(name) end
 function GetPostProcessingProperty(name) end
 
 --- Draw a 3D line. In contrast to DebugLine, it will not show behind objects. Default color is white.
+--- @param p0 TVec -- World space point as vector
+--- @param p1 TVec -- World space point as vector
 --- @param r? number -- Red
 --- @param g? number -- Green
 --- @param b? number -- Blue
@@ -512,9 +532,11 @@ function GetPostProcessingProperty(name) end
 --- end
 --- ```
 --- [View Documentation](https://teardowngame.com/experimental/api.html#DrawLine)
-function DrawLine(r, g, b, a) end
+function DrawLine(p0, p1, r, g, b, a) end
 
 --- Draw a 3D debug overlay line in the world. Default color is white.
+--- @param p0 TVec -- World space point as vector
+--- @param p1 TVec -- World space point as vector
 --- @param r? number -- Red
 --- @param g? number -- Green
 --- @param b? number -- Blue
@@ -536,9 +558,10 @@ function DrawLine(r, g, b, a) end
 --- end
 --- ```
 --- [View Documentation](https://teardowngame.com/experimental/api.html#DebugLine)
-function DebugLine(r, g, b, a) end
+function DebugLine(p0, p1, r, g, b, a) end
 
 --- Draw a debug cross in the world to highlight a location. Default color is white.
+--- @param p0 TVec -- World space point as vector
 --- @param r? number -- Red
 --- @param g? number -- Green
 --- @param b? number -- Blue
@@ -554,7 +577,7 @@ function DebugLine(r, g, b, a) end
 --- end
 --- ```
 --- [View Documentation](https://teardowngame.com/experimental/api.html#DebugCross)
-function DebugCross(r, g, b, a) end
+function DebugCross(p0, r, g, b, a) end
 
 --- Draw the axis of the transform
 --- @param transform TTransform -- The transform
@@ -625,8 +648,6 @@ function DebugWatch(name, value, lineWrapping) end
 --- [View Documentation](https://teardowngame.com/experimental/api.html#DebugPrint)
 function DebugPrint(message, lineWrapping) end
 
---- ### This function is deprecated. Use the event system instead.
---- Binds the callback function on the event
 --- @param eventName string -- Event name
 --- @param listenerFunction string -- Listener function name
 --- ### Example
@@ -642,8 +663,6 @@ function DebugPrint(message, lineWrapping) end
 --- [View Documentation](https://teardowngame.com/experimental/api.html#RegisterListenerTo)
 function RegisterListenerTo(eventName, listenerFunction) end
 
---- ### This function is deprecated. Use the event system instead.
---- Unbinds the callback function from the event
 --- @param eventName string -- Event name
 --- @param listenerFunction string -- Listener function name
 --- ### Example
@@ -660,8 +679,6 @@ function RegisterListenerTo(eventName, listenerFunction) end
 --- [View Documentation](https://teardowngame.com/experimental/api.html#UnregisterListener)
 function UnregisterListener(eventName, listenerFunction) end
 
---- ### This function is deprecated. Use the event system instead.
---- Triggers an event for all registered listeners
 --- @param eventName string -- Event name
 --- @param args? string -- Event parameters
 --- ### Example
@@ -805,7 +822,7 @@ function SetToolHaptic(id, handle, amplitude) end
 --- end
 --- function client.tick()
 --- 	if InputDown("interact") then
----     	StopHaptic(haptic_effect)
+--- 		StopHaptic(haptic_effect)
 --- 	elseif not HapticIsPlaying(haptic_effect) then
 --- 		PlayHaptic(haptic_effect, 1)
 --- 	end

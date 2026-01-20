@@ -239,6 +239,8 @@ function QuatCopy(org) end
 function QuatAxisAngle(axis, angle) end
 
 --- Create a quaternion representing a rotation between the input normals
+--- @param normal0 TVec -- Unit vector
+--- @param normal1 TVec -- Unit vector
 --- @return TQuat quat -- New quaternion
 --- ### Example
 --- ```lua
@@ -248,9 +250,11 @@ function QuatAxisAngle(axis, angle) end
 --- end
 --- ```
 --- [View Documentation](https://teardowngame.com/experimental/api.html#QuatDeltaNormals)
-function QuatDeltaNormals() end
+function QuatDeltaNormals(normal0, normal1) end
 
 --- Create a quaternion representing a rotation between the input vectors that doesn't need to be of unit-length
+--- @param vector0 TVec -- Vector
+--- @param vector1 TVec -- Vector
 --- @return TQuat quat -- New quaternion
 --- ### Example
 --- ```lua
@@ -260,7 +264,7 @@ function QuatDeltaNormals() end
 --- end
 --- ```
 --- [View Documentation](https://teardowngame.com/experimental/api.html#QuatDeltaVectors)
-function QuatDeltaVectors() end
+function QuatDeltaVectors(vector0, vector1) end
 
 --- @param x number -- Angle around X axis in degrees, sometimes also called roll or bank
 --- @param y number -- Angle around Y axis in degrees, sometimes also called yaw or heading

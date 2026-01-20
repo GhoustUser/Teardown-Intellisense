@@ -6,7 +6,7 @@
 		"name": "GhoustUser",
 		"url": "https://github.com/GhoustUser"
 	},
-	"version": "0.4.4",
+	"version": "0.5.0",
 	"main": "./out/extension.js",
 	"scripts": {
 		"vscode:prepublish": "npm run compile",
@@ -36,15 +36,16 @@
 		"configuration": {
 			"title": "Teardown Modding Extension",
 			"properties": {
-				"teardownModding.enableScriptingAPI": {
+				"teardownModding.enableIntellisense": {
 					"type": "boolean",
 					"default": false,
-					"description": "Whether to enable Lua scripting API references for Teardown modding. (workspace only)"
+					"title": "Enable Intellisense",
+					"description": "Enables the Teardown scripting API intellisense. (workspace only)"
 				},
 				"teardownModding.showPrompt": {
 					"type": "boolean",
 					"default": true,
-					"description": "Used to track if the user has already seen the prompt to enable the scripting API. (workspace only)"
+					"description": "Show prompt to enable Teardown scripting API intellisense when info.txt is detected. (once per workspace)"
 				}
 			}
 		}

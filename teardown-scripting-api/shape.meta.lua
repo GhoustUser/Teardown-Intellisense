@@ -568,6 +568,7 @@ function GetShapeMaterial(shape, entry) end
 --- to remove of voxels.
 --- @param type string -- One of "sphere", "cube" or "noise"
 --- @param size number -- Size of brush in voxels (must be in range 1 to 16)
+--- @param indexOrPath number or string -- Material index or path to brush vox file
 --- @param object? string -- Optional object in brush vox file if brush vox file is used
 --- ### Example
 --- ```lua
@@ -576,13 +577,19 @@ function GetShapeMaterial(shape, entry) end
 --- end
 --- ```
 --- [View Documentation](https://teardowngame.com/experimental/api.html#SetBrush)
-function SetBrush(type, size, object) end
+function SetBrush(type, size, indexOrPath, object) end
 
 --- Draw voxelized line between (x0,y0,z0) and (x1,y1,z1) into shape using the material
 --- set up with SetBrush. Paint mode will only change material of existing voxels (where
 --- the current material index is non-zero). noOverwrite mode will only fill in voxels if the
 --- space isn't already occupied by another shape in the scene.
 --- @param shape number -- Handle to shape
+--- @param x0 number -- Start X coordinate
+--- @param y0 number -- Start Y coordinate
+--- @param z0 number -- Start Z coordinate
+--- @param x1 number -- End X coordinate
+--- @param y1 number -- End Y coordinate
+--- @param z1 number -- End Z coordinate
 --- @param paint? boolean -- Paint mode. Default is false.
 --- @param noOverwrite? boolean -- Only fill in voxels if space isn't already occupied. Default is false.
 --- ### Example
@@ -593,11 +600,17 @@ function SetBrush(type, size, object) end
 --- end
 --- ```
 --- [View Documentation](https://teardowngame.com/experimental/api.html#DrawShapeLine)
-function DrawShapeLine(shape, paint, noOverwrite) end
+function DrawShapeLine(shape, x0, y0, z0, x1, y1, z1, paint, noOverwrite) end
 
 --- Draw box between (x0,y0,z0) and (x1,y1,z1) into shape using the material
 --- set up with SetBrush.
 --- @param shape number -- Handle to shape
+--- @param x0 number -- Start X coordinate
+--- @param y0 number -- Start Y coordinate
+--- @param z0 number -- Start Z coordinate
+--- @param x1 number -- End X coordinate
+--- @param y1 number -- End Y coordinate
+--- @param z1 number -- End Z coordinate
 --- ### Example
 --- ```lua
 --- function server.init()
@@ -606,7 +619,7 @@ function DrawShapeLine(shape, paint, noOverwrite) end
 --- end
 --- ```
 --- [View Documentation](https://teardowngame.com/experimental/api.html#DrawShapeBox)
-function DrawShapeBox(shape) end
+function DrawShapeBox(shape, x0, y0, z0, x1, y1, z1) end
 
 --- Extrude region of shape. The extruded region will be filled in with the material set up with SetBrush.
 --- The mode parameter sepcifies how the region is determined.

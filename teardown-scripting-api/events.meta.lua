@@ -1,5 +1,6 @@
 --- @meta
 
+
 --- @param type string -- Event type
 --- @return number value -- Number of event available
 --- ### Example
@@ -15,12 +16,13 @@ function GetEventCount(type) end
 --- Post a custom event with the specified name and parameters.
 --- The parameters will be saved in a memory stream and can be retrieved later using GetEvent.
 --- @param eventName string -- Event name
+--- @param ...? any -- Optional parameters to send with the event.
 --- ### Example
 --- ```lua
 --- PostEvent("matchended", "team1", "team2", 5, 10)
 --- ```
 --- [View Documentation](https://teardowngame.com/experimental/api.html#PostEvent)
-function PostEvent(eventName) end
+function PostEvent(eventName, ...) end
 
 --- @param type string -- Event type
 --- @param index number -- Event index (starting with one)

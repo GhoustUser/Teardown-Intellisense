@@ -381,9 +381,9 @@ function GetBoneBody(handle, name) end
 --- 	local animator = GetPlayerAnimator()
 --- 	local bones = GetBoneNames(animator)
 --- 	for i=1, #bones do
----     	local bone = bones[i]
----     	local t = GetBoneWorldTransform(animator,bone)
----     	DebugCross(t.pos)
+--- 		local bone = bones[i]
+--- 		local t = GetBoneWorldTransform(animator,bone)
+--- 		DebugCross(t.pos)
 --- 	end
 --- ```
 --- [View Documentation](https://teardowngame.com/experimental/api.html#GetBoneWorldTransform)
