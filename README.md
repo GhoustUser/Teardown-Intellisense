@@ -4,6 +4,17 @@ A Visual Studio Code extension which adds intellisense for most features in the 
 
 Currently contains `27` files/categories with definitions for a total of `606` functions and `16` aliases, as well as classes like `server`, `client`, `Vec3` and `Quat`.
 
+## Examples
+Code completion for function names
+![Example image](./readme-images/code-completion-function.png)
+---
+Code completion for parameters
+![Example image](./readme-images/code-completion-string-parameter.png)
+---
+Info on hover
+![Example image](./readme-images/hover-info.png)
+---
+
 ## Usage
 
 Opening a workspace with an `info.txt` for the first time with the extension installed, you should get a popup in the bottom right which lets you enable intellisense.
