@@ -10,11 +10,12 @@
 
 
 --- @alias Registry_Key
---- | 'options' reserved for game settings (write protected from mods)
---- | 'game' reserved for the game engine internals (see documentation)
---- | 'savegame' used for persistent game data (write protected for mods)
---- | 'savegame.mod' used for persistent mod data. Use only alphanumeric character for key name.
---- | 'level' not reserved, but recommended for level specific entries and script communication
+--- | 'options' Reserved for game settings (write protected from mods)
+--- | 'game' Reserved for the game engine internals (see documentation)
+--- | 'savegame' Used for persistent game data (write protected for mods)
+--- | 'savegame.mod' Used for persistent mod data. Use only alphanumeric character for key name.
+--- | 'level' Not reserved, but recommended for level specific entries and script communication
+--- | string Any registry key
 
 --- @alias LoadLanguageTable_Id
 --- | 0 English

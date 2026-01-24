@@ -1,7 +1,7 @@
 --- @meta
 
 
---- General functions that control the operation and flow of the script. 
+--- General functions that control the operation and flow of the script.
 
 
 ---@alias InputIdentifier ScriptControl_PhysicalInput | ScriptControl_LogicalInput
@@ -16,7 +16,6 @@
 --- | 'downarrow' Down arrow key
 --- | 'leftarrow' Left arrow key
 --- | 'rightarrow' Right arrow key
---- | 'f1-f12' Function keys
 --- | 'backspace' Backspace key
 --- | 'alt' Alt key
 --- | 'delete' Delete key
@@ -29,12 +28,58 @@
 --- | 'shift' Shift key
 --- | 'ctrl' Ctrl key
 --- | 'return' Return key
---- | 'any' Any key or button
---- | 'a,b,c,...' Latin, alphabetical keys a through z
---- | '0-9' Digits, zero to nine
 --- | 'mousedx' Mouse horizontal diff. Only valid in InputValue.
 --- | 'mousedy' Mouse vertical diff. Only valid in InputValue.
 --- | 'mousewheel' Mouse wheel. Only valid in InputValue.
+--- | 'a' A Character key
+--- | 'b' B Character key
+--- | 'c' C Character key
+--- | 'd' D Character key
+--- | 'e' E Character key
+--- | 'f' F Character key
+--- | 'g' G Character key
+--- | 'h' H Character key
+--- | 'i' I Character key
+--- | 'j' J Character key
+--- | 'k' K Character key
+--- | 'l' L Character key
+--- | 'm' M Character key
+--- | 'n' N Character key
+--- | 'o' O Character key
+--- | 'p' P Character key
+--- | 'q' Q Character key
+--- | 'r' R Character key
+--- | 's' S Character key
+--- | 't' T Character key
+--- | 'u' U Character key
+--- | 'v' V Character key
+--- | 'w' W Character key
+--- | 'x' X Character key
+--- | 'y' Y Character key
+--- | 'z' Z Character key
+--- | '0' 0 Digit key
+--- | '1' 1 Digit key
+--- | '2' 2 Digit key
+--- | '3' 3 Digit key
+--- | '4' 4 Digit key
+--- | '5' 5 Digit key
+--- | '6' 6 Digit key
+--- | '7' 7 Digit key
+--- | '8' 8 Digit key
+--- | '9' 9 Digit key
+--- | 'f1' Function key 1
+--- | 'f2' Function key 2
+--- | 'f3' Function key 3
+--- | 'f4' Function key 4
+--- | 'f5' Function key 5
+--- | 'f6' Function key 6
+--- | 'f7' Function key 7
+--- | 'f8' Function key 8
+--- | 'f9' Function key 9
+--- | 'f10' Function key 10
+--- | 'f11' Function key 11
+--- | 'f12' Function key 12
+--- | string Any key or button
 
 --- @alias ScriptControl_LogicalInput
 --- | 'up' Move forward / Accelerate
@@ -327,7 +372,7 @@ function SetValueInTable(tableId, memberName, newValue, type, length) end
 --- 		if IsPlayerHost(p) then
 --- 			-- Primary button which will be placed in the main pause menu below "Main menu" button
 --- 			if PauseMenuButton("Back to Hub", "main_bottom") then
---- 				ServerCall("server.startLevel", "hub", "level/hub.xml")	
+--- 				ServerCall("server.startLevel", "hub", "level/hub.xml")
 --- 			end
 --- 			-- Primary button which will be placed in the main pause menu above "Main menu" button
 --- 			if PauseMenuButton("Back to Hub", "main_top") then
@@ -455,7 +500,7 @@ function ClientCall(playerId, function_arg, ...) end
 --- ```lua
 --- function client.tick()
 --- 	if UiTextButton("I am Ready") then
---- 		ServerCall("server.setPlayerReady", GetLocalPlayer()) 
+--- 		ServerCall("server.setPlayerReady", GetLocalPlayer())
 --- 	end
 --- end
 --- function server.setPlayerReady(playerId)

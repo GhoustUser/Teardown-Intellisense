@@ -1,12 +1,12 @@
 {
 	"name": "teardown-modding-extension",
 	"displayName": "Teardown Modding Extension",
-	"description": "Adds intellisense for Teardown's scripting API.",
+	"description": "Adds intellisense for Teardown's scripting API using custom-made definitions based on the web documentation",
 	"author": {
 		"name": "GhoustUser",
 		"url": "https://github.com/GhoustUser"
 	},
-	"version": "0.5.1",
+	"version": "0.5.2",
 	"main": "./out/extension.js",
 	"scripts": {
 		"vscode:prepublish": "npm run compile",

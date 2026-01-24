@@ -1,7 +1,7 @@
 --- @meta
 
 
---- The following optional callback functions are available on the client. The client part of a script is typically used for overlay graphics and user interfaces, but it can also be used for optimization purposes to spawn local particle effects, sounds or animations. 
+--- The following optional callback functions are available on the client. The client part of a script is typically used for overlay graphics and user interfaces, but it can also be used for optimization purposes to spawn local particle effects, sounds or animations.
 --- @class client
 --- @field init? fun() -- Called once at load time
 --- @field tick? fun(dt:number) -- Called exactly once per frame. The time step is variable but always between 0.0 and 0.0333333
@@ -10,6 +10,7 @@
 --- @field draw? fun() -- Called when the 2D overlay is being draw, after the scene but before the standard HUD. Ui functions can only be used from this callback.
 --- @field render? fun(dt:number) -- Called exactly once per frame, right before things are actually drawn to the screen.
 --- @field destroy? fun() -- For game mode scripts, this is called when the game mode is stopped
+--- @field [string] fun(...): any -- Custom functions can be defined with `function client.myFunction(...) end` and called from the server using `ClientCall`.
 
 --- @type client
 client = client

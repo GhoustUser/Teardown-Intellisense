@@ -2,6 +2,8 @@
 
 A Visual Studio Code extension which adds intellisense for most features in the [Teardown scripting API (2.0.0 // Experimental)](https://teardowngame.com/experimental/api.html).
 
+This version uses custom-created lua definitions based on the current web documentation.
+
 Currently contains `27` files/categories with definitions for a total of `606` functions and `16` aliases, as well as classes like `server`, `client`, `Vec3` and `Quat`.
 
 ## Examples
@@ -31,7 +33,7 @@ I will try to get this on the VSCode extension marketplace at some point, but fo
 ## Settings:
 
 - **`Enable Scripting API`** : Enables or disables the Teardown scripting API intellisense for this project.
-- **`Show Prompt`** : 
+- **`Show Prompt`** :
   - **In User Settings:** Whether to show the popup when opening a valid workspace for the first time.
   - **In workspace settings:** Used by the extension to make sure the popup is only shown once, if enabled in user settings.
 
@@ -42,8 +44,30 @@ The extension adds `.meta.lua` files to the Lua Language Server's workspace libr
 Currently, the only requirement for a Teardown mod is having an `info.txt` in the root folder. But since a folder with an `info.txt` file isn't guaranteed to be a Teardown mod, I've chosen to go with this popup prompt approach. Hopefully I can replace this with a better solution in the future.
 
 ### Note:
-This is my first VS Code extension, and also my first public coding project, so any help, advice or feedback is appreciated.
+
+Teardown already has some lua definitions included in the game files under `Teardown`/`Data`/:
+- `script_defs.lua`
+- `voxscript_defs.lua`
+- `script`/`include`/`common.lua`
+- `script`/`include`/`player.lua`
+
+However, these are fairly limited - they contain basic function definitions but often lack proper type information, and most of the time don't include the descriptions or examples available in the web documentation.
+
+That's why this extension includes it's own type definitions instead of just referencing the built-in ones.
+
+---
+
+### Feedback:
+This is my first VS Code extension, and also my first public coding project, so you might encounter some mistakes.
+
+If you have any issues, suggestions or advice, feedback is always appreciated.
+
+---
 
 ## Links
 - [Teardown Game](https://teardowngame.com) - The game this is for
 - [Teardown API (Experimental)](https://teardowngame.com/experimental/api.html) - docs for the scripting API
+
+## Changelog
+
+See [commit history](https://github.com/GhoustUser/Teardown-Intellisense/commits/master/) for changes.

@@ -1,6 +1,28 @@
 --- @meta
 
 
+--- Vector math is used in Teardown scripts to represent 3D positions, directions, rotations and transforms.
+--- The base types are vectors, quaternions and transforms.
+--- Vectors and quaternions are indexed tables with three and four components.
+--- Transforms are tables consisting of one vector (pos) and one quaternion (rot)
+
+
+---@class TVec -- A 3D vector
+---@field [0] number -- x
+---@field [1] number -- y
+---@field [2] number -- z
+
+---@class TQuat -- A quaternion representing rotation
+---@field [0] number -- x
+---@field [1] number -- y
+---@field [2] number -- z
+---@field [3] number -- w
+
+---@class TTransform -- A transform containing position and rotation
+---@field pos TVec -- Position
+---@field rot TQuat -- Rotation
+
+
 --- Create new vector and optionally initializes it to the provided values.
 --- A Vec is equivalent to a regular lua table with three numbers.
 --- @param x? number -- X value
