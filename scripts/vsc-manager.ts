@@ -51,7 +51,7 @@ class VscManager {
         this._projectPath = this.workspaceUri?.fsPath || null;
     }
 
-    /** Retrieves a workspace setting value.
+    /** Retrieves a workspace or global setting value.
      * @param {string} settingKey - The key of the setting to retrieve.
      * @param {any} defaultValue - The default value to return if the setting is not found.
      * @returns {any} - The value of the setting or the default value.
@@ -76,13 +76,13 @@ class VscManager {
     /** Updates a workspace setting value.
      * @param {string} settingKey - The key of the setting to set.
      * @param {any} value - The value to set for the setting.
-     * @param {boolean} [isGlobal=false] - Whether to set the setting globally or for the workspace.
+     * @param {boolean} isGlobal - Whether to set the setting globally or for the workspace.
      * @returns {Thenable<void>} - A promise that resolves when the setting is updated.
      */
     public updateSetting(
         settingKey: string,
         value: any,
-        isGlobal: boolean = false
+        isGlobal: boolean
     ): Thenable<void> {
         // get workspace-specific configuration
         const config = vscode.workspace.getConfiguration("", this.workspaceUri);

@@ -2,7 +2,7 @@
 	"name": "teardown-intellisense",
 	"displayName": "Teardown Intellisense",
     "description": "Adds intellisense for Teardown's scripting API using custom-made definitions based on the web documentation",
-	"version": "0.5.3",
+	"version": "0.5.4",
 	"author": {
 		"name": "GhoustUser",
 		"url": "https://github.com/GhoustUser"
@@ -55,7 +55,13 @@
 					"description": "Show prompt to enable Teardown scripting API intellisense when info.txt is detected. (once per workspace)"
 				}
 			}
-		}
+		},
+        "commands": [
+            {
+                "command": "TeardownIntellisense.toggleIntellisense",
+                "title": "Teardown Intellisense: Enable/Disable Intellisense"
+            }
+        ]
 	},
 	"devDependencies": {
 		"@types/node": "^25.0.8",
