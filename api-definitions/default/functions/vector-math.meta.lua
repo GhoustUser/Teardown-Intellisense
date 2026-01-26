@@ -25,10 +25,6 @@
 
 --- Create new vector and optionally initializes it to the provided values.
 --- A Vec is equivalent to a regular lua table with three numbers.
---- @param x? number -- X value
---- @param y? number -- Y value
---- @param z? number -- Z value
---- @return TVec vec -- New vector
 --- ### Example
 --- ```lua
 --- function init()
@@ -42,14 +38,16 @@
 --- 	DebugPrint("b1 == b2: " .. tostring(VecStr(b1) == VecStr(b2)))
 --- end
 --- ```
+--- @param x? number -- X value
+--- @param y? number -- Y value
+--- @param z? number -- Z value
+--- @return TVec vec -- New vector
 --- [View Documentation](https://teardowngame.com/experimental/api.html#Vec)
 function Vec(x, y, z) end
 
 --- Vectors should never be assigned like regular numbers. Since they are
 --- implemented with lua tables assignment means two references pointing to
 --- the same data. Use this function instead.
---- @param org TVec -- A vector
---- @return TVec new -- Copy of org vector
 --- ### Example
 --- ```lua
 --- function init()
@@ -61,12 +59,12 @@ function Vec(x, y, z) end
 --- 	local wrong2 = wrong1
 --- end
 --- ```
+--- @param org TVec -- A vector
+--- @return TVec new -- Copy of org vector
 --- [View Documentation](https://teardowngame.com/experimental/api.html#VecCopy)
 function VecCopy(org) end
 
 --- Returns the string representation of vector
---- @param vector TVec -- Vector
---- @return string str -- String representation
 --- ### Example
 --- ```lua
 --- function init()
@@ -74,11 +72,11 @@ function VecCopy(org) end
 --- 	DebugPrint(VecStr(v))
 --- end
 --- ```
+--- @param vector TVec -- Vector
+--- @return string str -- String representation
 --- [View Documentation](https://teardowngame.com/experimental/api.html#VecStr)
 function VecStr(vector) end
 
---- @param vec TVec -- A vector
---- @return number length -- Length (magnitude) of the vector
 --- ### Example
 --- ```lua
 --- function init()
@@ -88,12 +86,12 @@ function VecStr(vector) end
 --- 	DebugPrint(l)
 --- end
 --- ```
+--- @param vec TVec -- A vector
+--- @return number length -- Length (magnitude) of the vector
 --- [View Documentation](https://teardowngame.com/experimental/api.html#VecLength)
 function VecLength(vec) end
 
 --- If the input vector is of zero length, the function returns {0,0,1}
---- @param vec TVec -- A vector
---- @return TVec norm -- A vector of length 1.0
 --- ### Example
 --- ```lua
 --- function init()
@@ -103,12 +101,11 @@ function VecLength(vec) end
 --- 	DebugPrint(VecStr(n))
 --- end
 --- ```
+--- @param vec TVec -- A vector
+--- @return TVec norm -- A vector of length 1.0
 --- [View Documentation](https://teardowngame.com/experimental/api.html#VecNormalize)
 function VecNormalize(vec) end
 
---- @param vec TVec -- A vector
---- @param scale number -- A scale factor
---- @return TVec norm -- A scaled version of input vector
 --- ### Example
 --- ```lua
 --- function init()
@@ -118,12 +115,12 @@ function VecNormalize(vec) end
 --- 	DebugPrint(VecStr(n))
 --- end
 --- ```
+--- @param vec TVec -- A vector
+--- @param scale number -- A scale factor
+--- @return TVec norm -- A scaled version of input vector
 --- [View Documentation](https://teardowngame.com/experimental/api.html#VecScale)
 function VecScale(vec, scale) end
 
---- @param a TVec -- Vector
---- @param b TVec -- Vector
---- @return TVec c -- New vector with sum of a and b
 --- ### Example
 --- ```lua
 --- function init()
@@ -134,12 +131,12 @@ function VecScale(vec, scale) end
 --- 	DebugPrint(VecStr(c))
 --- end
 --- ```
+--- @param a TVec -- Vector
+--- @param b TVec -- Vector
+--- @return TVec c -- New vector with sum of a and b
 --- [View Documentation](https://teardowngame.com/experimental/api.html#VecAdd)
 function VecAdd(a, b) end
 
---- @param a TVec -- Vector
---- @param b TVec -- Vector
---- @return TVec c -- New vector representing a-b
 --- ### Example
 --- ```lua
 --- function init()
@@ -150,12 +147,12 @@ function VecAdd(a, b) end
 --- 	DebugPrint(VecStr(c))
 --- end
 --- ```
+--- @param a TVec -- Vector
+--- @param b TVec -- Vector
+--- @return TVec c -- New vector representing a-b
 --- [View Documentation](https://teardowngame.com/experimental/api.html#VecSub)
 function VecSub(a, b) end
 
---- @param a TVec -- Vector
---- @param b TVec -- Vector
---- @return number c -- Dot product of a and b
 --- ### Example
 --- ```lua
 --- function init()
@@ -166,12 +163,12 @@ function VecSub(a, b) end
 --- 	DebugPrint(c)
 --- end
 --- ```
+--- @param a TVec -- Vector
+--- @param b TVec -- Vector
+--- @return number c -- Dot product of a and b
 --- [View Documentation](https://teardowngame.com/experimental/api.html#VecDot)
 function VecDot(a, b) end
 
---- @param a TVec -- Vector
---- @param b TVec -- Vector
---- @return TVec c -- Cross product of a and b (also called vector product)
 --- ### Example
 --- ```lua
 --- function init()
@@ -182,13 +179,12 @@ function VecDot(a, b) end
 --- 	DebugPrint(VecStr(c))
 --- end
 --- ```
+--- @param a TVec -- Vector
+--- @param b TVec -- Vector
+--- @return TVec c -- Cross product of a and b (also called vector product)
 --- [View Documentation](https://teardowngame.com/experimental/api.html#VecCross)
 function VecCross(a, b) end
 
---- @param a TVec -- Vector
---- @param b TVec -- Vector
---- @param t number -- fraction (usually between 0.0 and 1.0)
---- @return TVec c -- Linearly interpolated vector between a and b, using t
 --- ### Example
 --- ```lua
 --- function init()
@@ -202,6 +198,10 @@ function VecCross(a, b) end
 --- 	DebugPrint("c1" .. VecStr(c1) .. " == c2" .. VecStr(c2))
 --- end
 --- ```
+--- @param a TVec -- Vector
+--- @param b TVec -- Vector
+--- @param t number -- fraction (usually between 0.0 and 1.0)
+--- @return TVec c -- Linearly interpolated vector between a and b, using t
 --- [View Documentation](https://teardowngame.com/experimental/api.html#VecLerp)
 function VecLerp(a, b, t) end
 
@@ -210,11 +210,6 @@ function VecLerp(a, b, t) end
 --- what you are doing. Use QuatEuler or QuatAxisAngle instead.
 --- If no arguments are given, a unit quaternion will be created: {0, 0, 0, 1}.
 --- A quaternion is equivalent to a regular lua table with four numbers.
---- @param x? number -- X value
---- @param y? number -- Y value
---- @param z? number -- Z value
---- @param w? number -- W value
---- @return TQuat quat -- New quaternion
 --- ### Example
 --- ```lua
 --- function init()
@@ -224,14 +219,17 @@ function VecLerp(a, b, t) end
 --- 	DebugPrint(QuatStr(a1) == QuatStr(a2))
 --- end
 --- ```
+--- @param x? number -- X value
+--- @param y? number -- Y value
+--- @param z? number -- Z value
+--- @param w? number -- W value
+--- @return TQuat quat -- New quaternion
 --- [View Documentation](https://teardowngame.com/experimental/api.html#Quat)
 function Quat(x, y, z, w) end
 
 --- Quaternions should never be assigned like regular numbers. Since they are
 --- implemented with lua tables assignment means two references pointing to
 --- the same data. Use this function instead.
---- @param org TQuat -- Quaternion
---- @return TQuat new -- Copy of org quaternion
 --- ### Example
 --- ```lua
 --- function init()
@@ -243,13 +241,12 @@ function Quat(x, y, z, w) end
 --- 	local wrong2 = wrong1
 --- end
 --- ```
+--- @param org TQuat -- Quaternion
+--- @return TQuat new -- Copy of org quaternion
 --- [View Documentation](https://teardowngame.com/experimental/api.html#QuatCopy)
 function QuatCopy(org) end
 
 --- Create a quaternion representing a rotation around a specific axis
---- @param axis TVec -- Rotation axis, unit vector
---- @param angle number -- Rotation angle in degrees
---- @return TQuat quat -- New quaternion
 --- ### Example
 --- ```lua
 --- function init()
@@ -258,13 +255,13 @@ function QuatCopy(org) end
 --- 	DebugPrint(QuatStr(q))
 --- end
 --- ```
+--- @param axis TVec -- Rotation axis, unit vector
+--- @param angle number -- Rotation angle in degrees
+--- @return TQuat quat -- New quaternion
 --- [View Documentation](https://teardowngame.com/experimental/api.html#QuatAxisAngle)
 function QuatAxisAngle(axis, angle) end
 
 --- Create a quaternion representing a rotation between the input normals
---- @param normal0 TVec -- Unit vector
---- @param normal1 TVec -- Unit vector
---- @return TQuat quat -- New quaternion
 --- ### Example
 --- ```lua
 --- function init()
@@ -272,13 +269,13 @@ function QuatAxisAngle(axis, angle) end
 --- 	local q = QuatDeltaNormals(Vec(1,0,0), Vec(0,1,0))
 --- end
 --- ```
+--- @param normal0 TVec -- Unit vector
+--- @param normal1 TVec -- Unit vector
+--- @return TQuat quat -- New quaternion
 --- [View Documentation](https://teardowngame.com/experimental/api.html#QuatDeltaNormals)
 function QuatDeltaNormals(normal0, normal1) end
 
 --- Create a quaternion representing a rotation between the input vectors that doesn't need to be of unit-length
---- @param vector0 TVec -- Vector
---- @param vector1 TVec -- Vector
---- @return TQuat quat -- New quaternion
 --- ### Example
 --- ```lua
 --- function init()
@@ -286,13 +283,12 @@ function QuatDeltaNormals(normal0, normal1) end
 --- 	local q = QuatDeltaVectors(Vec(10,0,0), Vec(0,5,0))
 --- end
 --- ```
+--- @param vector0 TVec -- Vector
+--- @param vector1 TVec -- Vector
+--- @return TQuat quat -- New quaternion
 --- [View Documentation](https://teardowngame.com/experimental/api.html#QuatDeltaVectors)
 function QuatDeltaVectors(vector0, vector1) end
 
---- @param x number -- Angle around X axis in degrees, sometimes also called roll or bank
---- @param y number -- Angle around Y axis in degrees, sometimes also called yaw or heading
---- @param z number -- Angle around Z axis in degrees, sometimes also called pitch or attitude
---- @return TQuat quat -- New quaternion
 --- ### Example
 --- ```lua
 --- function init()
@@ -300,13 +296,14 @@ function QuatDeltaVectors(vector0, vector1) end
 --- 	local q = QuatEuler(0, 30, 25)
 --- end
 --- ```
+--- @param x number -- Angle around X axis in degrees, sometimes also called roll or bank
+--- @param y number -- Angle around Y axis in degrees, sometimes also called yaw or heading
+--- @param z number -- Angle around Z axis in degrees, sometimes also called pitch or attitude
+--- @return TQuat quat -- New quaternion
 --- [View Documentation](https://teardowngame.com/experimental/api.html#QuatEuler)
 function QuatEuler(x, y, z) end
 
 --- Return the quaternion aligned to specified axes
---- @param xAxis TVec -- X axis
---- @param zAxis TVec -- Z axis
---- @return TQuat quat -- Quaternion
 --- ### Example
 --- ```lua
 --- function update()
@@ -323,13 +320,12 @@ function QuatEuler(x, y, z) end
 --- 	DrawSprite(laserSprite, t, length, 0.5, 1.0, 0.3, 0.3, 1, true, true)
 --- end
 --- ```
+--- @param xAxis TVec -- X axis
+--- @param zAxis TVec -- Z axis
+--- @return TQuat quat -- Quaternion
 --- [View Documentation](https://teardowngame.com/experimental/api.html#QuatAlignXZ)
 function QuatAlignXZ(xAxis, zAxis) end
 
---- @param quat TQuat -- Quaternion
---- @return number x -- Angle around X axis in degrees, sometimes also called roll or bank
---- @return number y -- Angle around Y axis in degrees, sometimes also called yaw or heading
---- @return number z -- Angle around Z axis in degrees, sometimes also called pitch or attitude
 --- ### Example
 --- ```lua
 --- function init()
@@ -339,15 +335,16 @@ function QuatAlignXZ(xAxis, zAxis) end
 --- 	DebugPrint(rx .. " " .. ry .. " " .. rz)
 --- end
 --- ```
+--- @param quat TQuat -- Quaternion
+--- @return number x -- Angle around X axis in degrees, sometimes also called roll or bank
+--- @return number y -- Angle around Y axis in degrees, sometimes also called yaw or heading
+--- @return number z -- Angle around Z axis in degrees, sometimes also called pitch or attitude
 --- [View Documentation](https://teardowngame.com/experimental/api.html#GetQuatEuler)
 function GetQuatEuler(quat) end
 
 --- Create a quaternion pointing the negative Z axis (forward) towards
 --- a specific point, keeping the Y axis upwards. This is very useful
 --- for creating camera transforms.
---- @param eye TVec -- Vector representing the camera location
---- @param target TVec -- Vector representing the point to look at
---- @return TQuat quat -- New quaternion
 --- ### Example
 --- ```lua
 --- function init()
@@ -357,15 +354,14 @@ function GetQuatEuler(quat) end
 --- 	SetCameraTransform(Transform(eye, rot))
 --- end
 --- ```
+--- @param eye TVec -- Vector representing the camera location
+--- @param target TVec -- Vector representing the point to look at
+--- @return TQuat quat -- New quaternion
 --- [View Documentation](https://teardowngame.com/experimental/api.html#QuatLookAt)
 function QuatLookAt(eye, target) end
 
 --- Spherical, linear interpolation between a and b, using t. This is
 --- very useful for animating between two rotations.
---- @param a TQuat -- Quaternion
---- @param b TQuat -- Quaternion
---- @param t number -- fraction (usually between 0.0 and 1.0)
---- @return TQuat c -- New quaternion
 --- ### Example
 --- ```lua
 --- function init()
@@ -376,12 +372,14 @@ function QuatLookAt(eye, target) end
 --- 	DebugPrint(QuatStr(q))
 --- end
 --- ```
+--- @param a TQuat -- Quaternion
+--- @param b TQuat -- Quaternion
+--- @param t number -- fraction (usually between 0.0 and 1.0)
+--- @return TQuat c -- New quaternion
 --- [View Documentation](https://teardowngame.com/experimental/api.html#QuatSlerp)
 function QuatSlerp(a, b, t) end
 
 --- Returns the string representation of quaternion
---- @param quat TQuat -- Quaternion
---- @return string str -- String representation
 --- ### Example
 --- ```lua
 --- function init()
@@ -389,14 +387,13 @@ function QuatSlerp(a, b, t) end
 --- 	DebugPrint(QuatStr(q))
 --- end
 --- ```
+--- @param quat TQuat -- Quaternion
+--- @return string str -- String representation
 --- [View Documentation](https://teardowngame.com/experimental/api.html#QuatStr)
 function QuatStr(quat) end
 
 --- Rotate one quaternion with another quaternion. This is mathematically
 --- equivalent to c = a * b using quaternion multiplication.
---- @param a TQuat -- Quaternion
---- @param b TQuat -- Quaternion
---- @return TQuat c -- New quaternion
 --- ### Example
 --- ```lua
 --- function init()
@@ -409,13 +406,13 @@ function QuatStr(quat) end
 --- 	DebugPrint(x .. " " .. y .. " " .. z)
 --- end
 --- ```
+--- @param a TQuat -- Quaternion
+--- @param b TQuat -- Quaternion
+--- @return TQuat c -- New quaternion
 --- [View Documentation](https://teardowngame.com/experimental/api.html#QuatRotateQuat)
 function QuatRotateQuat(a, b) end
 
 --- Rotate a vector by a quaternion
---- @param a TQuat -- Quaternion
---- @param vec TVec -- Vector
---- @return TVec vec -- Rotated vector
 --- ### Example
 --- ```lua
 --- function init()
@@ -426,14 +423,14 @@ function QuatRotateQuat(a, b) end
 --- 	DebugPrint(VecStr(r))
 --- end
 --- ```
+--- @param a TQuat -- Quaternion
+--- @param vec TVec -- Vector
+--- @return TVec vec -- Rotated vector
 --- [View Documentation](https://teardowngame.com/experimental/api.html#QuatRotateVec)
 function QuatRotateVec(a, vec) end
 
 --- A transform is a regular lua table with two entries: pos and rot,
 --- a vector and quaternion representing transform position and rotation.
---- @param pos? TVec -- Vector representing transform position
---- @param rot? TQuat -- Quaternion representing transform rotation
---- @return TTransform transform -- New transform
 --- ### Example
 --- ```lua
 --- function init()
@@ -448,14 +445,15 @@ function QuatRotateVec(a, vec) end
 --- 	DebugPrint(TransformStr(t3))
 --- end
 --- ```
+--- @param pos? TVec -- Vector representing transform position
+--- @param rot? TQuat -- Quaternion representing transform rotation
+--- @return TTransform transform -- New transform
 --- [View Documentation](https://teardowngame.com/experimental/api.html#Transform)
 function Transform(pos, rot) end
 
 --- Transforms should never be assigned like regular numbers. Since they are
 --- implemented with lua tables assignment means two references pointing to
 --- the same data. Use this function instead.
---- @param org TTransform -- Transform
---- @return TTransform new -- Copy of org transform
 --- ### Example
 --- ```lua
 --- function init()
@@ -467,12 +465,12 @@ function Transform(pos, rot) end
 --- 	local wrong2 = wrong1
 --- end
 --- ```
+--- @param org TTransform -- Transform
+--- @return TTransform new -- Copy of org transform
 --- [View Documentation](https://teardowngame.com/experimental/api.html#TransformCopy)
 function TransformCopy(org) end
 
 --- Returns the string representation of transform
---- @param transform TTransform -- Transform
---- @return string str -- String representation
 --- ### Example
 --- ```lua
 --- function init()
@@ -483,14 +481,13 @@ function TransformCopy(org) end
 --- 	DebugPrint(TransformStr(t))
 --- end
 --- ```
+--- @param transform TTransform -- Transform
+--- @return string str -- String representation
 --- [View Documentation](https://teardowngame.com/experimental/api.html#TransformStr)
 function TransformStr(transform) end
 
 --- Transform child transform out of the parent transform.
 --- This is the opposite of TransformToLocalTransform.
---- @param parent TTransform -- Transform
---- @param child TTransform -- Transform
---- @return TTransform transform -- New transform
 --- ### Example
 --- ```lua
 --- function init()
@@ -503,14 +500,14 @@ function TransformStr(transform) end
 --- 	DebugPrint(TransformStr(w))
 --- end
 --- ```
+--- @param parent TTransform -- Transform
+--- @param child TTransform -- Transform
+--- @return TTransform transform -- New transform
 --- [View Documentation](https://teardowngame.com/experimental/api.html#TransformToParentTransform)
 function TransformToParentTransform(parent, child) end
 
 --- Transform one transform into the local space of another transform.
 --- This is the opposite of TransformToParentTransform.
---- @param parent TTransform -- Transform
---- @param child TTransform -- Transform
---- @return TTransform transform -- New transform
 --- ### Example
 --- ```lua
 --- function init()
@@ -523,13 +520,13 @@ function TransformToParentTransform(parent, child) end
 --- 	DebugPrint(TransformStr(s))
 --- end
 --- ```
+--- @param parent TTransform -- Transform
+--- @param child TTransform -- Transform
+--- @return TTransform transform -- New transform
 --- [View Documentation](https://teardowngame.com/experimental/api.html#TransformToLocalTransform)
 function TransformToLocalTransform(parent, child) end
 
 --- Transfom vector v out of transform t only considering rotation.
---- @param t TTransform -- Transform
---- @param v TVec -- Vector
---- @return TVec r -- Transformed vector
 --- ### Example
 --- ```lua
 --- function init()
@@ -540,13 +537,13 @@ function TransformToLocalTransform(parent, child) end
 --- 	DebugPrint(VecStr(up))
 --- end
 --- ```
+--- @param t TTransform -- Transform
+--- @param v TVec -- Vector
+--- @return TVec r -- Transformed vector
 --- [View Documentation](https://teardowngame.com/experimental/api.html#TransformToParentVec)
 function TransformToParentVec(t, v) end
 
 --- Transfom vector v into transform t only considering rotation.
---- @param t TTransform -- Transform
---- @param v TVec -- Vector
---- @return TVec r -- Transformed vector
 --- ### Example
 --- ```lua
 --- function init()
@@ -557,13 +554,13 @@ function TransformToParentVec(t, v) end
 --- 	DebugPrint(VecStr(up))
 --- end
 --- ```
+--- @param t TTransform -- Transform
+--- @param v TVec -- Vector
+--- @return TVec r -- Transformed vector
 --- [View Documentation](https://teardowngame.com/experimental/api.html#TransformToLocalVec)
 function TransformToLocalVec(t, v) end
 
 --- Transfom position p out of transform t.
---- @param t TTransform -- Transform
---- @param p TVec -- Vector representing position
---- @return TVec r -- Transformed position
 --- ### Example
 --- ```lua
 --- function init()
@@ -574,13 +571,13 @@ function TransformToLocalVec(t, v) end
 --- 	DebugPrint(VecStr(p))
 --- end
 --- ```
+--- @param t TTransform -- Transform
+--- @param p TVec -- Vector representing position
+--- @return TVec r -- Transformed position
 --- [View Documentation](https://teardowngame.com/experimental/api.html#TransformToParentPoint)
 function TransformToParentPoint(t, p) end
 
 --- Transfom position p into transform t.
---- @param t TTransform -- Transform
---- @param p TVec -- Vector representing position
---- @return TVec r -- Transformed position
 --- ### Example
 --- ```lua
 --- function init()
@@ -591,10 +588,12 @@ function TransformToParentPoint(t, p) end
 --- 	DebugPrint(VecStr(p))
 --- end
 --- ```
+--- @param t TTransform -- Transform
+--- @param p TVec -- Vector representing position
+--- @return TVec r -- Transformed position
 --- [View Documentation](https://teardowngame.com/experimental/api.html#TransformToLocalPoint)
 function TransformToLocalPoint(t, p) end
 
---- @param seed number -- Random seed
 --- ### Example
 --- ```lua
 --- function init()
@@ -602,10 +601,10 @@ function TransformToLocalPoint(t, p) end
 --- 	result = RollDie()
 --- end
 --- ```
+--- @param seed number -- Random seed
 --- [View Documentation](https://teardowngame.com/experimental/api.html#SetRandomSeed)
 function SetRandomSeed(seed) end
 
---- @return boolean result -- Random true/false
 --- ### Example
 --- ```lua
 --- function init()
@@ -615,12 +614,10 @@ function SetRandomSeed(seed) end
 --- 	end
 --- end
 --- ```
+--- @return boolean result -- Random true/false
 --- [View Documentation](https://teardowngame.com/experimental/api.html#GetRandomBool)
 function GetRandomBool() end
 
---- @param min number -- Lower number
---- @param max number -- Upper number
---- @return number result -- Random number in given range, including max.
 --- ### Example
 --- ```lua
 --- function init()
@@ -628,12 +625,12 @@ function GetRandomBool() end
 --- 	-- dieRoll is 1,2,3,4,5 or 6
 --- end
 --- ```
---- [View Documentation](https://teardowngame.com/experimental/api.html#GetRandomInt)
-function GetRandomInt(min, max) end
-
 --- @param min number -- Lower number
 --- @param max number -- Upper number
 --- @return number result -- Random number in given range, including max.
+--- [View Documentation](https://teardowngame.com/experimental/api.html#GetRandomInt)
+function GetRandomInt(min, max) end
+
 --- ### Example
 --- ```lua
 --- function init()
@@ -641,11 +638,12 @@ function GetRandomInt(min, max) end
 --- 	randomAngleDeg = GetRandomFloat(0.0f, 360.0f)
 --- end
 --- ```
+--- @param min number -- Lower number
+--- @param max number -- Upper number
+--- @return number result -- Random number in given range, including max.
 --- [View Documentation](https://teardowngame.com/experimental/api.html#GetRandomFloat)
 function GetRandomFloat(min, max) end
 
---- @param length? number -- Optional length use to scale the generated direction.
---- @return TVec vector -- Random direction with unit length
 --- ### Example
 --- ```lua
 --- function init()
@@ -653,6 +651,8 @@ function GetRandomFloat(min, max) end
 --- 	ricochetDirection = GetRandomDirection()
 --- end
 --- ```
+--- @param length? number -- Optional length use to scale the generated direction.
+--- @return TVec vector -- Random direction with unit length
 --- [View Documentation](https://teardowngame.com/experimental/api.html#GetRandomDirection)
 function GetRandomDirection(length) end
 

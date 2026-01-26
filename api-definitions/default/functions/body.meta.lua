@@ -1,12 +1,9 @@
 --- @meta
 
 
---- A body represents a rigid body in the scene. It can be either static or dynamic. Only dynamic bodies are affected by physics. 
+--- A body represents a rigid body in the scene. It can be either static or dynamic. Only dynamic bodies are affected by physics.
 
 
---- @param tag? string -- Tag name
---- @param global? boolean -- Search in entire scene
---- @return number handle -- Handle to first body with specified tag or zero if not found
 --- ### Example
 --- ```lua
 --- function init()
@@ -18,12 +15,12 @@
 --- 	DebugPrint(escape)
 --- end
 --- ```
+--- @param tag? string -- Tag name
+--- @param global? boolean -- Search in entire scene
+--- @return number handle -- Handle to first body with specified tag or zero if not found
 --- [View Documentation](https://teardowngame.com/experimental/api.html#FindBody)
 function FindBody(tag, global) end
 
---- @param tag? string -- Tag name
---- @param global? boolean -- Search in entire scene
---- @return table list -- Indexed table with handles to all bodies with specified tag
 --- ### Example
 --- ```lua
 --- function init()
@@ -35,11 +32,12 @@ function FindBody(tag, global) end
 --- 	end
 --- end
 --- ```
+--- @param tag? string -- Tag name
+--- @param global? boolean -- Search in entire scene
+--- @return table list -- Indexed table with handles to all bodies with specified tag
 --- [View Documentation](https://teardowngame.com/experimental/api.html#FindBodies)
 function FindBodies(tag, global) end
 
---- @param handle number -- Body handle
---- @return TTransform transform -- Transform of the body
 --- ### Example
 --- ```lua
 --- function init()
@@ -48,11 +46,11 @@ function FindBodies(tag, global) end
 --- 	DebugPrint(TransformStr(t))
 --- end
 --- ```
+--- @param handle number -- Body handle
+--- @return TTransform transform -- Transform of the body
 --- [View Documentation](https://teardowngame.com/experimental/api.html#GetBodyTransform)
 function GetBodyTransform(handle) end
 
---- @param handle number -- Body handle
---- @param transform TTransform -- Desired transform
 --- ### Example
 --- ```lua
 --- function init()
@@ -63,11 +61,11 @@ function GetBodyTransform(handle) end
 --- 	SetBodyTransform(handle, t)
 --- end
 --- ```
+--- @param handle number -- Body handle
+--- @param transform TTransform -- Desired transform
 --- [View Documentation](https://teardowngame.com/experimental/api.html#SetBodyTransform)
 function SetBodyTransform(handle, transform) end
 
---- @param handle number -- Body handle
---- @return number mass -- Body mass. Static bodies always return zero mass.
 --- ### Example
 --- ```lua
 --- function init()
@@ -77,13 +75,13 @@ function SetBodyTransform(handle, transform) end
 --- 	DebugPrint(mass)
 --- end
 --- ```
+--- @param handle number -- Body handle
+--- @return number mass -- Body mass. Static bodies always return zero mass.
 --- [View Documentation](https://teardowngame.com/experimental/api.html#GetBodyMass)
 function GetBodyMass(handle) end
 
 --- Check if body is dynamic. Note that something that was created static
 --- may become dynamic due to destruction.
---- @param handle number -- Body handle
---- @return boolean dynamic -- Return true if body is dynamic
 --- ### Example
 --- ```lua
 --- function init()
@@ -91,14 +89,14 @@ function GetBodyMass(handle) end
 --- 	DebugPrint(IsBodyDynamic(handle))
 --- end
 --- ```
+--- @param handle number -- Body handle
+--- @return boolean dynamic -- Return true if body is dynamic
 --- [View Documentation](https://teardowngame.com/experimental/api.html#IsBodyDynamic)
 function IsBodyDynamic(handle) end
 
 --- Change the dynamic state of a body. There is very limited use for this
 --- function. In most situations you should leave it up to the engine to decide.
 --- Use with caution.
---- @param handle number -- Body handle
---- @param dynamic boolean -- True for dynamic. False for static.
 --- ### Example
 --- ```lua
 --- function init()
@@ -107,13 +105,13 @@ function IsBodyDynamic(handle) end
 --- 	DebugPrint(IsBodyDynamic(handle))
 --- end
 --- ```
+--- @param handle number -- Body handle
+--- @param dynamic boolean -- True for dynamic. False for static.
 --- [View Documentation](https://teardowngame.com/experimental/api.html#SetBodyDynamic)
 function SetBodyDynamic(handle, dynamic) end
 
 --- This can be used for animating bodies with preserved physical interaction,
 --- but in most cases you are better off with a motorized joint instead.
---- @param handle number -- Body handle (should be a dynamic body)
---- @param velocity TVec -- Vector with linear velocity
 --- ### Example
 --- ```lua
 --- function init()
@@ -122,11 +120,11 @@ function SetBodyDynamic(handle, dynamic) end
 --- 	SetBodyVelocity(handle, vel)
 --- end
 --- ```
+--- @param handle number -- Body handle (should be a dynamic body)
+--- @param velocity TVec -- Vector with linear velocity
 --- [View Documentation](https://teardowngame.com/experimental/api.html#SetBodyVelocity)
 function SetBodyVelocity(handle, velocity) end
 
---- @param handle number -- Body handle (should be a dynamic body)
---- @return TVec velocity -- Linear velocity as vector
 --- ### Example
 --- ```lua
 --- handle = 0
@@ -142,13 +140,12 @@ function SetBodyVelocity(handle, velocity) end
 --- 	DebugPrint(VecStr(GetBodyVelocity(handle)))
 --- end
 --- ```
+--- @param handle number -- Body handle (should be a dynamic body)
+--- @return TVec velocity -- Linear velocity as vector
 --- [View Documentation](https://teardowngame.com/experimental/api.html#GetBodyVelocity)
 function GetBodyVelocity(handle) end
 
 --- Return the velocity on a body taking both linear and angular velocity into account.
---- @param handle number -- Body handle (should be a dynamic body)
---- @param pos TVec -- World space point as vector
---- @return TVec velocity -- Linear velocity on body at pos as vector
 --- ### Example
 --- ```lua
 --- handle = 0
@@ -164,13 +161,14 @@ function GetBodyVelocity(handle) end
 --- 	DebugPrint(VecStr(GetBodyVelocityAtPos(handle, Vec(0, 0, 0))))
 --- end
 --- ```
+--- @param handle number -- Body handle (should be a dynamic body)
+--- @param pos TVec -- World space point as vector
+--- @return TVec velocity -- Linear velocity on body at pos as vector
 --- [View Documentation](https://teardowngame.com/experimental/api.html#GetBodyVelocityAtPos)
 function GetBodyVelocityAtPos(handle, pos) end
 
 --- This can be used for animating bodies with preserved physical interaction,
 --- but in most cases you are better off with a motorized joint instead.
---- @param handle number -- Body handle (should be a dynamic body)
---- @param angVel TVec -- Vector with angular velocity
 --- ### Example
 --- ```lua
 --- function server.init()
@@ -179,11 +177,11 @@ function GetBodyVelocityAtPos(handle, pos) end
 --- 	SetBodyAngularVelocity(handle, angVel)
 --- end
 --- ```
+--- @param handle number -- Body handle (should be a dynamic body)
+--- @param angVel TVec -- Vector with angular velocity
 --- [View Documentation](https://teardowngame.com/experimental/api.html#SetBodyAngularVelocity)
 function SetBodyAngularVelocity(handle, angVel) end
 
---- @param handle number -- Body handle (should be a dynamic body)
---- @return TVec angVel -- Angular velocity as vector
 --- ### Example
 --- ```lua
 --- handle = 0
@@ -199,6 +197,8 @@ function SetBodyAngularVelocity(handle, angVel) end
 --- 	DebugPrint(VecStr(GetBodyAngularVelocity(handle)))
 --- end
 --- ```
+--- @param handle number -- Body handle (should be a dynamic body)
+--- @return TVec angVel -- Angular velocity as vector
 --- [View Documentation](https://teardowngame.com/experimental/api.html#GetBodyAngularVelocity)
 function GetBodyAngularVelocity(handle) end
 
@@ -206,8 +206,6 @@ function GetBodyAngularVelocity(handle) end
 --- bodies that don't move are taken out of the simulation. This function
 --- can be used to query the active state of a specific body. Only dynamic
 --- bodies can be active.
---- @param handle number -- Body handle
---- @return boolean active -- Return true if body is active
 --- ### Example
 --- ```lua
 --- -- try to break the body to see the logs
@@ -218,13 +216,13 @@ function GetBodyAngularVelocity(handle) end
 --- 	end
 --- end
 --- ```
+--- @param handle number -- Body handle
+--- @return boolean active -- Return true if body is active
 --- [View Documentation](https://teardowngame.com/experimental/api.html#IsBodyActive)
 function IsBodyActive(handle) end
 
 --- This function makes it possible to manually activate and deactivate bodies to include or
 --- exclude in simulation. The engine normally handles this automatically, so use with care.
---- @param handle number -- Body handle
---- @param active boolean -- Set to tru if body should be active (simulated)
 --- ### Example
 --- ```lua
 --- handle = 0
@@ -243,13 +241,12 @@ function IsBodyActive(handle) end
 --- 	end
 --- end
 --- ```
+--- @param handle number -- Body handle
+--- @param active boolean -- Set to tru if body should be active (simulated)
 --- [View Documentation](https://teardowngame.com/experimental/api.html#SetBodyActive)
 function SetBodyActive(handle, active) end
 
 --- Apply impulse to dynamic body at position (give body a push).
---- @param handle number -- Body handle (should be a dynamic body)
---- @param position TVec -- World space position as vector
---- @param impulse TVec -- World space impulse as vector
 --- ### Example
 --- ```lua
 --- function applyImpulse()
@@ -259,12 +256,13 @@ function SetBodyActive(handle, active) end
 --- 	ApplyBodyImpulse(handle, pos, imp)
 --- end
 --- ```
+--- @param handle number -- Body handle (should be a dynamic body)
+--- @param position TVec -- World space position as vector
+--- @param impulse TVec -- World space impulse as vector
 --- [View Documentation](https://teardowngame.com/experimental/api.html#ApplyBodyImpulse)
 function ApplyBodyImpulse(handle, position, impulse) end
 
 --- Return handles to all shapes owned by a body
---- @param handle number -- Body handle
---- @return table list -- Indexed table of shape handles
 --- ### Example
 --- ```lua
 --- function client.init()
@@ -276,11 +274,11 @@ function ApplyBodyImpulse(handle, position, impulse) end
 --- 	end
 --- end
 --- ```
+--- @param handle number -- Body handle
+--- @return table list -- Indexed table of shape handles
 --- [View Documentation](https://teardowngame.com/experimental/api.html#GetBodyShapes)
 function GetBodyShapes(handle) end
 
---- @param body number -- Body handle
---- @return number handle -- Get parent vehicle for body, or zero if not part of vehicle
 --- ### Example
 --- ```lua
 --- function client.init()
@@ -289,31 +287,30 @@ function GetBodyShapes(handle) end
 --- 	DebugPrint(vehicle)
 --- end
 --- ```
+--- @param body number -- Body handle
+--- @return number handle -- Get parent vehicle for body, or zero if not part of vehicle
 --- [View Documentation](https://teardowngame.com/experimental/api.html#GetBodyVehicle)
 function GetBodyVehicle(body) end
 
---- @param body number -- Body handle
---- @return number handle -- Get parent animator for body, or zero if not part of an animator hierarchy
 --- ### Example
 --- ```lua
 --- local animator = GetBodyAnimator(body)
 --- ```
+--- @param body number -- Body handle
+--- @return number handle -- Get parent animator for body, or zero if not part of an animator hierarchy
 --- [View Documentation](https://teardowngame.com/experimental/api.html#GetBodyAnimator)
 function GetBodyAnimator(body) end
 
---- @param body number -- Body handle
---- @return number playerId -- Get parent player for body, or zero if not part of a player animator hierarchy
 --- ### Example
 --- ```lua
 --- local player = GetBodyPlayer(body)
 --- ```
+--- @param body number -- Body handle
+--- @return number playerId -- Get parent player for body, or zero if not part of a player animator hierarchy
 --- [View Documentation](https://teardowngame.com/experimental/api.html#GetBodyPlayer)
 function GetBodyPlayer(body) end
 
 --- Return the world space, axis-aligned bounding box for a body.
---- @param handle number -- Body handle
---- @return TVec min -- Vector representing the AABB lower bound
---- @return TVec max -- Vector representing the AABB upper bound
 --- ### Example
 --- ```lua
 --- function client.init()
@@ -324,11 +321,12 @@ function GetBodyPlayer(body) end
 --- 	DebugPrint(VecStr(boundsSize) .. " " .. VecStr(center))
 --- end
 --- ```
+--- @param handle number -- Body handle
+--- @return TVec min -- Vector representing the AABB lower bound
+--- @return TVec max -- Vector representing the AABB upper bound
 --- [View Documentation](https://teardowngame.com/experimental/api.html#GetBodyBounds)
 function GetBodyBounds(handle) end
 
---- @param handle number -- Body handle
---- @return TVec point -- Vector representing local center of mass in body space
 --- ### Example
 --- ```lua
 --- function client.init()
@@ -341,17 +339,14 @@ function GetBodyBounds(handle) end
 --- 	DebugCross(worldPoint)
 --- end
 --- ```
+--- @param handle number -- Body handle
+--- @return TVec point -- Vector representing local center of mass in body space
 --- [View Documentation](https://teardowngame.com/experimental/api.html#GetBodyCenterOfMass)
 function GetBodyCenterOfMass(handle) end
 
---- This function does a very rudimetary check and will only return true if the 
+--- This function does a very rudimetary check and will only return true if the
 --- object is visible within 74 degrees of the camera's forward direction, and
 --- only tests line-of-sight visibility for the corners and center of the bounding box.
---- @param handle number -- Body handle
---- @param maxDist number -- Maximum visible distance
---- @param rejectTransparent? boolean -- See through transparent materials. Default false.
---- @param playerId? number -- Player ID. On player, zero means local player.
---- @return boolean visible -- Return true if body is visible
 --- ### Example
 --- ```lua
 --- local handle = 0
@@ -367,12 +362,15 @@ function GetBodyCenterOfMass(handle) end
 --- 	end
 --- end
 --- ```
+--- @param handle number -- Body handle
+--- @param maxDist number -- Maximum visible distance
+--- @param rejectTransparent? boolean -- See through transparent materials. Default false.
+--- @param playerId? number -- Player ID. On player, zero means local player.
+--- @return boolean visible -- Return true if body is visible
 --- [View Documentation](https://teardowngame.com/experimental/api.html#IsBodyVisible)
 function IsBodyVisible(handle, maxDist, rejectTransparent, playerId) end
 
 --- Determine if any shape of a body has been broken.
---- @param handle number -- Body handle
---- @return boolean broken -- Return true if body is broken
 --- ### Example
 --- ```lua
 --- local handle = 0
@@ -383,13 +381,13 @@ function IsBodyVisible(handle, maxDist, rejectTransparent, playerId) end
 --- 	DebugPrint(IsBodyBroken(handle))
 --- end
 --- ```
+--- @param handle number -- Body handle
+--- @return boolean broken -- Return true if body is broken
 --- [View Documentation](https://teardowngame.com/experimental/api.html#IsBodyBroken)
 function IsBodyBroken(handle) end
 
 --- Determine if a body is in any way connected to a static object, either by being static itself or
 --- be being directly or indirectly jointed to something static.
---- @param handle number -- Body handle
---- @return boolean result -- Return true if body is in any way connected to a static body
 --- ### Example
 --- ```lua
 --- local handle = 0
@@ -400,16 +398,13 @@ function IsBodyBroken(handle) end
 --- 	DebugPrint(IsBodyJointedToStatic(handle))
 --- end
 --- ```
+--- @param handle number -- Body handle
+--- @return boolean result -- Return true if body is in any way connected to a static body
 --- [View Documentation](https://teardowngame.com/experimental/api.html#IsBodyJointedToStatic)
 function IsBodyJointedToStatic(handle) end
 
 --- Render next frame with an outline around specified body.
 --- If no color is given, a white outline will be drawn.
---- @param handle number -- Body handle
---- @param r? number -- Red
---- @param g? number -- Green
---- @param b? number -- Blue
---- @param a? number -- Alpha
 --- ### Example
 --- ```lua
 --- local handle = 0
@@ -426,13 +421,16 @@ function IsBodyJointedToStatic(handle) end
 --- 	end
 --- end
 --- ```
+--- @param handle number -- Body handle
+--- @param r? number -- Red
+--- @param g? number -- Green
+--- @param b? number -- Blue
+--- @param a? number -- Alpha
 --- [View Documentation](https://teardowngame.com/experimental/api.html#DrawBodyOutline)
 function DrawBodyOutline(handle, r, g, b, a) end
 
 --- Flash the appearance of a body when rendering this frame. This is
 --- used for valuables in the game.
---- @param handle number -- Body handle
---- @param amount number -- Amount
 --- ### Example
 --- ```lua
 --- local handle = 0
@@ -445,16 +443,12 @@ function DrawBodyOutline(handle, r, g, b, a) end
 --- 	end
 --- end
 --- ```
+--- @param handle number -- Body handle
+--- @param amount number -- Amount
 --- [View Documentation](https://teardowngame.com/experimental/api.html#DrawBodyHighlight)
 function DrawBodyHighlight(handle, amount) end
 
 --- This will return the closest point of a specific body
---- @param body number -- Body handle
---- @param origin TVec -- World space point
---- @return boolean hit -- True if a point was found
---- @return TVec point -- World space closest point
---- @return TVec normal -- World space normal at closest point
---- @return number shape -- Handle to closest shape
 --- ### Example
 --- ```lua
 --- local handle = 0
@@ -469,19 +463,18 @@ function DrawBodyHighlight(handle, amount) end
 --- 	end
 --- end
 --- ```
+--- @param body number -- Body handle
+--- @param origin TVec -- World space point
+--- @return boolean hit -- True if a point was found
+--- @return TVec point -- World space closest point
+--- @return TVec normal -- World space normal at closest point
+--- @return number shape -- Handle to closest shape
 --- [View Documentation](https://teardowngame.com/experimental/api.html#GetBodyClosestPoint)
 function GetBodyClosestPoint(body, origin) end
 
 --- This will tell the physics solver to constrain the velocity between two bodies. The physics solver
 --- will try to reach the desired goal, while not applying an impulse bigger than the min and max values.
 --- This function should only be used from the update callback.
---- @param bodyA number -- First body handle (zero for static)
---- @param bodyB number -- Second body handle (zero for static)
---- @param point TVec -- World space point
---- @param dir TVec -- World space direction
---- @param relVel number -- Desired relative velocity along the provided direction
---- @param min? number -- Minimum impulse (default: -infinity)
---- @param max? number -- Maximum impulse (default: infinity)
 --- ### Example
 --- ```lua
 --- local handleA = 0
@@ -496,18 +489,19 @@ function GetBodyClosestPoint(body, origin) end
 --- 	ConstrainVelocity(handleA, handleB, Vec(0, 5, 0), Vec(1, 0, 0), 3)
 --- end
 --- ```
+--- @param bodyA number -- First body handle (zero for static)
+--- @param bodyB number -- Second body handle (zero for static)
+--- @param point TVec -- World space point
+--- @param dir TVec -- World space direction
+--- @param relVel number -- Desired relative velocity along the provided direction
+--- @param min? number -- Minimum impulse (default: -infinity)
+--- @param max? number -- Maximum impulse (default: infinity)
 --- [View Documentation](https://teardowngame.com/experimental/api.html#ConstrainVelocity)
 function ConstrainVelocity(bodyA, bodyB, point, dir, relVel, min, max) end
 
 --- This will tell the physics solver to constrain the angular velocity between two bodies. The physics solver
 --- will try to reach the desired goal, while not applying an angular impulse bigger than the min and max values.
 --- This function should only be used from the update callback.
---- @param bodyA number -- First body handle (zero for static)
---- @param bodyB number -- Second body handle (zero for static)
---- @param dir TVec -- World space direction
---- @param relAngVel number -- Desired relative angular velocity along the provided direction
---- @param min? number -- Minimum angular impulse (default: -infinity)
---- @param max? number -- Maximum angular impulse (default: infinity)
 --- ### Example
 --- ```lua
 --- local handleA = 0
@@ -522,6 +516,12 @@ function ConstrainVelocity(bodyA, bodyB, point, dir, relVel, min, max) end
 --- 	ConstrainAngularVelocity(handleA, handleB, Vec(1, 0, 0), 3)
 --- end
 --- ```
+--- @param bodyA number -- First body handle (zero for static)
+--- @param bodyB number -- Second body handle (zero for static)
+--- @param dir TVec -- World space direction
+--- @param relAngVel number -- Desired relative angular velocity along the provided direction
+--- @param min? number -- Minimum angular impulse (default: -infinity)
+--- @param max? number -- Maximum angular impulse (default: infinity)
 --- [View Documentation](https://teardowngame.com/experimental/api.html#ConstrainAngularVelocity)
 function ConstrainAngularVelocity(bodyA, bodyB, dir, relAngVel, min, max) end
 
@@ -530,12 +530,6 @@ function ConstrainAngularVelocity(bodyA, bodyB, dir, relAngVel, min, max) end
 --- maximum relative velocity and maximum impulse. In other words: physically push on
 --- the bodies so that pointA and pointB are aligned in world space. This is useful for
 --- physically animating objects. This function should only be used from the update callback.
---- @param bodyA number -- First body handle (zero for static)
---- @param bodyB number -- Second body handle (zero for static)
---- @param pointA TVec -- World space point for first body
---- @param pointB TVec -- World space point for second body
---- @param maxVel? number -- Maximum relative velocity (default: infinite)
---- @param maxImpulse? number -- Maximum impulse (default: infinite)
 --- ### Example
 --- ```lua
 --- local handleA = 0
@@ -552,6 +546,12 @@ function ConstrainAngularVelocity(bodyA, bodyB, dir, relAngVel, min, max) end
 --- 	ConstrainPosition(handleA, handleA, GetBodyTransform(handleA).pos, GetBodyTransform(handleB).pos)
 --- end
 --- ```
+--- @param bodyA number -- First body handle (zero for static)
+--- @param bodyB number -- Second body handle (zero for static)
+--- @param pointA TVec -- World space point for first body
+--- @param pointB TVec -- World space point for second body
+--- @param maxVel? number -- Maximum relative velocity (default: infinite)
+--- @param maxImpulse? number -- Maximum impulse (default: infinite)
 --- [View Documentation](https://teardowngame.com/experimental/api.html#ConstrainPosition)
 function ConstrainPosition(bodyA, bodyB, pointA, pointB, maxVel, maxImpulse) end
 
@@ -561,12 +561,6 @@ function ConstrainPosition(bodyA, bodyB, pointA, pointB, maxVel, maxImpulse) end
 --- angular velocity and maximum angular impulse. In other words: physically rotate the
 --- bodies so that quatA and quatB are aligned in world space. This is useful for
 --- physically animating objects. This function should only be used from the update callback.
---- @param bodyA number -- First body handle (zero for static)
---- @param bodyB number -- Second body handle (zero for static)
---- @param quatA TQuat -- World space orientation for first body
---- @param quatB TQuat -- World space orientation for second body
---- @param maxAngVel? number -- Maximum relative angular velocity (default: infinite)
---- @param maxAngImpulse? number -- Maximum angular impulse (default: infinite)
 --- ### Example
 --- ```lua
 --- local handleA = 0
@@ -582,11 +576,16 @@ function ConstrainPosition(bodyA, bodyB, pointA, pointB, maxVel, maxImpulse) end
 --- 	ConstrainOrientation(handleA, handleB, GetBodyTransform(handleA).rot, GetBodyTransform(handleB).rot)
 --- end
 --- ```
+--- @param bodyA number -- First body handle (zero for static)
+--- @param bodyB number -- Second body handle (zero for static)
+--- @param quatA TQuat -- World space orientation for first body
+--- @param quatB TQuat -- World space orientation for second body
+--- @param maxAngVel? number -- Maximum relative angular velocity (default: infinite)
+--- @param maxAngImpulse? number -- Maximum angular impulse (default: infinite)
 --- [View Documentation](https://teardowngame.com/experimental/api.html#ConstrainOrientation)
 function ConstrainOrientation(bodyA, bodyB, quatA, quatB, maxAngVel, maxAngImpulse) end
 
 --- Every scene in Teardown has an implicit static world body that contains all shapes that are not explicitly assigned a body in the editor.
---- @return number body -- Handle to the static world body
 --- ### Example
 --- ```lua
 --- local handle
@@ -597,6 +596,7 @@ function ConstrainOrientation(bodyA, bodyB, quatA, quatB, maxAngVel, maxAngImpul
 --- 	DebugCross(GetBodyTransform(handle).pos)
 --- end
 --- ```
+--- @return number body -- Handle to the static world body
 --- [View Documentation](https://teardowngame.com/experimental/api.html#GetWorldBody)
 function GetWorldBody() end
 

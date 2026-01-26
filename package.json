@@ -2,7 +2,7 @@
 	"name": "teardown-intellisense",
 	"displayName": "Teardown Intellisense",
     "description": "Adds intellisense for Teardown's scripting API using custom-made definitions based on the web documentation",
-	"version": "0.5.5",
+	"version": "0.5.6",
 	"author": {
 		"name": "GhoustUser",
 		"url": "https://github.com/GhoustUser"

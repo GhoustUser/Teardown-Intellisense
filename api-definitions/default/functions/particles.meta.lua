@@ -13,17 +13,16 @@
 function ParticleReset() end
 
 --- Set type of particle
---- @param type string -- Type of particle. Can be "smoke" or "plain".
 --- ### Example
 --- ```lua
 --- function client.init()
 --- 	ParticleType("smoke")
 --- end
 --- ```
+--- @param type string -- Type of particle. Can be "smoke" or "plain".
 --- [View Documentation](https://teardowngame.com/experimental/api.html#ParticleType)
 function ParticleType(type) end
 
---- @param type number -- Tile in the particle texture atlas (0-15)
 --- ### Example
 --- ```lua
 --- function client.init()
@@ -33,16 +32,11 @@ function ParticleType(type) end
 --- 	ParticleTile(5)
 --- end
 --- ```
+--- @param type number -- Tile in the particle texture atlas (0-15)
 --- [View Documentation](https://teardowngame.com/experimental/api.html#ParticleTile)
 function ParticleTile(type) end
 
 --- Set particle color to either constant (three arguments) or linear interpolation (six arguments)
---- @param r0 number -- Red value
---- @param g0 number -- Green value
---- @param b0 number -- Blue value
---- @param r1? number -- Red value at end
---- @param g1? number -- Green value at end
---- @param b1? number -- Blue value at end
 --- ### Example
 --- ```lua
 --- function client.init()
@@ -52,15 +46,16 @@ function ParticleTile(type) end
 --- 	ParticleColor(1,1,0, 1,0,0)
 --- end
 --- ```
+--- @param r0 number -- Red value
+--- @param g0 number -- Green value
+--- @param b0 number -- Blue value
+--- @param r1? number -- Red value at end
+--- @param g1? number -- Green value at end
+--- @param b1? number -- Blue value at end
 --- [View Documentation](https://teardowngame.com/experimental/api.html#ParticleColor)
 function ParticleColor(r0, g0, b0, r1, g1, b1) end
 
 --- Set the particle radius. Max radius for smoke particles is 1.0.
---- @param r0 number -- Radius
---- @param r1? number -- End radius
---- @param interpolation? string -- Interpolation method: linear, smooth, easein, easeout or constant. Default is linear.
---- @param fadein? number -- Fade in between t=0 and t=fadein. Default is zero.
---- @param fadeout? number -- Fade out between t=fadeout and t=1. Default is one.
 --- ### Example
 --- ```lua
 --- function client.init()
@@ -70,15 +65,15 @@ function ParticleColor(r0, g0, b0, r1, g1, b1) end
 --- 	ParticleRadius(0.1, 0.7)
 --- end
 --- ```
+--- @param r0 number -- Radius
+--- @param r1? number -- End radius
+--- @param interpolation? string -- Interpolation method: linear, smooth, easein, easeout or constant. Default is linear.
+--- @param fadein? number -- Fade in between t=0 and t=fadein. Default is zero.
+--- @param fadeout? number -- Fade out between t=fadeout and t=1. Default is one.
 --- [View Documentation](https://teardowngame.com/experimental/api.html#ParticleRadius)
 function ParticleRadius(r0, r1, interpolation, fadein, fadeout) end
 
 --- Set the particle alpha (opacity).
---- @param a0 number -- Alpha (0.0 - 1.0)
---- @param a1? number -- End alpha (0.0 - 1.0)
---- @param interpolation? string -- Interpolation method: linear, smooth, easein, easeout or constant. Default is linear.
---- @param fadein? number -- Fade in between t=0 and t=fadein. Default is zero.
---- @param fadeout? number -- Fade out between t=fadeout and t=1. Default is one.
 --- ### Example
 --- ```lua
 --- function client.init()
@@ -86,15 +81,15 @@ function ParticleRadius(r0, r1, interpolation, fadein, fadeout) end
 --- 	ParticleAlpha(1.0, 0.0)
 --- end
 --- ```
+--- @param a0 number -- Alpha (0.0 - 1.0)
+--- @param a1? number -- End alpha (0.0 - 1.0)
+--- @param interpolation? string -- Interpolation method: linear, smooth, easein, easeout or constant. Default is linear.
+--- @param fadein? number -- Fade in between t=0 and t=fadein. Default is zero.
+--- @param fadeout? number -- Fade out between t=fadeout and t=1. Default is one.
 --- [View Documentation](https://teardowngame.com/experimental/api.html#ParticleAlpha)
 function ParticleAlpha(a0, a1, interpolation, fadein, fadeout) end
 
 --- Set particle gravity. It will be applied along the world Y axis. A negative value will move the particle downwards.
---- @param g0 number -- Gravity
---- @param g1? number -- End gravity
---- @param interpolation? string -- Interpolation method: linear, smooth, easein, easeout or constant. Default is linear.
---- @param fadein? number -- Fade in between t=0 and t=fadein. Default is zero.
---- @param fadeout? number -- Fade out between t=fadeout and t=1. Default is one.
 --- ### Example
 --- ```lua
 --- function client.init()
@@ -102,16 +97,16 @@ function ParticleAlpha(a0, a1, interpolation, fadein, fadeout) end
 --- 	ParticleGravity(2)
 --- end
 --- ```
+--- @param g0 number -- Gravity
+--- @param g1? number -- End gravity
+--- @param interpolation? string -- Interpolation method: linear, smooth, easein, easeout or constant. Default is linear.
+--- @param fadein? number -- Fade in between t=0 and t=fadein. Default is zero.
+--- @param fadeout? number -- Fade out between t=fadeout and t=1. Default is one.
 --- [View Documentation](https://teardowngame.com/experimental/api.html#ParticleGravity)
 function ParticleGravity(g0, g1, interpolation, fadein, fadeout) end
 
 --- Particle drag will slow down fast moving particles. It's implemented slightly different for
 --- smoke and plain particles. Drag must be positive, and usually look good between zero and one.
---- @param d0 number -- Drag
---- @param d1? number -- End drag
---- @param interpolation? string -- Interpolation method: linear, smooth, easein, easeout or constant. Default is linear.
---- @param fadein? number -- Fade in between t=0 and t=fadein. Default is zero.
---- @param fadeout? number -- Fade out between t=fadeout and t=1. Default is one.
 --- ### Example
 --- ```lua
 --- function client.init()
@@ -119,15 +114,15 @@ function ParticleGravity(g0, g1, interpolation, fadein, fadeout) end
 --- 	ParticleDrag(0.5)
 --- end
 --- ```
+--- @param d0 number -- Drag
+--- @param d1? number -- End drag
+--- @param interpolation? string -- Interpolation method: linear, smooth, easein, easeout or constant. Default is linear.
+--- @param fadein? number -- Fade in between t=0 and t=fadein. Default is zero.
+--- @param fadeout? number -- Fade out between t=fadeout and t=1. Default is one.
 --- [View Documentation](https://teardowngame.com/experimental/api.html#ParticleDrag)
 function ParticleDrag(d0, d1, interpolation, fadein, fadeout) end
 
 --- Draw particle as emissive (glow in the dark). This is useful for fire and embers.
---- @param d0 number -- Emissive
---- @param d1? number -- End emissive
---- @param interpolation? string -- Interpolation method: linear, smooth, easein, easeout or constant. Default is linear.
---- @param fadein? number -- Fade in between t=0 and t=fadein. Default is zero.
---- @param fadeout? number -- Fade out between t=fadeout and t=1. Default is one.
 --- ### Example
 --- ```lua
 --- function client.init()
@@ -135,15 +130,15 @@ function ParticleDrag(d0, d1, interpolation, fadein, fadeout) end
 --- 	ParticleEmissive(5, 0)
 --- end
 --- ```
+--- @param d0 number -- Emissive
+--- @param d1? number -- End emissive
+--- @param interpolation? string -- Interpolation method: linear, smooth, easein, easeout or constant. Default is linear.
+--- @param fadein? number -- Fade in between t=0 and t=fadein. Default is zero.
+--- @param fadeout? number -- Fade out between t=fadeout and t=1. Default is one.
 --- [View Documentation](https://teardowngame.com/experimental/api.html#ParticleEmissive)
 function ParticleEmissive(d0, d1, interpolation, fadein, fadeout) end
 
 --- Makes the particle rotate. Positive values is counter-clockwise rotation.
---- @param r0 number -- Rotation speed in radians per second.
---- @param r1? number -- End rotation speed in radians per second.
---- @param interpolation? string -- Interpolation method: linear, smooth, easein, easeout or constant. Default is linear.
---- @param fadein? number -- Fade in between t=0 and t=fadein. Default is zero.
---- @param fadeout? number -- Fade out between t=fadeout and t=1. Default is one.
 --- ### Example
 --- ```lua
 --- function client.init()
@@ -151,16 +146,16 @@ function ParticleEmissive(d0, d1, interpolation, fadein, fadeout) end
 --- 	ParticleRotation(10, 1)
 --- end
 --- ```
+--- @param r0 number -- Rotation speed in radians per second.
+--- @param r1? number -- End rotation speed in radians per second.
+--- @param interpolation? string -- Interpolation method: linear, smooth, easein, easeout or constant. Default is linear.
+--- @param fadein? number -- Fade in between t=0 and t=fadein. Default is zero.
+--- @param fadeout? number -- Fade out between t=fadeout and t=1. Default is one.
 --- [View Documentation](https://teardowngame.com/experimental/api.html#ParticleRotation)
 function ParticleRotation(r0, r1, interpolation, fadein, fadeout) end
 
 --- Stretch particle along with velocity. 0.0 means no stretching. 1.0 stretches with the particle motion over
 --- one frame. Larger values stretches the particle even more.
---- @param s0 number -- Stretch
---- @param s1? number -- End stretch
---- @param interpolation? string -- Interpolation method: linear, smooth, easein, easeout or constant. Default is linear.
---- @param fadein? number -- Fade in between t=0 and t=fadein. Default is zero.
---- @param fadeout? number -- Fade out between t=fadeout and t=1. Default is one.
 --- ### Example
 --- ```lua
 --- function client.init()
@@ -168,15 +163,15 @@ function ParticleRotation(r0, r1, interpolation, fadein, fadeout) end
 --- 	ParticleStretch(1.0)
 --- end
 --- ```
+--- @param s0 number -- Stretch
+--- @param s1? number -- End stretch
+--- @param interpolation? string -- Interpolation method: linear, smooth, easein, easeout or constant. Default is linear.
+--- @param fadein? number -- Fade in between t=0 and t=fadein. Default is zero.
+--- @param fadeout? number -- Fade out between t=fadeout and t=1. Default is one.
 --- [View Documentation](https://teardowngame.com/experimental/api.html#ParticleStretch)
 function ParticleStretch(s0, s1, interpolation, fadein, fadeout) end
 
 --- Make particle stick when in contact with objects. This can be used for friction.
---- @param s0 number -- Sticky (0.0 - 1.0)
---- @param s1? number -- End sticky (0.0 - 1.0)
---- @param interpolation? string -- Interpolation method: linear, smooth, easein, easeout or constant. Default is linear.
---- @param fadein? number -- Fade in between t=0 and t=fadein. Default is zero.
---- @param fadeout? number -- Fade out between t=fadeout and t=1. Default is one.
 --- ### Example
 --- ```lua
 --- function client.init()
@@ -184,17 +179,17 @@ function ParticleStretch(s0, s1, interpolation, fadein, fadeout) end
 --- 	ParticleSticky(0.5)
 --- end
 --- ```
+--- @param s0 number -- Sticky (0.0 - 1.0)
+--- @param s1? number -- End sticky (0.0 - 1.0)
+--- @param interpolation? string -- Interpolation method: linear, smooth, easein, easeout or constant. Default is linear.
+--- @param fadein? number -- Fade in between t=0 and t=fadein. Default is zero.
+--- @param fadeout? number -- Fade out between t=fadeout and t=1. Default is one.
 --- [View Documentation](https://teardowngame.com/experimental/api.html#ParticleSticky)
 function ParticleSticky(s0, s1, interpolation, fadein, fadeout) end
 
 --- Control particle collisions. A value of zero means that collisions are ignored. One means full collision.
 --- It is sometimes useful to animate this value from zero to one in order to not collide with objects around
 --- the emitter.
---- @param c0 number -- Collide (0.0 - 1.0)
---- @param c1? number -- End collide (0.0 - 1.0)
---- @param interpolation? string -- Interpolation method: linear, smooth, easein, easeout or constant. Default is linear.
---- @param fadein? number -- Fade in between t=0 and t=fadein. Default is zero.
---- @param fadeout? number -- Fade out between t=fadeout and t=1. Default is one.
 --- ### Example
 --- ```lua
 --- function client.init()
@@ -206,12 +201,16 @@ function ParticleSticky(s0, s1, interpolation, fadein, fadeout) end
 --- 	ParticleCollide(1, 1, "constant", 0.05)
 --- end
 --- ```
+--- @param c0 number -- Collide (0.0 - 1.0)
+--- @param c1? number -- End collide (0.0 - 1.0)
+--- @param interpolation? string -- Interpolation method: linear, smooth, easein, easeout or constant. Default is linear.
+--- @param fadein? number -- Fade in between t=0 and t=fadein. Default is zero.
+--- @param fadeout? number -- Fade out between t=fadeout and t=1. Default is one.
 --- [View Documentation](https://teardowngame.com/experimental/api.html#ParticleCollide)
 function ParticleCollide(c0, c1, interpolation, fadein, fadeout) end
 
 --- Set particle bitmask. The value 256 means fire extinguishing particles and is currently the only
 --- flag in use. There might be support for custom flags and queries in the future.
---- @param bitmask number -- Particle flags (bitmask 0-65535)
 --- ### Example
 --- ```lua
 --- function client.tick()
@@ -220,15 +219,13 @@ function ParticleCollide(c0, c1, interpolation, fadein, fadeout) end
 --- 	SpawnParticle(Vec(0, 10, 0), -0.1, math.random() + 1)
 --- end
 --- ```
+--- @param bitmask number -- Particle flags (bitmask 0-65535)
 --- [View Documentation](https://teardowngame.com/experimental/api.html#ParticleFlags)
 function ParticleFlags(bitmask) end
 
 --- Spawn particle using the previously set up particle state. You can call this multiple times
 --- using the same particle state, but with different position, velocity and lifetime. You can
 --- also modify individual properties in the particle state in between calls to to this function.
---- @param pos TVec -- World space point as vector
---- @param velocity TVec -- World space velocity as vector
---- @param lifetime number -- Particle lifetime in seconds
 --- ### Example
 --- ```lua
 --- function client.tick()
@@ -239,6 +236,9 @@ function ParticleFlags(bitmask) end
 --- 	SpawnParticle(Vec(0, 5, 0), Vec(0, 1, 0), 10.0)
 --- end
 --- ```
+--- @param pos TVec -- World space point as vector
+--- @param velocity TVec -- World space velocity as vector
+--- @param lifetime number -- Particle lifetime in seconds
 --- [View Documentation](https://teardowngame.com/experimental/api.html#SpawnParticle)
 function SpawnParticle(pos, velocity, lifetime) end
 

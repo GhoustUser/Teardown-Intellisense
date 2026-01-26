@@ -1,9 +1,6 @@
 --- @meta
 
 
---- @param tag? string -- Tag name
---- @param global? boolean -- Search in entire scene
---- @return number handle -- Handle to first joint with specified tag or zero if not found
 --- ### Example
 --- ```lua
 --- function client.init()
@@ -11,12 +8,12 @@
 --- 	DebugPrint(joint)
 --- end
 --- ```
+--- @param tag? string -- Tag name
+--- @param global? boolean -- Search in entire scene
+--- @return number handle -- Handle to first joint with specified tag or zero if not found
 --- [View Documentation](https://teardowngame.com/experimental/api.html#FindJoint)
 function FindJoint(tag, global) end
 
---- @param tag? string -- Tag name
---- @param global? boolean -- Search in entire scene
---- @return table list -- Indexed table with handles to all joints with specified tag
 --- ### Example
 --- ```lua
 --- --Search for locations tagged "doorhinge" in script scope
@@ -28,11 +25,12 @@ function FindJoint(tag, global) end
 --- 	end
 --- end
 --- ```
+--- @param tag? string -- Tag name
+--- @param global? boolean -- Search in entire scene
+--- @return table list -- Indexed table with handles to all joints with specified tag
 --- [View Documentation](https://teardowngame.com/experimental/api.html#FindJoints)
 function FindJoints(tag, global) end
 
---- @param joint number -- Joint handle
---- @return boolean broken -- True if joint is broken
 --- ### Example
 --- ```lua
 --- function client.init()
@@ -40,13 +38,13 @@ function FindJoints(tag, global) end
 --- 	DebugPrint(broken)
 --- end
 --- ```
+--- @param joint number -- Joint handle
+--- @return boolean broken -- True if joint is broken
 --- [View Documentation](https://teardowngame.com/experimental/api.html#IsJointBroken)
 function IsJointBroken(joint) end
 
 --- Joint type is one of the following: "ball", "hinge", "prismatic" or "rope".
 --- An empty string is returned if joint handle is invalid.
---- @param joint number -- Joint handle
---- @return string type -- Joint type
 --- ### Example
 --- ```lua
 --- function client.init()
@@ -56,14 +54,13 @@ function IsJointBroken(joint) end
 --- 	end
 --- end
 --- ```
+--- @param joint number -- Joint handle
+--- @return string type -- Joint type
 --- [View Documentation](https://teardowngame.com/experimental/api.html#GetJointType)
 function GetJointType(joint) end
 
 --- A joint is always connected to two shapes. Use this function if you know
 --- one shape and want to find the other one.
---- @param joint number -- Joint handle
---- @param shape number -- Shape handle
---- @return number other -- Other shape handle
 --- ### Example
 --- ```lua
 --- function client.init()
@@ -75,12 +72,13 @@ function GetJointType(joint) end
 --- 	--otherShape is now A
 --- end
 --- ```
+--- @param joint number -- Joint handle
+--- @param shape number -- Shape handle
+--- @return number other -- Other shape handle
 --- [View Documentation](https://teardowngame.com/experimental/api.html#GetJointOtherShape)
 function GetJointOtherShape(joint, shape) end
 
 --- Get shapes connected to the joint.
---- @param joint number -- Joint handle
---- @return number shapes -- Shape handles
 --- ### Example
 --- ```lua
 --- local mainBody
@@ -108,6 +106,8 @@ function GetJointOtherShape(joint, shape) end
 --- 	end
 --- end
 --- ```
+--- @param joint number -- Joint handle
+--- @return number shapes -- Shape handles
 --- [View Documentation](https://teardowngame.com/experimental/api.html#GetJointShapes)
 function GetJointShapes(joint) end
 
@@ -115,9 +115,6 @@ function GetJointShapes(joint) end
 --- given in radians per second angular velocity. If joint type is prismatic joint
 --- velocity is given in meters per second. Calling this function will override and
 --- void any previous call to SetJointMotorTarget.
---- @param joint number -- Joint handle
---- @param velocity number -- Desired velocity
---- @param strength? number -- Desired strength. Default is infinite. Zero to disable.
 --- ### Example
 --- ```lua
 --- function server.init()
@@ -125,6 +122,9 @@ function GetJointShapes(joint) end
 --- 	SetJointMotor(FindJoint("hinge"), 0.5)
 --- end
 --- ```
+--- @param joint number -- Joint handle
+--- @param velocity number -- Desired velocity
+--- @param strength? number -- Desired strength. Default is infinite. Zero to disable.
 --- [View Documentation](https://teardowngame.com/experimental/api.html#SetJointMotor)
 function SetJointMotor(joint, velocity, strength) end
 
@@ -134,10 +134,6 @@ function SetJointMotor(joint, velocity, strength) end
 --- is given in radians per second. If joint type is prismatic, target is given
 --- in meters and velocity is given in meters per second. Setting a motor target will
 --- override any previous call to SetJointMotor.
---- @param joint number -- Joint handle
---- @param target number -- Desired movement target
---- @param maxVel? number -- Maximum velocity to reach target. Default is infinite.
---- @param strength? number -- Desired strength. Default is infinite. Zero to disable.
 --- ### Example
 --- ```lua
 --- function server.init()
@@ -145,14 +141,15 @@ function SetJointMotor(joint, velocity, strength) end
 --- 	SetJointMotorTarget(FindJoint("hinge"), 45, 3)
 --- end
 --- ```
+--- @param joint number -- Joint handle
+--- @param target number -- Desired movement target
+--- @param maxVel? number -- Maximum velocity to reach target. Default is infinite.
+--- @param strength? number -- Desired strength. Default is infinite. Zero to disable.
 --- [View Documentation](https://teardowngame.com/experimental/api.html#SetJointMotorTarget)
 function SetJointMotorTarget(joint, target, maxVel, strength) end
 
 --- Return joint limits for hinge or prismatic joint. Returns angle or distance
 --- depending on joint type.
---- @param joint number -- Joint handle
---- @return number min -- Minimum joint limit (angle or distance)
---- @return number max -- Maximum joint limit (angle or distance)
 --- ### Example
 --- ```lua
 --- function client.init()
@@ -160,13 +157,14 @@ function SetJointMotorTarget(joint, target, maxVel, strength) end
 --- 	DebugPrint(min .. "-" .. max)
 --- end
 --- ```
+--- @param joint number -- Joint handle
+--- @return number min -- Minimum joint limit (angle or distance)
+--- @return number max -- Maximum joint limit (angle or distance)
 --- [View Documentation](https://teardowngame.com/experimental/api.html#GetJointLimits)
 function GetJointLimits(joint) end
 
 --- Return the current position or angle or the joint, measured in same way
 --- as joint limits.
---- @param joint number -- Joint handle
---- @return number movement -- Current joint position or angle
 --- ### Example
 --- ```lua
 --- function client.init()
@@ -174,11 +172,11 @@ function GetJointLimits(joint) end
 --- 	DebugPrint(current)
 --- end
 --- ```
+--- @param joint number -- Joint handle
+--- @return number movement -- Current joint position or angle
 --- [View Documentation](https://teardowngame.com/experimental/api.html#GetJointMovement)
 function GetJointMovement(joint) end
 
---- @param body number -- Body handle (must be dynamic)
---- @return table bodies -- Handles to all dynamic bodies in the jointed structure. The input handle will also be included.
 --- ### Example
 --- ```lua
 --- local body = 0
@@ -193,25 +191,25 @@ function GetJointMovement(joint) end
 --- 	end
 --- end
 --- ```
+--- @param body number -- Body handle (must be dynamic)
+--- @return table bodies -- Handles to all dynamic bodies in the jointed structure. The input handle will also be included.
 --- [View Documentation](https://teardowngame.com/experimental/api.html#GetJointedBodies)
 function GetJointedBodies(body) end
 
 --- Detach joint from shape. If joint is not connected to shape, nothing happens.
---- @param joint number -- Joint handle
---- @param shape number -- Shape handle
 --- ### Example
 --- ```lua
 --- function server.init()
 --- 	DetachJointFromShape(FindJoint("joint"), FindShape("door"))
 --- end
 --- ```
+--- @param joint number -- Joint handle
+--- @param shape number -- Shape handle
 --- [View Documentation](https://teardowngame.com/experimental/api.html#DetachJointFromShape)
 function DetachJointFromShape(joint, shape) end
 
 --- Returns the number of points in the rope given its handle.
 --- Will return zero if the handle is not a rope
---- @param joint number -- Joint handle
---- @return number amount -- Number of points in a rope or zero if invalid
 --- ### Example
 --- ```lua
 --- function client.init()
@@ -219,14 +217,13 @@ function DetachJointFromShape(joint, shape) end
 --- 	local numberPoints = GetRopeNumberOfPoints(joint)
 --- end
 --- ```
+--- @param joint number -- Joint handle
+--- @return number amount -- Number of points in a rope or zero if invalid
 --- [View Documentation](https://teardowngame.com/experimental/api.html#GetRopeNumberOfPoints)
 function GetRopeNumberOfPoints(joint) end
 
 --- Returns the world position of the rope's point.
 --- Will return nil if the handle is not a rope or the index is not valid
---- @param joint number -- Joint handle
---- @param index number -- The point index, starting at 1
---- @return TVec pos -- World position of the point, or nil, if invalid
 --- ### Example
 --- ```lua
 --- function client.init()
@@ -237,14 +234,14 @@ function GetRopeNumberOfPoints(joint) end
 --- 	end
 --- end
 --- ```
+--- @param joint number -- Joint handle
+--- @param index number -- The point index, starting at 1
+--- @return TVec pos -- World position of the point, or nil, if invalid
 --- [View Documentation](https://teardowngame.com/experimental/api.html#GetRopePointPosition)
 function GetRopePointPosition(joint, index) end
 
 --- Returns the bounds of the rope.
 --- Will return nil if the handle is not a rope
---- @param joint number -- Joint handle
---- @return TVec min -- Lower point of rope bounds in world space
---- @return TVec max -- Upper point of rope bounds in world space
 --- ### Example
 --- ```lua
 --- function client.init()
@@ -254,12 +251,13 @@ function GetRopePointPosition(joint, index) end
 --- 	DebugCross(ma)
 --- end
 --- ```
+--- @param joint number -- Joint handle
+--- @return TVec min -- Lower point of rope bounds in world space
+--- @return TVec max -- Upper point of rope bounds in world space
 --- [View Documentation](https://teardowngame.com/experimental/api.html#GetRopeBounds)
 function GetRopeBounds(joint) end
 
 --- Breaks the rope at the specified point.
---- @param joint number -- Rope type joint handle
---- @param point TVec -- Point of break as world space vector
 --- ### Example
 --- ```lua
 --- function doPlayerAction(playerId)
@@ -272,6 +270,8 @@ function GetRopeBounds(joint) end
 --- 	end
 --- end
 --- ```
+--- @param joint number -- Rope type joint handle
+--- @param point TVec -- Point of break as world space vector
 --- [View Documentation](https://teardowngame.com/experimental/api.html#BreakRope)
 function BreakRope(joint, point) end
 

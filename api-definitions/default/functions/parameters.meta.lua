@@ -1,9 +1,6 @@
 --- @meta
 
 
---- @param name string -- Parameter name
---- @param default number -- Default parameter value
---- @return number value -- Parameter value
 --- ### Example
 --- ```lua
 --- function init()
@@ -12,12 +9,12 @@
 --- 	DebugPrint(parameterBlinkCount)
 --- end
 --- ```
---- [View Documentation](https://teardowngame.com/experimental/api.html#GetIntParam)
-function GetIntParam(name, default) end
-
 --- @param name string -- Parameter name
 --- @param default number -- Default parameter value
 --- @return number value -- Parameter value
+--- [View Documentation](https://teardowngame.com/experimental/api.html#GetIntParam)
+function GetIntParam(name, default) end
+
 --- ### Example
 --- ```lua
 --- function init()
@@ -26,12 +23,12 @@ function GetIntParam(name, default) end
 --- 	DebugPrint(parameterSpeed)
 --- end
 --- ```
+--- @param name string -- Parameter name
+--- @param default number -- Default parameter value
+--- @return number value -- Parameter value
 --- [View Documentation](https://teardowngame.com/experimental/api.html#GetFloatParam)
 function GetFloatParam(name, default) end
 
---- @param name string -- Parameter name
---- @param default boolean -- Default parameter value
---- @return boolean value -- Parameter value
 --- ### Example
 --- ```lua
 --- function init()
@@ -40,12 +37,12 @@ function GetFloatParam(name, default) end
 --- 	DebugPrint(parameterPlaySound)
 --- end
 --- ```
+--- @param name string -- Parameter name
+--- @param default boolean -- Default parameter value
+--- @return boolean value -- Parameter value
 --- [View Documentation](https://teardowngame.com/experimental/api.html#GetBoolParam)
 function GetBoolParam(name, default) end
 
---- @param name string -- Parameter name
---- @param default string -- Default parameter value
---- @return string value -- Parameter value
 --- ### Example
 --- ```lua
 --- function init()
@@ -54,12 +51,12 @@ function GetBoolParam(name, default) end
 --- 	DebugPrint(parameterMode)
 --- end
 --- ```
+--- @param name string -- Parameter name
+--- @param default string -- Default parameter value
+--- @return string value -- Parameter value
 --- [View Documentation](https://teardowngame.com/experimental/api.html#GetStringParam)
 function GetStringParam(name, default) end
 
---- @param name string -- Parameter name
---- @param default number -- Default parameter value
---- @return number value -- Parameter value
 --- ### Example
 --- ```lua
 --- function init()
@@ -68,6 +65,9 @@ function GetStringParam(name, default) end
 --- 	DebugPrint(color_r .. " " .. color_g .. " " .. color_b)
 --- end
 --- ```
+--- @param name string -- Parameter name
+--- @param default number -- Default parameter value
+--- @return number value -- Parameter value
 --- [View Documentation](https://teardowngame.com/experimental/api.html#GetColorParam)
 function GetColorParam(name, default) end
 

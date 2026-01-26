@@ -6,6 +6,14 @@
 
 ---@alias InputIdentifier ScriptControl_PhysicalInput | ScriptControl_LogicalInput
 
+--- ### Example
+--- ```lua
+--- function init()
+--- 	local v = GetVersion()
+--- 	--v is "0.5.0"
+--- 	DebugPrint(v)
+--- end
+--- ```
 --- @alias ScriptControl_PhysicalInput
 --- | 'esc' Escape key
 --- | 'tab' Tab key
@@ -128,19 +136,9 @@
 --- | 'bounce' Bounce and overshoot new value
 
 --- @return string version -- Dot separated string of current version of the game
---- ### Example
---- ```lua
---- function init()
---- 	local v = GetVersion()
---- 	--v is "0.5.0"
---- 	DebugPrint(v)
---- end
---- ```
 --- [View Documentation](https://teardowngame.com/experimental/api.html#GetVersion)
 function GetVersion() end
 
---- @param version string -- Reference version
---- @return boolean match -- True if current version is at least provided one
 --- ### Example
 --- ```lua
 --- function init()
@@ -153,12 +151,13 @@ function GetVersion() end
 --- 	end
 --- end
 --- ```
+--- @param version string -- Reference version
+--- @return boolean match -- True if current version is at least provided one
 --- [View Documentation](https://teardowngame.com/experimental/api.html#HasVersion)
 function HasVersion(version) end
 
 --- Returns running time of this script. If called from update, this returns
 --- the simulated time, otherwise it returns wall time.
---- @return number time -- The time in seconds since level was started
 --- ### Example
 --- ```lua
 --- function client.update()
@@ -166,13 +165,13 @@ function HasVersion(version) end
 --- 	DebugPrint(t)
 --- end
 --- ```
+--- @return number time -- The time in seconds since level was started
 --- [View Documentation](https://teardowngame.com/experimental/api.html#GetTime)
 function GetTime() end
 
 --- Returns timestep of the last frame. If called from update, this returns
 --- the simulation time step, which is always one 60th of a second (0.0166667).
 --- If called from tick or draw it returns the actual time since last frame.
---- @return number dt -- The timestep in seconds
 --- ### Example
 --- ```lua
 --- function client.tick()
@@ -184,11 +183,10 @@ function GetTime() end
 --- 	DebugPrint("update dt: " .. dt)
 --- end
 --- ```
+--- @return number dt -- The timestep in seconds
 --- [View Documentation](https://teardowngame.com/experimental/api.html#GetTimeStep)
 function GetTimeStep() end
 
---- @param playerId? number -- Player ID. On client, zero means client player. On server, zero means server (host) player.
---- @return string name -- Name of last pressed key, empty if no key is pressed
 --- ### Example
 --- ```lua
 --- function client.tick()
@@ -198,12 +196,11 @@ function GetTimeStep() end
 --- 	end
 --- end
 --- ```
+--- @param playerId? number -- Player ID. On client, zero means client player. On server, zero means server (host) player.
+--- @return string name -- Name of last pressed key, empty if no key is pressed
 --- [View Documentation](https://teardowngame.com/experimental/api.html#InputLastPressedKey)
 function InputLastPressedKey(playerId) end
 
---- @param input InputIdentifier -- The input identifier
---- @param playerId? number -- Player ID. On client, zero means client player. On server, zero means server (host) player.
---- @return boolean pressed -- True if input was pressed during last frame
 --- ### Example
 --- ```lua
 --- function client.tick()
@@ -212,12 +209,12 @@ function InputLastPressedKey(playerId) end
 --- 	end
 --- end
 --- ```
+--- @param input InputIdentifier -- The input identifier
+--- @param playerId? number -- Player ID. On client, zero means client player. On server, zero means server (host) player.
+--- @return boolean pressed -- True if input was pressed during last frame
 --- [View Documentation](https://teardowngame.com/experimental/api.html#InputPressed)
 function InputPressed(input, playerId) end
 
---- @param input InputIdentifier -- The input identifier
---- @param playerId? number -- Player ID. On client, zero means client player. On server, zero means server (host) player.
---- @return boolean pressed -- True if input was released during last frame
 --- ### Example
 --- ```lua
 --- function client.tick()
@@ -226,12 +223,12 @@ function InputPressed(input, playerId) end
 --- 	end
 --- end
 --- ```
+--- @param input InputIdentifier -- The input identifier
+--- @param playerId? number -- Player ID. On client, zero means client player. On server, zero means server (host) player.
+--- @return boolean pressed -- True if input was released during last frame
 --- [View Documentation](https://teardowngame.com/experimental/api.html#InputReleased)
 function InputReleased(input, playerId) end
 
---- @param input InputIdentifier -- The input identifier
---- @param playerId? number -- Player ID. On client, zero means client player. On server, zero means server (host) player.
---- @return boolean pressed -- True if input is currently held down
 --- ### Example
 --- ```lua
 --- function client.tick()
@@ -240,12 +237,12 @@ function InputReleased(input, playerId) end
 --- 	end
 --- end
 --- ```
+--- @param input InputIdentifier -- The input identifier
+--- @param playerId? number -- Player ID. On client, zero means client player. On server, zero means server (host) player.
+--- @return boolean pressed -- True if input is currently held down
 --- [View Documentation](https://teardowngame.com/experimental/api.html#InputDown)
 function InputDown(input, playerId) end
 
---- @param input InputIdentifier -- The input identifier
---- @param playerId? number -- Player ID. On client, zero means client player. On server, zero means server (host) player.
---- @return number value -- Depends on input type
 --- ### Example
 --- ```lua
 --- local scrollPos = 0
@@ -254,6 +251,9 @@ function InputDown(input, playerId) end
 --- 	DebugPrint(scrollPos)
 --- end
 --- ```
+--- @param input InputIdentifier -- The input identifier
+--- @param playerId? number -- Player ID. On client, zero means client player. On server, zero means server (host) player.
+--- @return number value -- Depends on input type
 --- [View Documentation](https://teardowngame.com/experimental/api.html#InputValue)
 function InputValue(input, playerId) end
 
@@ -292,7 +292,6 @@ function InputResetOnTransition() end
 
 --- Returns the last input device id.
 --- 0 - none, 1 - mouse, 2 - gamepad
---- @return number value -- Last device id
 --- ### Example
 --- ```lua
 --- #include "ui/ui_helpers.lua"
@@ -306,13 +305,10 @@ function InputResetOnTransition() end
 --- 	end
 --- end
 --- ```
+--- @return number value -- Last device id
 --- [View Documentation](https://teardowngame.com/experimental/api.html#LastInputDevice)
 function LastInputDevice() end
 
---- @param variable string -- Name of number variable in the global context
---- @param value number -- The new value
---- @param transition? SetValue_Transition -- Transition type. See description.
---- @param time? number -- Transition time (seconds)
 --- ### Example
 --- ```lua
 --- myValue = 0
@@ -322,16 +318,15 @@ function LastInputDevice() end
 --- 	DebugPrint(myValue)
 --- end
 --- ```
+--- @param variable string -- Name of number variable in the global context
+--- @param value number -- The new value
+--- @param transition? SetValue_Transition -- Transition type. See description.
+--- @param time? number -- Transition time (seconds)
 --- [View Documentation](https://teardowngame.com/experimental/api.html#SetValue)
 function SetValue(variable, value, transition, time) end
 
 --- Chages the value of a table member in time according to specified args.
 --- Works similar to SetValue but for global variables of trivial types
---- @param tableId table -- Id of the table
---- @param memberName string -- Name of the member
---- @param newValue number -- New value
---- @param type string -- Transition type
---- @param length number -- Transition length
 --- ### Example
 --- ```lua
 --- local t = {}
@@ -345,6 +340,11 @@ function SetValue(variable, value, transition, time) end
 --- 	end
 --- end
 --- ```
+--- @param tableId table -- Id of the table
+--- @param memberName string -- Name of the member
+--- @param newValue number -- New value
+--- @param type string -- Transition type
+--- @param length number -- Transition length
 --- [View Documentation](https://teardowngame.com/experimental/api.html#SetValueInTable)
 function SetValueInTable(tableId, memberName, newValue, type, length) end
 
@@ -355,10 +355,6 @@ function SetValueInTable(tableId, memberName, newValue, type, length) end
 --- Call this function every frame from the tick function for as long as the pause menu button
 --- should still be visible.
 --- Only one button per script is allowed. Consecutive calls replace button added in previous calls.
---- @param title string -- Text on button
---- @param location? string -- Button location. If "bottom_bar" - bottom bar, if "main_bottom" - below "Main menu" button, if "main_top" - above "Main menu" button. Default "bottom_bar".
---- @param disabled? boolean -- Disable button. Button will be rendered as grayed out. Default is false. Only available when used with "bottom_bar".
---- @return boolean clicked -- True if clicked, false otherwise
 --- ### Example
 --- ```lua
 --- function server.startLevel(mission, path)
@@ -395,13 +391,15 @@ function SetValueInTable(tableId, memberName, newValue, type, length) end
 --- 	end
 --- end
 --- ```
+--- @param title string -- Text on button
+--- @param location? string -- Button location. If "bottom_bar" - bottom bar, if "main_bottom" - below "Main menu" button, if "main_top" - above "Main menu" button. Default "bottom_bar".
+--- @param disabled? boolean -- Disable button. Button will be rendered as grayed out. Default is false. Only available when used with "bottom_bar".
+--- @return boolean clicked -- True if clicked, false otherwise
 --- [View Documentation](https://teardowngame.com/experimental/api.html#PauseMenuButton)
 function PauseMenuButton(title, location, disabled) end
 
 --- Checks that file exists on the specified path.
 --- It is preferable to use UiHasImage whenever possible - it has better performance
---- @param path string -- Path to file
---- @return boolean exists -- True if file exists
 --- ### Example
 --- ```lua
 --- local file = "gfx/circle.png"
@@ -411,14 +409,12 @@ function PauseMenuButton(title, location, disabled) end
 --- 	end
 --- end
 --- ```
+--- @param path string -- Path to file
+--- @return boolean exists -- True if file exists
 --- [View Documentation](https://teardowngame.com/experimental/api.html#HasFile)
 function HasFile(path) end
 
 --- Start a level
---- @param mission string -- An identifier of your choice
---- @param path string -- Path to level XML file
---- @param layers? string -- Active layers. Default is no layers.
---- @param passThrough? boolean -- If set, loading screen will have no text and music will keep playing
 --- ### Example
 --- ```lua
 --- function server.init()
@@ -428,11 +424,14 @@ function HasFile(path) end
 --- 	StartLevel("level1", "MOD/level1.xml", "vehicles targets")
 --- end
 --- ```
+--- @param mission string -- An identifier of your choice
+--- @param path string -- Path to level XML file
+--- @param layers? string -- Active layers. Default is no layers.
+--- @param passThrough? boolean -- If set, loading screen will have no text and music will keep playing
 --- [View Documentation](https://teardowngame.com/experimental/api.html#StartLevel)
 function StartLevel(mission, path, layers, passThrough) end
 
 --- Set paused state of the game
---- @param paused boolean -- True if game should be paused
 --- ### Example
 --- ```lua
 --- function client.tick()
@@ -442,6 +441,7 @@ function StartLevel(mission, path, layers, passThrough) end
 --- 	end
 --- end
 --- ```
+--- @param paused boolean -- True if game should be paused
 --- [View Documentation](https://teardowngame.com/experimental/api.html#SetPaused)
 function SetPaused(paused) end
 
@@ -469,9 +469,6 @@ function Restart() end
 --- [View Documentation](https://teardowngame.com/experimental/api.html#Menu)
 function Menu() end
 
---- @param playerId number -- Player ID of the recipient. Use 0 to broadcast to every player.
---- @param function_arg string -- Name of the function to be invoked. This function must exist within issuing script.
---- @param ...? any -- Optional parameters to send to the recipent(s). Arguments should match the signature of the specified function.
 --- ### Example
 --- ```lua
 --- function server.tick()
@@ -491,11 +488,12 @@ function Menu() end
 --- 	-- spawn particles..
 --- end
 --- ```
+--- @param playerId number -- Player ID of the recipient. Use 0 to broadcast to every player.
+--- @param function_arg string -- Name of the function to be invoked. This function must exist within issuing script.
+--- @param ...? any -- Optional parameters to send to the recipent(s). Arguments should match the signature of the specified function.
 --- [View Documentation](https://teardowngame.com/experimental/api.html#ClientCall)
 function ClientCall(playerId, function_arg, ...) end
 
---- @param function_arg string -- Name of the function to be invoked. This function must exist within issuing script.
---- @param ...? any -- Optional parameters to send to the server. Arguments should match the signature of the specified function.
 --- ### Example
 --- ```lua
 --- function client.tick()
@@ -507,6 +505,8 @@ function ClientCall(playerId, function_arg, ...) end
 --- 	shared.playersReady[playerId] = true
 --- end
 --- ```
+--- @param function_arg string -- Name of the function to be invoked. This function must exist within issuing script.
+--- @param ...? any -- Optional parameters to send to the server. Arguments should match the signature of the specified function.
 --- [View Documentation](https://teardowngame.com/experimental/api.html#ServerCall)
 function ServerCall(function_arg, ...) end
 

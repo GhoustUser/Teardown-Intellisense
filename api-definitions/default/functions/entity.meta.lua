@@ -1,11 +1,22 @@
 --- @meta
 
 
---- An Entity is the basis of most objects in the Teardown engine (bodies, shapes, lights, locations, etc). 
---- All entities can have tags, which is a way to store custom properties on entities for scripting purposes. 
---- Some tags are also reserved for engine use. See documentation for details. 
+--- An Entity is the basis of most objects in the Teardown engine (bodies, shapes, lights, locations, etc).
+--- All entities can have tags, which is a way to store custom properties on entities for scripting purposes.
+--- Some tags are also reserved for engine use. See documentation for details.
 
 
+--- ### Example
+--- ```lua
+--- function client.tick()
+--- 	--You may use this function in a similar way to other "Find functions" like FindBody, FindShape, FindVehicle, etc.
+--- 	local myCar = FindEntity("myCar", false, "vehicle")
+--- 	--If you do not specify the tag, the first element found will be returned
+--- 	local joint = FindEntity("", true, "joint")
+--- 	--If the type is not specified, the search will be performed for all types of entity
+--- 	local target = FindEntity("target", true)
+--- end
+--- ```
 --- @alias GetProperty_EntityType
 --- | 'Body' desc (string), dynamic (boolean), mass (number), transform, velocity (vector(x, y, z)), angVelocity (vector(x, y, z)), active (boolean), friction (number), restitution (number), frictionMode (average|minimum|multiply|maximum), restitutionMode (average|minimum|multiply|maximum)
 --- | 'Shape' density (number), strength (number), size (number), emissiveScale (number), localTransform, worldTransform
@@ -35,25 +46,10 @@
 --- @param global? boolean -- Search in entire scene
 --- @param type? string -- Entity type ("body", "shape", "light", "location" etc.)
 --- @return number handle -- Handle to first entity with specified tag or zero if not found
---- ### Example
---- ```lua
---- function client.tick()
---- 	--You may use this function in a similar way to other "Find functions" like FindBody, FindShape, FindVehicle, etc.
---- 	local myCar = FindEntity("myCar", false, "vehicle")
---- 	--If you do not specify the tag, the first element found will be returned
---- 	local joint = FindEntity("", true, "joint")
---- 	--If the type is not specified, the search will be performed for all types of entity
---- 	local target = FindEntity("target", true)
---- end
---- ```
 --- [View Documentation](https://teardowngame.com/experimental/api.html#FindEntity)
 function FindEntity(tag, global, type) end
 
 --- Returns a list of entities with the specified tag and type. This is a universal method that is an alternative to FindBody, FindShape, FindVehicle, etc.
---- @param tag? string -- Tag name
---- @param global? boolean -- Search in entire scene
---- @param type? string -- Entity type ("body", "shape", "light", "location" etc.)
---- @return table list -- Indexed table with handles to all entities with specified tag
 --- ### Example
 --- ```lua
 --- function client.tick()
@@ -65,15 +61,14 @@ function FindEntity(tag, global, type) end
 --- 	local allUnbreakables = FindEntities("unbreakable", true)
 --- end
 --- ```
+--- @param tag? string -- Tag name
+--- @param global? boolean -- Search in entire scene
+--- @param type? string -- Entity type ("body", "shape", "light", "location" etc.)
+--- @return table list -- Indexed table with handles to all entities with specified tag
 --- [View Documentation](https://teardowngame.com/experimental/api.html#FindEntities)
 function FindEntities(tag, global, type) end
 
 --- Returns child entities
---- @param handle number -- Entity handle
---- @param tag? string -- Tag name
---- @param recursive? boolean -- Search recursively
---- @param type? string -- Entity type ("body", "shape", "light", "location" etc.)
---- @return table list -- Indexed table with child elements of the entity
 --- ### Example
 --- ```lua
 --- function client.tick()
@@ -85,13 +80,14 @@ function FindEntities(tag, global, type) end
 --- 	end
 --- end
 --- ```
+--- @param handle number -- Entity handle
+--- @param tag? string -- Tag name
+--- @param recursive? boolean -- Search recursively
+--- @param type? string -- Entity type ("body", "shape", "light", "location" etc.)
+--- @return table list -- Indexed table with child elements of the entity
 --- [View Documentation](https://teardowngame.com/experimental/api.html#GetEntityChildren)
 function GetEntityChildren(handle, tag, recursive, type) end
 
---- @param handle number -- Entity handle
---- @param tag? string -- Tag name
---- @param type? string -- Entity type ("body", "shape", "light", "location" etc.)
---- @return number handle -- 
 --- ### Example
 --- ```lua
 --- function client.tick()
@@ -100,12 +96,13 @@ function GetEntityChildren(handle, tag, recursive, type) end
 --- 	DebugWatch("Wheel vehicle", GetEntityType(vehicle) .. " " .. tostring(vehicle))
 --- end
 --- ```
+--- @param handle number -- Entity handle
+--- @param tag? string -- Tag name
+--- @param type? string -- Entity type ("body", "shape", "light", "location" etc.)
+--- @return number handle --
 --- [View Documentation](https://teardowngame.com/experimental/api.html#GetEntityParent)
 function GetEntityParent(handle, tag, type) end
 
---- @param handle number -- Entity handle
---- @param tag string -- Tag name
---- @param value? string -- Tag value
 --- ### Example
 --- ```lua
 --- function init()
@@ -118,12 +115,13 @@ function GetEntityParent(handle, tag, type) end
 --- 	DebugPrint(HasTag(handle, "team"))
 --- end
 --- ```
+--- @param handle number -- Entity handle
+--- @param tag string -- Tag name
+--- @param value? string -- Tag value
 --- [View Documentation](https://teardowngame.com/experimental/api.html#SetTag)
 function SetTag(handle, tag, value) end
 
 --- Remove tag from an entity. If the tag had a value it is removed too.
---- @param handle number -- Entity handle
---- @param tag string -- Tag name
 --- ### Example
 --- ```lua
 --- function init()
@@ -137,12 +135,11 @@ function SetTag(handle, tag, value) end
 --- 	DebugPrint(HasTag(handle, "team"))
 --- end
 --- ```
+--- @param handle number -- Entity handle
+--- @param tag string -- Tag name
 --- [View Documentation](https://teardowngame.com/experimental/api.html#RemoveTag)
 function RemoveTag(handle, tag) end
 
---- @param handle number -- Entity handle
---- @param tag string -- Tag name
---- @return boolean exists -- Returns true if entity has tag
 --- ### Example
 --- ```lua
 --- function init()
@@ -155,12 +152,12 @@ function RemoveTag(handle, tag) end
 --- 	DebugPrint(HasTag(handle, "team"))
 --- end
 --- ```
+--- @param handle number -- Entity handle
+--- @param tag string -- Tag name
+--- @return boolean exists -- Returns true if entity has tag
 --- [View Documentation](https://teardowngame.com/experimental/api.html#HasTag)
 function HasTag(handle, tag) end
 
---- @param handle number -- Entity handle
---- @param tag string -- Tag name
---- @return string value -- Returns the tag value, if any. Empty string otherwise.
 --- ### Example
 --- ```lua
 --- function init()
@@ -170,11 +167,12 @@ function HasTag(handle, tag) end
 --- 	DebugPrint(GetTagValue(handle, "team"))
 --- end
 --- ```
+--- @param handle number -- Entity handle
+--- @param tag string -- Tag name
+--- @return string value -- Returns the tag value, if any. Empty string otherwise.
 --- [View Documentation](https://teardowngame.com/experimental/api.html#GetTagValue)
 function GetTagValue(handle, tag) end
 
---- @param handle number -- Entity handle
---- @return table tags -- Indexed table of tags on entity
 --- ### Example
 --- ```lua
 --- function init()
@@ -188,14 +186,14 @@ function GetTagValue(handle, tag) end
 --- 	end
 --- end
 --- ```
+--- @param handle number -- Entity handle
+--- @return table tags -- Indexed table of tags on entity
 --- [View Documentation](https://teardowngame.com/experimental/api.html#ListTags)
 function ListTags(handle) end
 
 --- All entities can have an associated description. For bodies and
 --- shapes this can be provided through the editor. This function
 --- retrieves that description.
---- @param handle number -- Entity handle
---- @return string description -- The description string
 --- ### Example
 --- ```lua
 --- function init()
@@ -203,13 +201,13 @@ function ListTags(handle) end
 --- 	DebugPrint(GetDescription(body))
 --- end
 --- ```
+--- @param handle number -- Entity handle
+--- @return string description -- The description string
 --- [View Documentation](https://teardowngame.com/experimental/api.html#GetDescription)
 function GetDescription(handle) end
 
 --- All entities can have an associated description. The description for
 --- bodies and shapes will show up on the HUD when looking at them.
---- @param handle number -- Entity handle
---- @param description string -- The description string
 --- ### Example
 --- ```lua
 --- function init()
@@ -218,12 +216,13 @@ function GetDescription(handle) end
 --- 	DebugPrint(GetDescription(body))
 --- end
 --- ```
+--- @param handle number -- Entity handle
+--- @param description string -- The description string
 --- [View Documentation](https://teardowngame.com/experimental/api.html#SetDescription)
 function SetDescription(handle, description) end
 
 --- Remove an entity from the scene. All entities owned by this entity
 --- will also be removed.
---- @param handle number -- Entity handle
 --- ### Example
 --- ```lua
 --- function init()
@@ -232,11 +231,10 @@ function SetDescription(handle, description) end
 --- 	Delete(body)
 --- end
 --- ```
+--- @param handle number -- Entity handle
 --- [View Documentation](https://teardowngame.com/experimental/api.html#Delete)
 function Delete(handle) end
 
---- @param handle number -- Entity handle
---- @return boolean exists -- Returns true if the entity pointed to by handle still exists
 --- ### Example
 --- ```lua
 --- function init()
@@ -248,12 +246,12 @@ function Delete(handle) end
 --- 	DebugPrint(IsHandleValid(body))
 --- end
 --- ```
+--- @param handle number -- Entity handle
+--- @return boolean exists -- Returns true if the entity pointed to by handle still exists
 --- [View Documentation](https://teardowngame.com/experimental/api.html#IsHandleValid)
 function IsHandleValid(handle) end
 
 --- Returns the type name of provided entity, for example "body", "shape", "light", etc.
---- @param handle number -- Entity handle
---- @return string type -- Type name of the provided entity
 --- ### Example
 --- ```lua
 --- function init()
@@ -261,12 +259,11 @@ function IsHandleValid(handle) end
 --- 	DebugPrint(GetEntityType(body))
 --- end
 --- ```
+--- @param handle number -- Entity handle
+--- @return string type -- Type name of the provided entity
 --- [View Documentation](https://teardowngame.com/experimental/api.html#GetEntityType)
 function GetEntityType(handle) end
 
---- @param handle number -- Entity handle
---- @param property string -- Property name
---- @return any value -- Property value
 --- ### Example
 --- ```lua
 --- function client.tick()
@@ -275,14 +272,14 @@ function GetEntityType(handle) end
 --- 	DebugWatch("isDynamic", isDynamic)
 --- end
 --- ```
+--- @param handle number -- Entity handle
+--- @param property string -- Property name
+--- @return any value -- Property value
 --- @see GetProperty_EntityType
 --- [View Documentation](https://teardowngame.com/experimental/api.html#GetProperty)
 function GetProperty(handle, property) end
 
 --- ### SERVER ONLY
---- @param handle number -- Entity handle
---- @param property string -- Property name
---- @param value any -- Property value
 --- ### Example
 --- ```lua
 --- function tick()
@@ -290,6 +287,9 @@ function GetProperty(handle, property) end
 --- 	SetProperty(light, "intensity", math.abs(math.sin(GetTime())))
 --- end
 --- ```
+--- @param handle number -- Entity handle
+--- @param property string -- Property name
+--- @param value any -- Property value
 --- @see SetProperty_EntityType
 --- [View Documentation](https://teardowngame.com/experimental/api.html#SetProperty)
 function SetProperty(handle, property, value) end

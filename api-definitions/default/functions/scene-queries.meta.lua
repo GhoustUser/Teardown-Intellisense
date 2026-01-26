@@ -1,6 +1,19 @@
 --- @meta
 
 
+--- ### Example
+--- ```lua
+--- --Raycast dynamic, physical objects above debris threshold, but not specific vehicle
+--- function client.tick()
+--- 	local vehicle = FindVehicle("vehicle")
+--- 	QueryRequire("physical dynamic large")
+--- 	QueryRejectVehicle(vehicle)
+--- 	local hit, dist = QueryRaycast(Vec(0, 0, 0), Vec(1, 0, 0), 10)
+--- 	if hit then
+--- 		DebugPrint(dist)
+--- 	end
+--- end
+--- ```
 --- @alias QueryRequire_Layer
 --- | 'physical' have a physical representation
 --- | 'dynamic' part of a dynamic body
@@ -30,23 +43,9 @@
 --- | 'done' Path planning completed and a path was found. Get it with GetPathLength and GetPathPoint)
 
 --- @param layers string -- Space separate list of layers
---- ### Example
---- ```lua
---- --Raycast dynamic, physical objects above debris threshold, but not specific vehicle
---- function client.tick()
---- 	local vehicle = FindVehicle("vehicle")
---- 	QueryRequire("physical dynamic large")
---- 	QueryRejectVehicle(vehicle)
---- 	local hit, dist = QueryRaycast(Vec(0, 0, 0), Vec(1, 0, 0), 10)
---- 	if hit then
---- 		DebugPrint(dist)
---- 	end
---- end
---- ```
 --- [View Documentation](https://teardowngame.com/experimental/api.html#QueryRequire)
 function QueryRequire(layers) end
 
---- @param layers string -- Space separate list of layers
 --- ### Example
 --- ```lua
 --- --Raycast all the default layers and include the player layer.
@@ -58,11 +57,11 @@ function QueryRequire(layers) end
 --- 	end
 --- end
 --- ```
+--- @param layers string -- Space separate list of layers
 --- [View Documentation](https://teardowngame.com/experimental/api.html#QueryInclude)
 function QueryInclude(layers) end
 
 --- Set collision mask filter for the next query. Queries have a mask of 255 by default
---- @param mask number -- Mask bits (0-255)
 --- ### Example
 --- ```lua
 --- --Find the closest point on any shape (within 2 meters) to the player eye that the player can collide with.
@@ -75,16 +74,11 @@ function QueryInclude(layers) end
 --- 	end
 --- end
 --- ```
+--- @param mask number -- Mask bits (0-255)
 --- [View Documentation](https://teardowngame.com/experimental/api.html#QueryCollisionMask)
 function QueryCollisionMask(mask) end
 
 --- Exclude animator from the next query
---- @param handle number -- Animator handle
---- [View Documentation](https://teardowngame.com/experimental/api.html#QueryRejectAnimator)
-function QueryRejectAnimator(handle) end
-
---- Exclude vehicle from the next query
---- @param vehicle number -- Vehicle handle
 --- ### Example
 --- ```lua
 --- function client.tick()
@@ -98,11 +92,16 @@ function QueryRejectAnimator(handle) end
 --- 	end
 --- end
 --- ```
+--- @param handle number -- Animator handle
+--- [View Documentation](https://teardowngame.com/experimental/api.html#QueryRejectAnimator)
+function QueryRejectAnimator(handle) end
+
+--- Exclude vehicle from the next query
+--- @param vehicle number -- Vehicle handle
 --- [View Documentation](https://teardowngame.com/experimental/api.html#QueryRejectVehicle)
 function QueryRejectVehicle(vehicle) end
 
 --- Exclude body from the next query
---- @param body number -- Body handle
 --- ### Example
 --- ```lua
 --- function client.tick()
@@ -116,11 +115,11 @@ function QueryRejectVehicle(vehicle) end
 --- 	end
 --- end
 --- ```
+--- @param body number -- Body handle
 --- [View Documentation](https://teardowngame.com/experimental/api.html#QueryRejectBody)
 function QueryRejectBody(body) end
 
 --- Exclude bodies from the next query
---- @param bodies table -- Array with bodies handles
 --- ### Example
 --- ```lua
 --- function client.tick()
@@ -135,11 +134,11 @@ function QueryRejectBody(body) end
 --- 	end
 --- end
 --- ```
+--- @param bodies table -- Array with bodies handles
 --- [View Documentation](https://teardowngame.com/experimental/api.html#QueryRejectBodies)
 function QueryRejectBodies(bodies) end
 
 --- Exclude shape from the next query
---- @param shape number -- Shape handle
 --- ### Example
 --- ```lua
 --- function client.tick()
@@ -153,11 +152,11 @@ function QueryRejectBodies(bodies) end
 --- 	end
 --- end
 --- ```
+--- @param shape number -- Shape handle
 --- [View Documentation](https://teardowngame.com/experimental/api.html#QueryRejectShape)
 function QueryRejectShape(shape) end
 
 --- Exclude shapes from the next query
---- @param shapes table -- Array with shapes handles
 --- ### Example
 --- ```lua
 --- function client.tick()
@@ -172,32 +171,24 @@ function QueryRejectShape(shape) end
 --- 	end
 --- end
 --- ```
+--- @param shapes table -- Array with shapes handles
 --- [View Documentation](https://teardowngame.com/experimental/api.html#QueryRejectShapes)
 function QueryRejectShapes(shapes) end
 
 --- Exclude player from the next query
---- @param playerId? number -- Player ID. On client, zero means client player. On server, zero means server (host) player.
 --- ### Example
 --- ```lua
 --- --Do not include shape in next raycast
 --- QueryRejectPlayer(1)
 --- QueryRaycast(...)
 --- ```
+--- @param playerId? number -- Player ID. On client, zero means client player. On server, zero means server (host) player.
 --- [View Documentation](https://teardowngame.com/experimental/api.html#QueryRejectPlayer)
 function QueryRejectPlayer(playerId) end
 
 --- This will perform a raycast or spherecast (if radius is more than zero) query.
 --- If you want to set up a filter for the query you need to do so before every call
 --- to this function.
---- @param origin TVec -- Raycast origin as world space vector
---- @param direction TVec -- Unit length raycast direction as world space vector
---- @param maxDist number -- Raycast maximum distance. Keep this as low as possible for good performance.
---- @param radius? number -- Raycast thickness. Default zero.
---- @param rejectTransparent? boolean -- Raycast through transparent materials. Default false.
---- @return boolean hit -- True if raycast hit something
---- @return number dist -- Hit distance from origin
---- @return TVec normal -- World space normal at hit point
---- @return number shape -- Handle to hit shape
 --- ### Example
 --- ```lua
 --- function client.init()
@@ -210,18 +201,20 @@ function QueryRejectPlayer(playerId) end
 --- 	end
 --- end
 --- ```
+--- @param origin TVec -- Raycast origin as world space vector
+--- @param direction TVec -- Unit length raycast direction as world space vector
+--- @param maxDist number -- Raycast maximum distance. Keep this as low as possible for good performance.
+--- @param radius? number -- Raycast thickness. Default zero.
+--- @param rejectTransparent? boolean -- Raycast through transparent materials. Default false.
+--- @return boolean hit -- True if raycast hit something
+--- @return number dist -- Hit distance from origin
+--- @return TVec normal -- World space normal at hit point
+--- @return number shape -- Handle to hit shape
 --- [View Documentation](https://teardowngame.com/experimental/api.html#QueryRaycast)
 function QueryRaycast(origin, direction, maxDist, radius, rejectTransparent) end
 
 --- This will perform a raycast query that returns the handle of the joint of rope type when if collides with it.
 --- There are no filters for this type of raycast.
---- @param origin TVec -- Raycast origin as world space vector
---- @param direction TVec -- Unit length raycast direction as world space vector
---- @param maxDist number -- Raycast maximum distance. Keep this as low as possible for good performance.
---- @param radius? number -- Raycast thickness. Default zero.
---- @return boolean hit -- True if raycast hit something
---- @return number dist -- Hit distance from origin
---- @return number joint -- Handle to hit joint of rope type
 --- ### Example
 --- ```lua
 --- function client.tick()
@@ -234,16 +227,17 @@ function QueryRaycast(origin, direction, maxDist, radius, rejectTransparent) end
 --- 	end
 --- end
 --- ```
+--- @param origin TVec -- Raycast origin as world space vector
+--- @param direction TVec -- Unit length raycast direction as world space vector
+--- @param maxDist number -- Raycast maximum distance. Keep this as low as possible for good performance.
+--- @param radius? number -- Raycast thickness. Default zero.
+--- @return boolean hit -- True if raycast hit something
+--- @return number dist -- Hit distance from origin
+--- @return number joint -- Handle to hit joint of rope type
 --- [View Documentation](https://teardowngame.com/experimental/api.html#QueryRaycastRope)
 function QueryRaycastRope(origin, direction, maxDist, radius) end
 
 --- This will perform a raycast query looking for water.
---- @param origin TVec -- Raycast origin as world space vector
---- @param direction TVec -- Unit length raycast direction as world space vector
---- @param maxDist number -- Raycast maximum distance. Keep this as low as possible for good performance.
---- @return boolean hit -- True if raycast hit something
---- @return number dist -- Hit distance from origin
---- @return TVec hitPos -- Hit point as world space vector
 --- ### Example
 --- ```lua
 --- function client.init()
@@ -254,22 +248,17 @@ function QueryRaycastRope(origin, direction, maxDist, radius) end
 --- 	end
 --- end
 --- ```
+--- @param origin TVec -- Raycast origin as world space vector
+--- @param direction TVec -- Unit length raycast direction as world space vector
+--- @param maxDist number -- Raycast maximum distance. Keep this as low as possible for good performance.
+--- @return boolean hit -- True if raycast hit something
+--- @return number dist -- Hit distance from origin
+--- @return TVec hitPos -- Hit point as world space vector
 --- [View Documentation](https://teardowngame.com/experimental/api.html#QueryRaycastWater)
 function QueryRaycastWater(origin, direction, maxDist) end
 
 --- Test to see if a projectile would hit a shape or a player. It will return either a valid
 --- shape ID, player ID or none.
---- @param origin TVec -- Shot ray origin as world space vector
---- @param direction TVec -- Unit length direction as world space vector
---- @param maxDist number -- Shot maximum distance. Keep this as low as possible for good performance.
---- @param radius? number -- Ray thickness. Default zero.
---- @param playerId? number -- Instigating player, will be ignored during hit detection.
---- @return boolean didHit -- If it was a valid hit.
---- @return number dist -- Distance along direction where the hit was registered.
---- @return number shape -- Handle to hit shape, zero if it did not hit a shape
---- @return number playerId -- PlayerId of hit player, zero if it did not hit a player
---- @return number playerDamageFactor -- 1.0 for a hit on the torso, and less for a lower body hit. Applicable only if a player was hit. Use this to scale the damage.
---- @return TVec normal -- Normal vector of the hit
 --- ### Example
 --- ```lua
 --- -- Note: 'shape' and 'player' are IDs/handles (numbers), not object references.
@@ -297,18 +286,23 @@ function QueryRaycastWater(origin, direction, maxDist) end
 --- 	end
 --- end
 --- ```
+--- @param origin TVec -- Shot ray origin as world space vector
+--- @param direction TVec -- Unit length direction as world space vector
+--- @param maxDist number -- Shot maximum distance. Keep this as low as possible for good performance.
+--- @param radius? number -- Ray thickness. Default zero.
+--- @param playerId? number -- Instigating player, will be ignored during hit detection.
+--- @return boolean didHit -- If it was a valid hit.
+--- @return number dist -- Distance along direction where the hit was registered.
+--- @return number shape -- Handle to hit shape, zero if it did not hit a shape
+--- @return number playerId -- PlayerId of hit player, zero if it did not hit a player
+--- @return number playerDamageFactor -- 1.0 for a hit on the torso, and less for a lower body hit. Applicable only if a player was hit. Use this to scale the damage.
+--- @return TVec normal -- Normal vector of the hit
 --- [View Documentation](https://teardowngame.com/experimental/api.html#QueryShot)
 function QueryShot(origin, direction, maxDist, radius, playerId) end
 
 --- This will query the closest point to all shapes in the world. If you
 --- want to set up a filter for the query you need to do so before every call
 --- to this function.
---- @param origin TVec -- World space point
---- @param maxDist number -- Maximum distance. Keep this as low as possible for good performance.
---- @return boolean hit -- True if a point was found
---- @return TVec point -- World space closest point
---- @return TVec normal -- World space normal at closest point
---- @return number shape -- Handle to closest shape
 --- ### Example
 --- ```lua
 --- function client.tick()
@@ -321,13 +315,16 @@ function QueryShot(origin, direction, maxDist, radius, playerId) end
 --- 	end
 --- end
 --- ```
+--- @param origin TVec -- World space point
+--- @param maxDist number -- Maximum distance. Keep this as low as possible for good performance.
+--- @return boolean hit -- True if a point was found
+--- @return TVec point -- World space closest point
+--- @return TVec normal -- World space normal at closest point
+--- @return number shape -- Handle to closest shape
 --- [View Documentation](https://teardowngame.com/experimental/api.html#QueryClosestPoint)
 function QueryClosestPoint(origin, maxDist) end
 
 --- Return all shapes within the provided world space, axis-aligned bounding box
---- @param min TVec -- Aabb minimum point
---- @param max TVec -- Aabb maximum point
---- @return table list -- Indexed table with handles to all shapes in the aabb
 --- ### Example
 --- ```lua
 --- function client.tick()
@@ -338,13 +335,13 @@ function QueryClosestPoint(origin, maxDist) end
 --- 	end
 --- end
 --- ```
+--- @param min TVec -- Aabb minimum point
+--- @param max TVec -- Aabb maximum point
+--- @return table list -- Indexed table with handles to all shapes in the aabb
 --- [View Documentation](https://teardowngame.com/experimental/api.html#QueryAabbShapes)
 function QueryAabbShapes(min, max) end
 
 --- Return all bodies within the provided world space, axis-aligned bounding box
---- @param min TVec -- Aabb minimum point
---- @param max TVec -- Aabb maximum point
---- @return table list -- Indexed table with handles to all bodies in the aabb
 --- ### Example
 --- ```lua
 --- function client.tick()
@@ -355,6 +352,9 @@ function QueryAabbShapes(min, max) end
 --- 	end
 --- end
 --- ```
+--- @param min TVec -- Aabb minimum point
+--- @param max TVec -- Aabb maximum point
+--- @return table list -- Indexed table with handles to all bodies in the aabb
 --- [View Documentation](https://teardowngame.com/experimental/api.html#QueryAabbBodies)
 function QueryAabbBodies(min, max) end
 
@@ -363,17 +363,17 @@ function QueryAabbBodies(min, max) end
 --- will use the currently set up query filter, just like the other query functions.
 --- Using the 'water' type allows you to build a path within the water.
 --- The 'flying' type builds a path in the entire three-dimensional space.
---- @param start TVec -- World space start point
---- @param end_arg TVec -- World space target point
---- @param maxDist? number -- Maximum path length before giving up. Default is infinite.
---- @param targetRadius? number -- Maximum allowed distance to target in meters. Default is 2.0
---- @param type? string -- Type of path. Can be "low", "standart", "water", "flying". Default is "standart"
 --- ### Example
 --- ```lua
 --- function client.init()
 --- 	QueryPath(Vec(-10, 0, 0), Vec(10, 0, 0))
 --- end
 --- ```
+--- @param start TVec -- World space start point
+--- @param end_arg TVec -- World space target point
+--- @param maxDist? number -- Maximum path length before giving up. Default is infinite.
+--- @param targetRadius? number -- Maximum allowed distance to target in meters. Default is 2.0
+--- @param type? string -- Type of path. Can be "low", "standart", "water", "flying". Default is "standart"
 --- [View Documentation](https://teardowngame.com/experimental/api.html#QueryPath)
 function QueryPath(start, end_arg, maxDist, targetRadius, type) end
 
@@ -381,7 +381,6 @@ function QueryPath(start, end_arg, maxDist, targetRadius, type) end
 --- It is supposed to be used together with PathPlannerQuery.
 --- Returns created path planner id/handler.
 --- It is recommended to reuse previously created path planners, because they exist throughout the lifetime of the script.
---- @return number id -- Path planner id
 --- ### Example
 --- ```lua
 --- local paths = {}
@@ -399,12 +398,12 @@ function QueryPath(start, end_arg, maxDist, targetRadius, type) end
 --- 	end
 --- end
 --- ```
+--- @return number id -- Path planner id
 --- [View Documentation](https://teardowngame.com/experimental/api.html#CreatePathPlanner)
 function CreatePathPlanner() end
 
 --- Deletes the path planner with the specified id which can be used to save some memory.
 --- Calling CreatePathPlanner again can initialize a new path planner with the id previously deleted.
---- @param id number -- Path planner id
 --- ### Example
 --- ```lua
 --- local paths = {}
@@ -414,17 +413,12 @@ function CreatePathPlanner() end
 --- 	-- now calling PathPlannerQuery for 'id' will result in an error
 --- end
 --- ```
+--- @param id number -- Path planner id
 --- [View Documentation](https://teardowngame.com/experimental/api.html#DeletePathPlanner)
 function DeletePathPlanner(id) end
 
 --- It works similarly to QueryPath but several paths can be built simultaneously within the same script.
 --- The QueryPath automatically creates a path planner with an index of 0 and only works with it.
---- @param id number -- Path planner id
---- @param start TVec -- World space start point
---- @param end_arg TVec -- World space target point
---- @param maxDist? number -- Maximum path length before giving up. Default is infinite.
---- @param targetRadius? number -- Maximum allowed distance to target in meters. Default is 2.0
---- @param type? string -- Type of path. Can be "low", "standart", "water", "flying". Default is "standart"
 --- ### Example
 --- ```lua
 --- local paths = {}
@@ -442,12 +436,17 @@ function DeletePathPlanner(id) end
 --- 	end
 --- end
 --- ```
+--- @param id number -- Path planner id
+--- @param start TVec -- World space start point
+--- @param end_arg TVec -- World space target point
+--- @param maxDist? number -- Maximum path length before giving up. Default is infinite.
+--- @param targetRadius? number -- Maximum allowed distance to target in meters. Default is 2.0
+--- @param type? string -- Type of path. Can be "low", "standart", "water", "flying". Default is "standart"
 --- [View Documentation](https://teardowngame.com/experimental/api.html#PathPlannerQuery)
 function PathPlannerQuery(id, start, end_arg, maxDist, targetRadius, type) end
 
 --- Abort current path query, regardless of what state it is currently in. This is a way to
 --- save computing resources if the result of the current query is no longer of interest.
---- @param id? number -- Path planner id. Default value is 0.
 --- ### Example
 --- ```lua
 --- function server.init()
@@ -455,11 +454,10 @@ function PathPlannerQuery(id, start, end_arg, maxDist, targetRadius, type) end
 --- 	AbortPath()
 --- end
 --- ```
+--- @param id? number -- Path planner id. Default value is 0.
 --- [View Documentation](https://teardowngame.com/experimental/api.html#AbortPath)
 function AbortPath(id) end
 
---- @param id? number -- Path planner id. Default value is 0.
---- @return GetPathState_State state -- Current path planning state
 --- ### Example
 --- ```lua
 --- function server.init()
@@ -472,14 +470,14 @@ function AbortPath(id) end
 --- 	end
 --- end
 --- ```
+--- @param id? number -- Path planner id. Default value is 0.
+--- @return GetPathState_State state -- Current path planning state
 --- [View Documentation](https://teardowngame.com/experimental/api.html#GetPathState)
 function GetPathState(id) end
 
 --- Return the path length of the most recently computed path query. Note that the result can often be retrieved even
 --- if the path query failed. If the target point couldn't be reached, the path endpoint will be the point closest
 --- to the target.
---- @param id? number -- Path planner id. Default value is 0.
---- @return number length -- Length of last path planning result (in meters)
 --- ### Example
 --- ```lua
 --- function server.init()
@@ -492,15 +490,14 @@ function GetPathState(id) end
 --- 	end
 --- end
 --- ```
+--- @param id? number -- Path planner id. Default value is 0.
+--- @return number length -- Length of last path planning result (in meters)
 --- [View Documentation](https://teardowngame.com/experimental/api.html#GetPathLength)
 function GetPathLength(id) end
 
 --- Return a point along the path for the most recently computed path query. Note that the result can often be retrieved even
 --- if the path query failed. If the target point couldn't be reached, the path endpoint will be the point closest
 --- to the target.
---- @param dist number -- The distance along path. Should be between zero and result from GetPathLength()
---- @param id? number -- Path planner id. Default value is 0.
---- @return TVec point -- The path point dist meters along the path
 --- ### Example
 --- ```lua
 --- function client.init()
@@ -515,11 +512,12 @@ function GetPathLength(id) end
 --- 	end
 --- end
 --- ```
+--- @param dist number -- The distance along path. Should be between zero and result from GetPathLength()
+--- @param id? number -- Path planner id. Default value is 0.
+--- @return TVec point -- The path point dist meters along the path
 --- [View Documentation](https://teardowngame.com/experimental/api.html#GetPathPoint)
 function GetPathPoint(dist, id) end
 
---- @return number volume -- Volume of loudest sound played last frame
---- @return TVec position -- World position of loudest sound played last frame
 --- ### Example
 --- ```lua
 --- function client.tick()
@@ -529,12 +527,11 @@ function GetPathPoint(dist, id) end
 --- 	end
 --- end
 --- ```
+--- @return number volume -- Volume of loudest sound played last frame
+--- @return TVec position -- World position of loudest sound played last frame
 --- [View Documentation](https://teardowngame.com/experimental/api.html#GetLastSound)
 function GetLastSound() end
 
---- @param point TVec -- World point as vector
---- @return boolean inWater -- True if point is in water
---- @return number depth -- Depth of point into water, or zero if not in water
 --- ### Example
 --- ```lua
 --- function client.tick()
@@ -544,13 +541,14 @@ function GetLastSound() end
 --- 	end
 --- end
 --- ```
+--- @param point TVec -- World point as vector
+--- @return boolean inWater -- True if point is in water
+--- @return number depth -- Depth of point into water, or zero if not in water
 --- [View Documentation](https://teardowngame.com/experimental/api.html#IsPointInWater)
 function IsPointInWater(point) end
 
 --- Get the wind velocity at provided point. The wind will be determined by wind property of
 --- the environment, but it varies with position procedurally.
---- @param point TVec -- World point as vector
---- @return TVec vel -- Wind at provided position
 --- ### Example
 --- ```lua
 --- function client.tick()
@@ -558,6 +556,8 @@ function IsPointInWater(point) end
 --- 	DebugPrint(VecStr(v))
 --- end
 --- ```
+--- @param point TVec -- World point as vector
+--- @return TVec vel -- Wind at provided position
 --- [View Documentation](https://teardowngame.com/experimental/api.html#GetWindVelocity)
 function GetWindVelocity(point) end
 

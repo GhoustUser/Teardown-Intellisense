@@ -9,6 +9,19 @@
 --- Registry node names may only contain the characters a-z, numbers 0-9, dot, dash and underscore.
 
 
+--- ### Example
+--- ```lua
+--- function init()
+--- 	--If the registry looks like this:
+--- 	--	score
+--- 	--		levels
+--- 	--			level1 = 5
+--- 	--			level2 = 4
+--- 	ClearKey("score.levels")
+--- 	--Afterwards, the registry will look like this:
+--- 	--	score
+--- end
+--- ```
 --- @alias Registry_Key
 --- | 'options' Reserved for game settings (write protected from mods)
 --- | 'game' Reserved for the game engine internals (see documentation)
@@ -30,25 +43,10 @@
 
 --- Remove registry node, including all child nodes.
 --- @param key Registry_Key -- Registry key to clear
---- ### Example
---- ```lua
---- function init()
---- 	--If the registry looks like this:
---- 	--	score
---- 	--		levels
---- 	--			level1 = 5
---- 	--			level2 = 4
---- 	ClearKey("score.levels")
---- 	--Afterwards, the registry will look like this:
---- 	--	score
---- end
---- ```
 --- [View Documentation](https://teardowngame.com/experimental/api.html#ClearKey)
 function ClearKey(key) end
 
 --- List all child keys of a registry node.
---- @param parent string -- The parent registry key
---- @return table children -- Indexed table of strings with child keys
 --- ### Example
 --- ```lua
 --- --If the registry looks like this:
@@ -68,12 +66,12 @@ function ClearKey(key) end
 --- --rifle
 --- -- ...
 --- ```
+--- @param parent string -- The parent registry key
+--- @return table children -- Indexed table of strings with child keys
 --- [View Documentation](https://teardowngame.com/experimental/api.html#ListKeys)
 function ListKeys(parent) end
 
 --- Returns true if the registry contains a certain key
---- @param key Registry_Key -- Registry key
---- @return boolean exists -- True if key exists
 --- ### Example
 --- ```lua
 --- function init()
@@ -81,12 +79,11 @@ function ListKeys(parent) end
 --- 	DebugPrint(HasKey("game.tool.rifle"))
 --- end
 --- ```
+--- @param key Registry_Key -- Registry key
+--- @return boolean exists -- True if key exists
 --- [View Documentation](https://teardowngame.com/experimental/api.html#HasKey)
 function HasKey(key) end
 
---- @param key Registry_Key -- Registry key
---- @param value number -- Desired value
---- @param sync? boolean -- Synchronize to clients
 --- ### Example
 --- ```lua
 --- function init()
@@ -94,11 +91,12 @@ function HasKey(key) end
 --- 	DebugPrint(GetInt("score.levels.level1"))
 --- end
 --- ```
+--- @param key Registry_Key -- Registry key
+--- @param value number -- Desired value
+--- @param sync? boolean -- Synchronize to clients
 --- [View Documentation](https://teardowngame.com/experimental/api.html#SetInt)
 function SetInt(key, value, sync) end
 
---- @param key Registry_Key -- Registry key
---- @return number value -- Integer value of registry node or zero if not found
 --- ### Example
 --- ```lua
 --- function init()
@@ -106,24 +104,24 @@ function SetInt(key, value, sync) end
 --- 	DebugPrint(GetInt("score.levels.level1"))
 --- end
 --- ```
+--- @param key Registry_Key -- Registry key
+--- @return number value -- Integer value of registry node or zero if not found
 --- [View Documentation](https://teardowngame.com/experimental/api.html#GetInt)
 function GetInt(key) end
 
+--- ### Example
+--- ```lua
+--- function init()
+--- 	SetFloat("level.time", 22.3)
+--- 	DebugPrint(GetFloat("level.time"))
+--- end
+--- ```
 --- @param key Registry_Key -- Registry key
 --- @param value number -- Desired value
 --- @param sync? boolean -- Synchronize to clients
---- ### Example
---- ```lua
---- function init()
---- 	SetFloat("level.time", 22.3)
---- 	DebugPrint(GetFloat("level.time"))
---- end
---- ```
 --- [View Documentation](https://teardowngame.com/experimental/api.html#SetFloat)
 function SetFloat(key, value, sync) end
 
---- @param key Registry_Key -- Registry key
---- @return number value -- Float value of registry node or zero if not found
 --- ### Example
 --- ```lua
 --- function init()
@@ -131,24 +129,24 @@ function SetFloat(key, value, sync) end
 --- 	DebugPrint(GetFloat("level.time"))
 --- end
 --- ```
+--- @param key Registry_Key -- Registry key
+--- @return number value -- Float value of registry node or zero if not found
 --- [View Documentation](https://teardowngame.com/experimental/api.html#GetFloat)
 function GetFloat(key) end
 
+--- ### Example
+--- ```lua
+--- function init()
+--- 	SetBool("level.robots.enabled", true)
+--- 	DebugPrint(GetBool("level.robots.enabled"))
+--- end
+--- ```
 --- @param key Registry_Key -- Registry key
 --- @param value boolean -- Desired value
 --- @param sync? boolean -- Synchronize to clients
---- ### Example
---- ```lua
---- function init()
---- 	SetBool("level.robots.enabled", true)
---- 	DebugPrint(GetBool("level.robots.enabled"))
---- end
---- ```
 --- [View Documentation](https://teardowngame.com/experimental/api.html#SetBool)
 function SetBool(key, value, sync) end
 
---- @param key Registry_Key -- Registry key
---- @return boolean value -- Boolean value of registry node or false if not found
 --- ### Example
 --- ```lua
 --- function init()
@@ -156,24 +154,24 @@ function SetBool(key, value, sync) end
 --- 	DebugPrint(GetBool("level.robots.enabled"))
 --- end
 --- ```
+--- @param key Registry_Key -- Registry key
+--- @return boolean value -- Boolean value of registry node or false if not found
 --- [View Documentation](https://teardowngame.com/experimental/api.html#GetBool)
 function GetBool(key) end
 
+--- ### Example
+--- ```lua
+--- function init()
+--- 	SetString("level.name", "foo")
+--- 	DebugPrint(GetString("level.name"))
+--- end
+--- ```
 --- @param key Registry_Key -- Registry key
 --- @param value string -- Desired value
 --- @param sync? boolean -- Synchronize to clients
---- ### Example
---- ```lua
---- function init()
---- 	SetString("level.name", "foo")
---- 	DebugPrint(GetString("level.name"))
---- end
---- ```
 --- [View Documentation](https://teardowngame.com/experimental/api.html#SetString)
 function SetString(key, value, sync) end
 
---- @param key Registry_Key -- Registry key
---- @return string value -- String value of registry node or "" if not found
 --- ### Example
 --- ```lua
 --- function init()
@@ -181,30 +179,27 @@ function SetString(key, value, sync) end
 --- 	DebugPrint(GetString("level.name"))
 --- end
 --- ```
+--- @param key Registry_Key -- Registry key
+--- @return string value -- String value of registry node or "" if not found
 --- [View Documentation](https://teardowngame.com/experimental/api.html#GetString)
 function GetString(key) end
 
 --- Sets the color registry key value
---- @param key Registry_Key -- Registry key
---- @param r number -- Desired red channel value
---- @param g number -- Desired green channel value
---- @param b number -- Desired blue channel value
---- @param a? number -- Desired alpha channel value
 --- ### Example
 --- ```lua
 --- function init()
 --- 	SetColor("game.tool.wire.color", 1.0, 0.5, 0.3)
 --- end
 --- ```
+--- @param key Registry_Key -- Registry key
+--- @param r number -- Desired red channel value
+--- @param g number -- Desired green channel value
+--- @param b number -- Desired blue channel value
+--- @param a? number -- Desired alpha channel value
 --- [View Documentation](https://teardowngame.com/experimental/api.html#SetColor)
 function SetColor(key, r, g, b, a) end
 
 --- Returns the color registry key value
---- @param key Registry_Key -- Registry key
---- @return number r -- Desired red channel value
---- @return number g -- Desired green channel value
---- @return number b -- Desired blue channel value
---- @return number a -- Desired alpha channel value
 --- ### Example
 --- ```lua
 --- function init()
@@ -213,35 +208,39 @@ function SetColor(key, r, g, b, a) end
 --- 	DebugPrint("RGBA: " .. color[1] .. " " .. color[2] .. " " .. color[3] .. " " .. color[4])
 --- end
 --- ```
+--- @param key Registry_Key -- Registry key
+--- @return number r -- Desired red channel value
+--- @return number g -- Desired green channel value
+--- @return number b -- Desired blue channel value
+--- @return number a -- Desired alpha channel value
 --- [View Documentation](https://teardowngame.com/experimental/api.html#GetColor)
 function GetColor(key) end
 
 --- Returns the translation for the specified key from the translation table. If the key is not found returns the default value
---- @param key Registry_Key -- Translation key
---- @param default? string -- Default value
---- @return string value -- Translation
 --- ### Example
 --- ```lua
 --- function init()
 --- 	DebugPrint(GetTranslatedStringByKey("TOOL_CAMERA"))
 --- end
 --- ```
+--- @param key Registry_Key -- Translation key
+--- @param default? string -- Default value
+--- @return string value -- Translation
 --- [View Documentation](https://teardowngame.com/experimental/api.html#GetTranslatedStringByKey)
 function GetTranslatedStringByKey(key, default) end
 
 --- Checks that translation for specified key exists
---- @param key Registry_Key -- Translation key
---- @return boolean value -- True if translation exists
 --- ### Example
 --- ```lua
 --- function init()
 --- 	DebugPrint(HasTranslationByKey("TOOL_CAMERA"))
 --- end
 --- ```
+--- @param key Registry_Key -- Translation key
+--- @return boolean value -- True if translation exists
 --- [View Documentation](https://teardowngame.com/experimental/api.html#HasTranslationByKey)
 function HasTranslationByKey(key) end
 
---- @param id LoadLanguageTable_Id -- Language id (enum)
 --- ### Example
 --- ```lua
 --- function init()
@@ -249,17 +248,18 @@ function HasTranslationByKey(key) end
 --- 	LoadLanguageTable(0)
 --- end
 --- ```
+--- @param id LoadLanguageTable_Id -- Language id (enum)
 --- [View Documentation](https://teardowngame.com/experimental/api.html#LoadLanguageTable)
 function LoadLanguageTable(id) end
 
 --- Returns the user nickname with the specified id. If id is not specified, returns nickname for user with id '0'
---- @param id? number -- User id
---- @return string value -- User nickname
 --- ### Example
 --- ```lua
 --- function init()
 --- 	DebugPrint(GetUserNickname(0))
 --- end
 --- ```
+--- @param id? number -- User id
+--- @return string value -- User nickname
 --- [View Documentation](https://teardowngame.com/experimental/api.html#GetUserNickname)
 function GetUserNickname(id) end
