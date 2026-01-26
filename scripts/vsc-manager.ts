@@ -140,6 +140,27 @@ class VscManager {
         });
     }
 
+    /** Registers a listener for changes to a specific setting (workspace or user).
+     * @param {string} settingKey - The key of the setting to listen for changes
+     * @param {function} callback - Callback function to execute when the setting changes
+     * @returns {vscode.Disposable} - A disposable to unregister the listener.
+     */
+    public onSettingChanged(
+        settingKey: string,
+        callback: (newValue: any) => void
+    ): vscode.Disposable {
+        // create and return listener for both workspace and user settings
+        return vscode.workspace.onDidChangeConfiguration(event => {
+            // check if the changed setting affects the specified key
+            if (event.affectsConfiguration(settingKey)) {
+                const config = vscode.workspace.getConfiguration("", this.workspaceUri);
+                const newValue = config.get(settingKey);
+                // invoke the callback with the new value
+                callback(newValue);
+            }
+        });
+    }
+
     /** Registers a command in VS Code.
      * @param {string} command - The command identifier.
      * @param {() => void} callback - The function to execute when the command is invoked.

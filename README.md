@@ -6,6 +6,10 @@ This version uses custom-created lua definitions based on the current web docume
 
 Currently contains `27` files/categories with definitions for a total of `606` functions and `16` aliases, as well as classes like `server`, `client`, `Vec3` and `Quat`.
 
+Other features:
+- support for `#include "<path>"` syntax.
+- quick-fix action for missing imports.
+
 ## Examples
 Code completion for function names
 ![Example image](./readme-images/code-completion-function.png)

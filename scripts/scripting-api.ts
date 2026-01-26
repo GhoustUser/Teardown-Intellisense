@@ -1,4 +1,5 @@
 import path from "path";
+import fs from "fs";
 import VscManager from "./vsc-manager";
 
 /** Configuration for managing Lua workspace settings.
@@ -31,7 +32,7 @@ interface LuaSettingsConfig {
  * @returns {void}
  */
 function configureTDIntellisense(enable: boolean, vscManager: VscManager): void {
-    const luaApiPath = path.join(vscManager.context.extensionPath, "api-definitions", "default");
+    const luaApiPath = path.join(vscManager.context.extensionPath, "api-definitions");
 
     // define what settings to configure
     const config: LuaSettingsConfig = {
@@ -69,6 +70,21 @@ function configureTDIntellisense(enable: boolean, vscManager: VscManager): void 
     // apply configuration for each value setting
     for (const valueSetting of config.valueSettings) {
         updateValueSetting(valueSetting, enable, vscManager);
+    }
+
+    // add `.vscode/*` to `ignore.txt`
+    const ignoreTxtPath = path.join(vscManager.projectPath, "ignore.txt");
+    if (fs.existsSync(ignoreTxtPath)) {
+        let ignoreTxtContent = fs.readFileSync(ignoreTxtPath, "utf-8");
+        const endsWithNewline = ignoreTxtContent.endsWith('\n');
+        const vscodeIgnoreLine = "# .vscode/*";
+        const alreadyIgnored = ignoreTxtContent
+            .split(/\r?\n/)
+            .some(line => line.trim() === vscodeIgnoreLine);
+        if (!alreadyIgnored) {
+            ignoreTxtContent += (endsWithNewline ? "" : "\n") + vscodeIgnoreLine + (endsWithNewline ? "\n" : "");
+            fs.writeFileSync(ignoreTxtPath, ignoreTxtContent, "utf-8");
+        }
     }
 }
 

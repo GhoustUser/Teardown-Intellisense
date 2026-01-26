@@ -4,6 +4,7 @@ import fs from "fs";
 
 import VscManager from "./scripts/vsc-manager";
 import { configureTDIntellisense } from "./scripts/scripting-api";
+import { setupDynamicIntellisense } from "./scripts/dynamic-intellisense";
 
 let c: vscode.ExtensionContext | null = null;
 
@@ -29,8 +30,11 @@ function activate(context: vscode.ExtensionContext): void {
     // register command to toggle intellisense setting
     registerToggleIntellisenseCommand(vscManager);
 
+    // setup dynamic per-file intellisense
+    setupDynamicIntellisense(vscManager);
+
     // listen for changes to the `enableIntellisense` setting
-    vscManager.onWorkspaceSettingChanged("TeardownIntellisense.enableIntellisense", (newValue: boolean) => {
+    vscManager.onSettingChanged("TeardownIntellisense.enableIntellisense", (newValue: boolean) => {
         configureTDIntellisense(newValue, vscManager);
     });
 
@@ -47,9 +51,8 @@ function activate(context: vscode.ExtensionContext): void {
     }
 
     // listen for changes to the `teardownDirectory` setting
-    vscManager.onUserSettingChanged("TeardownIntellisense.teardownDirectory", (newValue: string) => {
+    vscManager.onSettingChanged("TeardownIntellisense.teardownDirectory", (teardownDir: string) => {
         // check if the Teardown directory setting is set
-        const teardownDir: string = vscManager.getSetting("TeardownIntellisense.teardownDirectory", "");
         if (teardownDir.length > 0) {
             // validate the directory
             const isValidDir = ValidateTeardownDirectory(teardownDir);
@@ -62,6 +65,18 @@ function activate(context: vscode.ExtensionContext): void {
                     ]
                 );
             }
+        }
+        // update dynamic intellisense includes
+        if (vscManager.getSetting("TeardownIntellisense.enableIntellisense", false)) {
+            setupDynamicIntellisense(vscManager);
+        }
+    });
+
+    // listen for changes to the `additionalIncludePaths` setting
+    vscManager.onSettingChanged("TeardownIntellisense.additionalIncludePaths", (additionalIncludePaths: string[]) => {
+        // update dynamic intellisense includes
+        if (vscManager.getSetting("TeardownIntellisense.enableIntellisense", false)) {
+            setupDynamicIntellisense(vscManager);
         }
     });
 }

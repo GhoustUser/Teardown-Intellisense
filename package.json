@@ -1,12 +1,13 @@
 {
 	"name": "teardown-intellisense",
 	"displayName": "Teardown Intellisense",
-    "description": "Adds intellisense for Teardown's scripting API using custom-made definitions based on the web documentation",
-	"version": "0.5.7",
+    "description": "Adds intellisense for Teardown's scripting API using custom-made definitions based on the official Teardown modding documentation",
+	"version": "0.7.0",
 	"author": {
 		"name": "GhoustUser",
 		"url": "https://github.com/GhoustUser"
 	},
+    "homepage": "https://teardowngame.com/experimental/api.html",
     "publisher": "GhoustUser",
 	"icon": "./icon.png",
     "galleryBanner": {
@@ -42,24 +43,33 @@
 		"configuration": {
 			"title": "Teardown Intellisense",
 			"properties": {
-                "TeardownIntellisense.teardownDirectory": {
-                    "type": "string",
-                    "default": "",
-                    "title": "Teardown Directory",
-                    "description": "Path to the Teardown installation directory."
-                },
 				"TeardownIntellisense.enableIntellisense": {
-					"type": "boolean",
-					"default": false,
 					"title": "Enable Intellisense",
-					"description": "Enables the Teardown scripting API intellisense."
+					"description": "Enables the Teardown scripting API intellisense.",
+					"type": "boolean",
+					"default": false
 				},
 				"TeardownIntellisense.showPrompt": {
-					"type": "boolean",
-					"default": true,
                     "title": "Show Prompt on First Detection",
-					"description": "Show prompt to enable Teardown scripting API intellisense when info.txt is detected. (once per workspace)"
-				}
+					"description": "Show prompt to enable Teardown scripting API intellisense when info.txt is detected. (once per workspace)",
+					"type": "boolean",
+					"default": true
+				},
+                "TeardownIntellisense.teardownDirectory": {
+                    "title": "Teardown Directory",
+                    "description": "Path to the Teardown installation directory.",
+                    "type": "string",
+                    "default": ""
+                },
+                "TeardownIntellisense.additionalIncludePaths": {
+                    "title": "Additional Include Paths",
+                    "description": "Additional file/folder paths to to search for API definitions relative to \"<Teardown Directory>/data/\".",
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "default": ["script/include"]
+                }
 			}
 		},
         "commands": [
