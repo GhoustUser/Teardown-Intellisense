@@ -1,10 +1,20 @@
 --- @meta
 
 
+--- @alias ShotType
+--- | 'bullet'
+--- | 'rocket'
+--- | 'gun'
+--- | 'shotgun'
+--- | number
+
+--- @alias PaintType
+--- | 'explosion'
+--- | 'spraycan'
+
+
 --- ### CLIENT ONLY
 --- Adds a marker on the map with the provided info.
-
-
 --- ### Example
 --- ```lua
 --- function client.tick()
@@ -52,7 +62,7 @@ function SelectedMapMarker() end
 --- ```
 --- @param origin TVec -- Origin in world space as vector
 --- @param direction TVec -- Unit length direction as world space vector
---- @param type? string -- Shot type, see description, default is "bullet"
+--- @param type? ShotType -- Shot type, see description, default is "bullet"
 --- @param strength? number -- Strength scaling, default is 1.0
 --- @param maxDist? number -- Maximum distance, default is 100.0
 --- @param playerId? number -- Instigating player. Can be skipped for non-player shots (helicopters etc.)
@@ -69,7 +79,7 @@ function Shoot(origin, direction, type, strength, maxDist, playerId) end
 --- ```
 --- @param origin TVec -- Origin in world space as vector
 --- @param radius number -- Affected radius, in range 0.0 to 5.0
---- @param type? string -- Paint type. Can be "explosion" or "spraycan". Default is spraycan.
+--- @param type? PaintType -- Paint type. Can be "explosion" or "spraycan". Default is spraycan.
 --- @param probability? number -- Dithering probability between zero and one, default is 1.0
 --- [View Documentation](https://teardowngame.com/experimental/api.html#Paint)
 function Paint(origin, radius, type, probability) end
@@ -651,6 +661,10 @@ function DebugWatch(name, value, lineWrapping) end
 --- [View Documentation](https://teardowngame.com/experimental/api.html#DebugPrint)
 function DebugPrint(message, lineWrapping) end
 
+--- # ⚠️ Deprecated
+--- @deprecated
+--- ### use the event system instead.
+--- ---
 --- ### Example
 --- ```lua
 --- function onLangauageChanged()
@@ -666,6 +680,10 @@ function DebugPrint(message, lineWrapping) end
 --- [View Documentation](https://teardowngame.com/experimental/api.html#RegisterListenerTo)
 function RegisterListenerTo(eventName, listenerFunction) end
 
+--- # ⚠️ Deprecated
+--- @deprecated
+--- ### use the event system instead.
+--- ---
 --- ### Example
 --- ```lua
 --- function onLangauageChanged()
@@ -682,6 +700,10 @@ function RegisterListenerTo(eventName, listenerFunction) end
 --- [View Documentation](https://teardowngame.com/experimental/api.html#UnregisterListener)
 function UnregisterListener(eventName, listenerFunction) end
 
+--- # ⚠️ Deprecated
+--- @deprecated
+--- ### use the event system instead.
+--- ---
 --- ### Example
 --- ```lua
 --- function onLangauageChanged()

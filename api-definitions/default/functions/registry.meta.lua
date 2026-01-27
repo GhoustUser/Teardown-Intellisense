@@ -9,6 +9,27 @@
 --- Registry node names may only contain the characters a-z, numbers 0-9, dot, dash and underscore.
 
 
+--- @alias Registry_Key
+--- | 'options' Reserved for game settings (write protected from mods)
+--- | 'game' Reserved for the game engine internals (see documentation)
+--- | 'savegame' Used for persistent game data (write protected for mods)
+--- | 'savegame.mod' Used for persistent mod data. Use only alphanumeric character for key name.
+--- | 'level' Not reserved, but recommended for level specific entries and script communication
+--- | string Any registry key
+
+
+--- @alias LoadLanguageTable_Id
+--- | 0 English
+--- | 1 French
+--- | 2 Spanish
+--- | 3 Italian
+--- | 4 German
+--- | 5 Simplified Chinese
+--- | 6 Japanese
+--- | 7 Russian
+--- | 8 Polish
+
+
 --- ### Example
 --- ```lua
 --- function init()
@@ -22,25 +43,6 @@
 --- 	--	score
 --- end
 --- ```
---- @alias Registry_Key
---- | 'options' Reserved for game settings (write protected from mods)
---- | 'game' Reserved for the game engine internals (see documentation)
---- | 'savegame' Used for persistent game data (write protected for mods)
---- | 'savegame.mod' Used for persistent mod data. Use only alphanumeric character for key name.
---- | 'level' Not reserved, but recommended for level specific entries and script communication
---- | string Any registry key
-
---- @alias LoadLanguageTable_Id
---- | 0 English
---- | 1 French
---- | 2 Spanish
---- | 3 Italian
---- | 4 German
---- | 5 Simplified Chinese
---- | 6 Japanese
---- | 7 Russian
---- | 8 Polish
-
 --- Remove registry node, including all child nodes.
 --- @param key Registry_Key -- Registry key to clear
 --- [View Documentation](https://teardowngame.com/experimental/api.html#ClearKey)

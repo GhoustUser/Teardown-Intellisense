@@ -15,7 +15,7 @@ function FindRig(tag, global) end
 
 --- ### Example
 --- ```lua
---- 	local t = GetRigWorldTransform(rig)
+--- local t = GetRigWorldTransform(rig)
 --- ```
 --- @param rig number -- Rig handle
 --- @return TTransform transform -- World transform, nil if rig is missing
@@ -24,7 +24,7 @@ function GetRigWorldTransform(rig) end
 
 --- ### Example
 --- ```lua
---- 	SetRigWorldTransform(rig, Transform(...))
+--- SetRigWorldTransform(rig, Transform(...))
 --- ```
 --- @param rig number -- Rig handle
 --- @param transform TTransform -- New world transform
@@ -43,7 +43,7 @@ function GetRigLocationWorldTransform(rig, name) end
 
 --- ### Example
 --- ```lua
---- 	SetRigLocationWorldTransform(rig, "some_location_name", Transform(...))
+--- SetRigLocationWorldTransform(rig, "some_location_name", Transform(...))
 --- ```
 --- @param rig number -- Rig handle
 --- @param name string -- Name of location
@@ -63,8 +63,8 @@ function GetRigLocationLocalTransform(rig, name) end
 
 --- ### Example
 --- ```lua
---- 	local someBody = FindBody("bodyname")
---- 	SetPlayerRigTransform(someBody, GetBodyTransform(someBody))
+--- local someBody = FindBody("bodyname")
+--- SetPlayerRigTransform(someBody, GetBodyTransform(someBody))
 --- ```
 --- @param rig number -- Rig handle
 --- @param name string -- Name of location

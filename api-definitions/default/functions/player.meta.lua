@@ -1,10 +1,6 @@
 --- @meta
 
 
---- ### Example
---- ```lua
---- local playerIds = GetAllPlayers()
---- ```
 --- @alias GetPlayerParam_parameter
 --- | 'health' Current value of the player's health.
 --- | 'healthRegeneration' Is the player's health regeneration enabled.
@@ -17,6 +13,7 @@
 --- | 'flashlightAllowed' Changes ability to use flashlight
 --- | 'disableInteract' Disable interactions for player
 --- | 'CollisionMask' Player collision mask bits (0-255) with respect to all shapes layer bits
+
 
 --- @alias SetPlayerParam_parameter
 --- | 'health' Current value of the player's health.
@@ -31,6 +28,11 @@
 --- | 'disableInteract' Disable interactions for player
 --- | 'CollisionMask' Player collision mask bits (0-255) with respect to all shapes layer bits
 
+
+--- ### Example
+--- ```lua
+--- local playerIds = GetAllPlayers()
+--- ```
 --- @return number[] name -- List of all player Ids
 --- [View Documentation](https://teardowngame.com/experimental/api.html#GetAllPlayers)
 function GetAllPlayers() end
@@ -127,8 +129,11 @@ function IsPlayerHost(playerId) end
 --- [View Documentation](https://teardowngame.com/experimental/api.html#IsPlayerValid)
 function IsPlayerValid(playerId) end
 
---- Return center point of player. This function is deprecated.
---- Use GetPlayerTransform instead.
+--- # ⚠️ Deprecated
+--- @deprecated
+--- ### use `GetPlayerTransform` instead.
+--- ---
+--- Return center point of player.
 --- ### Example
 --- ```lua
 --- function client.init()
@@ -149,6 +154,8 @@ function GetPlayerPos(playerId) end
 --- local muzzle = GetToolLocationWorldTransform("muzzle")
 --- local _, pos, _, dir = GetPlayerAimInfo(muzzle.pos)
 --- Shoot(pos, dir)
+--- -- example with all return values:
+--- local hit, startpos, endpos, direction, hitnormal, hitdist, hitentity, hitmaterial = GetPlayerAimInfo(muzzle.pos)
 --- ```
 --- @param position TVec -- Start position of the search
 --- @param maxdist? number -- Max search distance
@@ -1032,8 +1039,8 @@ function GetToolHandPoseWorldTransform(playerId) end
 --- 	end
 --- end
 --- ```
---- @param right TTransform -- Transform of right hand relative to the tool body origin, or nil if right hand is not used
---- @param left TTransform -- Transform of left hand, or nil if left hand is not used
+--- @param right TTransform | nil -- Transform of right hand relative to the tool body origin, or nil if right hand is not used
+--- @param left TTransform | nil -- Transform of left hand, or nil if left hand is not used
 --- @param playerId? number -- Player ID. On client, zero means client player.
 --- [View Documentation](https://teardowngame.com/experimental/api.html#SetToolHandPoseLocalTransform)
 function SetToolHandPoseLocalTransform(right, left, playerId) end
@@ -1236,8 +1243,8 @@ function GetPlayerUp(playerId) end
 
 --- ### Example
 --- ```lua
---- 	local rig = FindRig("myrig")
---- 	SetPlayerRig(rig)
+--- local rig = FindRig("myrig")
+--- SetPlayerRig(rig)
 --- ```
 --- @param rig number -- Rig handle
 --- @param playerId? number -- Player ID. On client, zero means client player. On server, zero means server (host) player.
@@ -1262,19 +1269,30 @@ function GetPlayerRig(playerId) end
 --- [View Documentation](https://teardowngame.com/experimental/api.html#GetPlayerRigWorldTransform)
 function GetPlayerRigWorldTransform(playerId) end
 
+--- ### ⚠️ This function will be deprecated in the next update!
+--- ---
 --- ### Example
 --- ```lua
---- 	ClearPlayerRig(someId)
+--- ClearPlayerRig(someId)
 --- ```
 --- @param rigId number -- Unique rig-id, -1 means all rigs
 --- @param playerId? number -- Player ID. On client, zero means client player. On server, zero means server (host) player.
 --- [View Documentation](https://teardowngame.com/experimental/api.html#ClearPlayerRig)
 function ClearPlayerRig(rigId, playerId) end
 
+--- ### ⚠️ This function will be deprecated in the next update!
+--- ---
 --- ### Example
 --- ```lua
---- 	local someBody = FindBody("bodyname")
---- 	SetPlayerRigLocationLocalTransform(someBody, "ik_foot_l", TransformToLocalTransform(GetBodyTransform(someBody), GetLocationTransform(FindLocation("ik_foot_l"))))
+--- local someBody = FindBody("bodyname")
+--- SetPlayerRigLocationLocalTransform(
+--- 	someBody,
+--- 	"ik_foot_l",
+--- 	TransformToLocalTransform(
+--- 		GetBodyTransform(someBody),
+--- 		GetLocationTransform(FindLocation("ik_foot_l"))
+--- 	)
+--- )
 --- ```
 --- @param rigId number -- Unique id
 --- @param name string -- Name of location
@@ -1283,10 +1301,12 @@ function ClearPlayerRig(rigId, playerId) end
 --- [View Documentation](https://teardowngame.com/experimental/api.html#SetPlayerRigLocationLocalTransform)
 function SetPlayerRigLocationLocalTransform(rigId, name, location, playerId) end
 
+--- ### ⚠️ This function will be deprecated in the next update!
+--- ---
 --- ### Example
 --- ```lua
---- 	local someBody = FindBody("bodyname")
---- 	SetPlayerRigTransform(someBody, GetBodyTransform(someBody))
+--- local someBody = FindBody("bodyname")
+--- SetPlayerRigTransform(someBody, GetBodyTransform(someBody))
 --- ```
 --- @param rigId number -- Unique id
 --- @param location table -- New world transform
@@ -1294,6 +1314,8 @@ function SetPlayerRigLocationLocalTransform(rigId, name, location, playerId) end
 --- [View Documentation](https://teardowngame.com/experimental/api.html#SetPlayerRigTransform)
 function SetPlayerRigTransform(rigId, location, playerId) end
 
+--- ### ⚠️ This function will be deprecated in the next update!
+--- ---
 --- ### Example
 --- ```lua
 --- local t = GetPlayerRigLocationWorldTransform("ik_hand_l")
@@ -1304,6 +1326,8 @@ function SetPlayerRigTransform(rigId, location, playerId) end
 --- [View Documentation](https://teardowngame.com/experimental/api.html#GetPlayerRigLocationWorldTransform)
 function GetPlayerRigLocationWorldTransform(name, playerId) end
 
+--- ### ⚠️ This function will be deprecated in the next update!
+--- ---
 --- ### CLIENT ONLY
 --- ### Example
 --- ```lua
@@ -1322,12 +1346,16 @@ function GetPlayerRigLocationWorldTransform(name, playerId) end
 --- [View Documentation](https://teardowngame.com/experimental/api.html#SetPlayerRigTags)
 function SetPlayerRigTags(rigId, tag, playerId) end
 
+--- ### ⚠️ This function will be deprecated in the next update!
+--- ---
 --- @param tag string -- Tag name
 --- @param playerId? number -- Player ID. On client, zero means client player. On server, zero means server (host) player.
 --- @return boolean exists -- Returns true if entity has tag
 --- [View Documentation](https://teardowngame.com/experimental/api.html#GetPlayerRigHasTag)
 function GetPlayerRigHasTag(tag, playerId) end
 
+--- ### ⚠️ This function will be deprecated in the next update!
+--- ---
 --- @param tag string -- Tag name
 --- @param playerId? number -- Player ID. On client, zero means client player. On server, zero means server (host) player.
 --- @return string value -- Returns the tag value, if any. Empty string otherwise.

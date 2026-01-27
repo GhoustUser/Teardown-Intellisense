@@ -1,6 +1,37 @@
 --- @meta
 
 
+--- @alias QueryRequire_Layer
+--- | 'physical' have a physical representation
+--- | 'dynamic' part of a dynamic body
+--- | 'static' part of a static body
+--- | 'large' above debris threshold
+--- | 'small' below debris threshold
+--- | 'visible' only hit visible shapes
+--- | 'animator' part of an animator hierarchy
+--- | 'player' part of an player animator hierarchy
+--- | 'tool' part of a tool
+
+
+--- @alias QueryInclude_Layer
+--- | 'physical' have a physical representation
+--- | 'dynamic' part of a dynamic body
+--- | 'static' part of a static body
+--- | 'large' above debris threshold
+--- | 'small' below debris threshold
+--- | 'visible' only hit visible shapes
+--- | 'animator' part of an animator hierarchy
+--- | 'player' part of an player
+--- | 'tool' part of a tool
+
+
+--- @alias GetPathState_State
+--- | 'idle' No recent query
+--- | 'busy' Busy computing. No path found yet.
+--- | 'fail' Failed to find path. You can still get the resulting path (even though it won't reach the target).
+--- | 'done' Path planning completed and a path was found. Get it with GetPathLength and GetPathPoint)
+
+
 --- ### Example
 --- ```lua
 --- --Raycast dynamic, physical objects above debris threshold, but not specific vehicle
@@ -14,35 +45,7 @@
 --- 	end
 --- end
 --- ```
---- @alias QueryRequire_Layer
---- | 'physical' have a physical representation
---- | 'dynamic' part of a dynamic body
---- | 'static' part of a static body
---- | 'large' above debris threshold
---- | 'small' below debris threshold
---- | 'visible' only hit visible shapes
---- | 'animator' part of an animator hierarchy
---- | 'player' part of an player animator hierarchy
---- | 'tool' part of a tool
-
---- @alias QueryInclude_Layer
---- | 'physical' have a physical representation
---- | 'dynamic' part of a dynamic body
---- | 'static' part of a static body
---- | 'large' above debris threshold
---- | 'small' below debris threshold
---- | 'visible' only hit visible shapes
---- | 'animator' part of an animator hierarchy
---- | 'player' part of an player
---- | 'tool' part of a tool
-
---- @alias GetPathState_State
---- | 'idle' No recent query
---- | 'busy' Busy computing. No path found yet.
---- | 'fail' Failed to find path. You can still get the resulting path (even though it won't reach the target).
---- | 'done' Path planning completed and a path was found. Get it with GetPathLength and GetPathPoint)
-
---- @param layers string -- Space separate list of layers
+--- @param layers QueryRequire_Layer -- Space separate list of layers
 --- [View Documentation](https://teardowngame.com/experimental/api.html#QueryRequire)
 function QueryRequire(layers) end
 
@@ -57,7 +60,7 @@ function QueryRequire(layers) end
 --- 	end
 --- end
 --- ```
---- @param layers string -- Space separate list of layers
+--- @param layers QueryInclude_Layer -- Space separate list of layers
 --- [View Documentation](https://teardowngame.com/experimental/api.html#QueryInclude)
 function QueryInclude(layers) end
 
@@ -471,7 +474,7 @@ function AbortPath(id) end
 --- end
 --- ```
 --- @param id? number -- Path planner id. Default value is 0.
---- @return GetPathState_State state -- Current path planning state
+--- @return GetPathState_State GetPathState_State -- Current path planning state
 --- [View Documentation](https://teardowngame.com/experimental/api.html#GetPathState)
 function GetPathState(id) end
 

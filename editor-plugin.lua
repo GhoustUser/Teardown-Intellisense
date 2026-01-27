@@ -12,29 +12,29 @@ but works fine with relative paths.
 
 Add next settings to ".luarc.json" in project's root folder and replace paths.
 {
-    "runtime.version": "Lua 5.1",
-    "runtime.plugin": "path/to/td_vscode_plugin.lua",
-    "workspace.library": [
-        "path/to/script_defs.lua",
-        "path/to/voxscript_defs.lua"
-    ]
+	"runtime.version": "Lua 5.1",
+	"runtime.plugin": "path/to/td_vscode_plugin.lua",
+	"workspace.library": [
+		"path/to/script_defs.lua",
+		"path/to/voxscript_defs.lua"
+	]
 }
 --]]
 
 function OnSetText(uri, text)
-    local diffs = {}
+	local diffs = {}
 
-    for start, path, finish in text:gmatch '()#include%s+"([^"]+)"()' do
-        diffs[#diffs + 1] = {
-            start  = start,
-            finish = finish - 1,
-            text   = ('require("%s")'):format(path),
-        }
-    end
+	for start, path, finish in text:gmatch '()#include%s+"([^"]+)"()' do
+		diffs[#diffs + 1] = {
+			start  = start,
+			finish = finish - 1,
+			text   = ('require("%s")'):format(path),
+		}
+	end
 
-    if #diffs == 0 then
-        return nil
-    end
+	if #diffs == 0 then
+		return nil
+	end
 
-    return diffs
+	return diffs
 end

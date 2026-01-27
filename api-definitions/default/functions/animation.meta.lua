@@ -118,7 +118,7 @@ function SetAnimatorTransform(handle, transform) end
 --- [View Documentation](https://teardowngame.com/experimental/api.html#MakeRagdoll)
 function MakeRagdoll(handle) end
 
---- Take control if the prefab bodies and do an optional blend between the current ragdoll state and current animation state
+--- Take control of the prefab bodies and do an optional blend between the current ragdoll state and current animation state
 --- ### Example
 --- ```lua
 --- --Take control of bodies and do a blend during one sec between the animation state and last physics state
@@ -376,13 +376,13 @@ function GetBoneBody(handle, name) end
 
 --- ### Example
 --- ```lua
---- 	local animator = GetPlayerAnimator()
---- 	local bones = GetBoneNames(animator)
---- 	for i=1, #bones do
---- 		local bone = bones[i]
---- 		local t = GetBoneWorldTransform(animator,bone)
---- 		DebugCross(t.pos)
---- 	end
+--- local animator = GetPlayerAnimator()
+--- local bones = GetBoneNames(animator)
+--- for i=1, #bones do
+--- 	local bone = bones[i]
+--- 	local t = GetBoneWorldTransform(animator,bone)
+--- 	DebugCross(t.pos)
+--- end
 --- ```
 --- @param handle number -- Animator handle
 --- @param name string -- Bone name

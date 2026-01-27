@@ -6,6 +6,14 @@
 
 --- The following built-in events are available.
 --- You can also create custom events that can be triggered by your scripts and listened to by other scripts.
+--- @alias EventType
+--- | "playerhurt" Triggered when a player is hurt. | Parameters: playerId (number), healthBefore (number), healthAfter (number), attackerId (number), point (TVec), impulse (TVec). | Server and Client.
+--- | "playerdied" Triggered when a player dies. | Parameters: playerId (number), attackerId (number), damage (number), healthBefore (number), cause (string), point (TVec), impulse (TVec). | Server and Client.
+--- | "explosion" Triggered when an explosion occurs. | Parameters: point (TVec), strength (number). | Server only.
+--- | "projectilehit" Triggered when a projectile hits an object. | Parameters: shape (number), point (TVec), direction (TVec). | Server only.
+--- | string
+
+
 --- ### Example
 --- ```lua
 --- local count = GetEventCount("matchended")
@@ -13,13 +21,6 @@
 --- 	local name1, name2, score1, score2 = GetEvent("matchended", i)
 --- end
 --- ```
---- @alias EventType
---- | "playerhurt" Triggered when a player is hurt. | Parameters: playerId (number), healthBefore (number), healthAfter (number), attackerId (number), point (TVec), impulse (TVec). | Server and Client.
---- | "playerdied" Triggered when a player dies. | Parameters: playerId (number), attackerId (number), damage (number), healthBefore (number), cause (string), point (TVec), impulse (TVec). | Server and Client.
---- | "explosion" Triggered when an explosion occurs. | Parameters: point (TVec), strength (number). | Server only.
---- | "projectilehit" Triggered when a projectile hits an object. | Parameters: shape (number), point (TVec), direction (TVec). | Server only.
-
-
 --- @param type EventType -- Event type
 --- @return number value -- Number of event available
 --- [View Documentation](https://teardowngame.com/experimental/api.html#GetEventCount)
@@ -43,7 +44,7 @@ function PostEvent(eventName, ...) end
 --- 	local name1, name2, score1, score2 = GetEvent("matchended", i)
 --- end
 --- ```
---- @param type string -- Event type
+--- @param type EventType -- Event type
 --- @param index number -- Event index (starting with one)
 --- @return any returnValues -- Return values depending on event type
 --- [View Documentation](https://teardowngame.com/experimental/api.html#GetEvent)

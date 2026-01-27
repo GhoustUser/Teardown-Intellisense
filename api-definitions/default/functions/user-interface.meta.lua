@@ -1,10 +1,6 @@
 --- @meta
 
 
---- ### Example
---- ```lua
---- UiMakeInteractive()
---- ```
 --- @alias UiAlign_Alignment
 --- | 'left' Horizontally align to the left
 --- | 'right' Horizontally align to the right
@@ -13,11 +9,17 @@
 --- | 'bottom' Veritcally align to the bottom
 --- | 'middle' Vertically align to the middle
 
+
 --- @alias UiTextAlignment_Alignment
 --- | 'left' Horizontally align to the left
 --- | 'right' Horizontally align to the right
 --- | 'center' Horizontally align to the center
 
+
+--- ### Example
+--- ```lua
+--- UiMakeInteractive()
+--- ```
 --- Calling this function will disable game input, bring up the mouse pointer
 --- and allow Ui interaction with the calling script without pausing the game.
 --- This can be useful to make interactive user interfaces from scripts while

@@ -6,17 +6,19 @@
 --- Some tags are also reserved for engine use. See documentation for details.
 
 
---- ### Example
---- ```lua
---- function client.tick()
---- 	--You may use this function in a similar way to other "Find functions" like FindBody, FindShape, FindVehicle, etc.
---- 	local myCar = FindEntity("myCar", false, "vehicle")
---- 	--If you do not specify the tag, the first element found will be returned
---- 	local joint = FindEntity("", true, "joint")
---- 	--If the type is not specified, the search will be performed for all types of entity
---- 	local target = FindEntity("target", true)
---- end
---- ```
+--- @alias EntityType
+--- | 'Body'
+--- | 'Shape'
+--- | 'Light'
+--- | 'Location'
+--- | 'Water'
+--- | 'Joint'
+--- | 'Vehicle'
+--- | 'Wheel'
+--- | 'Screen'
+--- | 'Trigger'
+
+
 --- @alias GetProperty_EntityType
 --- | 'Body' desc (string), dynamic (boolean), mass (number), transform, velocity (vector(x, y, z)), angVelocity (vector(x, y, z)), active (boolean), friction (number), restitution (number), frictionMode (average|minimum|multiply|maximum), restitutionMode (average|minimum|multiply|maximum)
 --- | 'Shape' density (number), strength (number), size (number), emissiveScale (number), localTransform, worldTransform
@@ -28,6 +30,7 @@
 --- | 'Wheel' drive (number), steer (number), travel (vector(x, y))
 --- | 'Screen' enabled (boolean), bulge (number), resolution (number, number), script (string), interactive (boolean), emissive (number), fxraster (number), fxca (number), fxnoise (number), fxglitch (number), size (vector(x, y))
 --- | 'Trigger' transform, type (string), size (vector(x, y, z)/number)
+
 
 --- @alias SetProperty_EntityType
 --- | 'Body' desc (string), dynamic (boolean), transform, velocity (vector(x, y, z)), angVelocity (vector(x,y,z)), active (boolean), friction (number), restitution (number), frictionMode (average|minimum|multiply|maximum), restitutionMode (average|minimum|multiply|maximum)
@@ -41,10 +44,22 @@
 --- | 'Screen' enabled (boolean), interactive (boolean), emissive (number), fxraster (number), fxca (number), fxnoise (number), fxglitch (number)
 --- | 'Trigger' transform, size (vector(x, y, z)/number)
 
+
 --- Returns an entity with the specified tag and type. This is a universal method that is an alternative to FindBody, FindShape, FindVehicle, etc.
+--- ### Example
+--- ```lua
+--- function client.tick()
+--- 	--You may use this function in a similar way to other "Find functions" like FindBody, FindShape, FindVehicle, etc.
+--- 	local myCar = FindEntity("myCar", false, "vehicle")
+--- 	--If you do not specify the tag, the first element found will be returned
+--- 	local joint = FindEntity("", true, "joint")
+--- 	--If the type is not specified, the search will be performed for all types of entity
+--- 	local target = FindEntity("target", true)
+--- end
+--- ```
 --- @param tag? string -- Tag name
 --- @param global? boolean -- Search in entire scene
---- @param type? string -- Entity type ("body", "shape", "light", "location" etc.)
+--- @param type? EntityType -- Entity type ("body", "shape", "light", "location" etc.)
 --- @return number handle -- Handle to first entity with specified tag or zero if not found
 --- [View Documentation](https://teardowngame.com/experimental/api.html#FindEntity)
 function FindEntity(tag, global, type) end
@@ -63,7 +78,7 @@ function FindEntity(tag, global, type) end
 --- ```
 --- @param tag? string -- Tag name
 --- @param global? boolean -- Search in entire scene
---- @param type? string -- Entity type ("body", "shape", "light", "location" etc.)
+--- @param type? EntityType -- Entity type ("body", "shape", "light", "location" etc.)
 --- @return table list -- Indexed table with handles to all entities with specified tag
 --- [View Documentation](https://teardowngame.com/experimental/api.html#FindEntities)
 function FindEntities(tag, global, type) end
@@ -273,9 +288,8 @@ function GetEntityType(handle) end
 --- end
 --- ```
 --- @param handle number -- Entity handle
---- @param property string -- Property name
+--- @param property GetProperty_EntityType -- Property name
 --- @return any value -- Property value
---- @see GetProperty_EntityType
 --- [View Documentation](https://teardowngame.com/experimental/api.html#GetProperty)
 function GetProperty(handle, property) end
 
@@ -288,9 +302,8 @@ function GetProperty(handle, property) end
 --- end
 --- ```
 --- @param handle number -- Entity handle
---- @param property string -- Property name
+--- @param property SetProperty_EntityType -- Property name
 --- @param value any -- Property value
---- @see SetProperty_EntityType
 --- [View Documentation](https://teardowngame.com/experimental/api.html#SetProperty)
 function SetProperty(handle, property, value) end
 

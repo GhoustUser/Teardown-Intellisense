@@ -1,6 +1,13 @@
 --- @meta
 
 
+--- @alias JointType
+--- | "ball"
+--- | "hinge"
+--- | "prismatic"
+--- | "rope"
+
+
 --- ### Example
 --- ```lua
 --- function client.init()
@@ -55,7 +62,7 @@ function IsJointBroken(joint) end
 --- end
 --- ```
 --- @param joint number -- Joint handle
---- @return string type -- Joint type
+--- @return JointType | "" type -- Joint type
 --- [View Documentation](https://teardowngame.com/experimental/api.html#GetJointType)
 function GetJointType(joint) end
 

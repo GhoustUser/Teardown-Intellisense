@@ -6,14 +6,6 @@
 
 ---@alias InputIdentifier ScriptControl_PhysicalInput | ScriptControl_LogicalInput
 
---- ### Example
---- ```lua
---- function init()
---- 	local v = GetVersion()
---- 	--v is "0.5.0"
---- 	DebugPrint(v)
---- end
---- ```
 --- @alias ScriptControl_PhysicalInput
 --- | 'esc' Escape key
 --- | 'tab' Tab key
@@ -89,6 +81,7 @@
 --- | 'f12' Function key 12
 --- | string Any key or button
 
+
 --- @alias ScriptControl_LogicalInput
 --- | 'up' Move forward / Accelerate
 --- | 'down' Move backward / Brake
@@ -135,6 +128,15 @@
 --- | 'easeout' Slow at end
 --- | 'bounce' Bounce and overshoot new value
 
+
+--- ### Example
+--- ```lua
+--- function init()
+--- 	local v = GetVersion()
+--- 	--v is "0.5.0"
+--- 	DebugPrint(v)
+--- end
+--- ```
 --- @return string version -- Dot separated string of current version of the game
 --- [View Documentation](https://teardowngame.com/experimental/api.html#GetVersion)
 function GetVersion() end
